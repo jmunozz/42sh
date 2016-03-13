@@ -10,25 +10,30 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_ls
+NAME = minishell
 DNAME = d_ft_ls
 FLAGS = -Wall -Wextra -Werror
 DFLAGS = -Wall -Wextra -Weverything
-SRC = main.c manage_list.c manage_list_next.c ft_ls.c manage_arg.c manage_file.c
+SRC = main.c ft_minishell.c
+PATH = srcs/
+OBJ = $(PATH)$(SRC:.c=.o)
 
 all: $(NAME)
 
-lib:
-	cd libft ; make ; cp libft.a ../.
+%.o: %.c
+	gcc $(FLAGS) -c $^
 
-$(NAME): lib
-	gcc $(FLAGS) $(SRC) -I libft libft.a -o $(NAME)
+lib:
+	cd libft ; make
+
+$(NAME): lib $(OBJ)
+	gcc $(FLAGS) $(OBJ) -I libft -I includes libft/libft.a -o $(NAME)
 
 $(DNAME): lib
-	gcc $(DFLAGS) $(SRC) -I libft libft.a -o $(DNAME)
+	gcc $(DFLAGS) $(PATH)$(SRC) -I libft -I includes libft.a -o $(DNAME)
 
 clean:
-	rm -f libft.a
+	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
