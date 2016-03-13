@@ -24,5 +24,6 @@ int		main(char **env)
 		free(config);
 		return (ft_initerror());
 	}
+	ft_putstr(config->prompt);
 	return (ft_minishell(config));
 }
