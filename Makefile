@@ -6,39 +6,44 @@
 #    By: tboos <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/07 15:35:19 by tboos             #+#    #+#              #
-#    Updated: 2016/03/08 19:12:51 by tboos            ###   ########.fr        #
+#    Updated: 2016/03/17 15:22:49 by tboos            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
+.PHONY: fclean re
+.SUFFIXES:
 NAME = minishell
-DNAME = d_ft_ls
+DNAME = d_minishell
 FLAGS = -Wall -Wextra -Werror
 DFLAGS = -Wall -Wextra -Weverything
-SRC = main.c ft_minishell.c
-PATH = srcs/
-OBJ = $(PATH)$(SRC:.c=.o)
+SRC = main.c ft_minishell.c free.c ft_errors.c
+SRCS = $(foreach S, $(SRC), srcs/$(S))
+OBJ = $(SRCS:.c=.o)
+HEAD = -I libft -I includes
 
-all: $(NAME)
+all: lib $(NAME)
+
+$(NAME): $(OBJ)
+	gcc $(FLAGS) $(HEAD) $^ -L libft -l ft -o $@
 
 %.o: %.c
-	gcc $(FLAGS) -c $^
+	gcc $(FLAGS) $(HEAD)  -c $^ -o $@
 
 lib:
-	cd libft ; make
-
-$(NAME): lib $(OBJ)
-	gcc $(FLAGS) $(OBJ) -I libft -I includes libft/libft.a -o $(NAME)
+	make -C libft
 
 $(DNAME): lib
-	gcc $(DFLAGS) $(PATH)$(SRC) -I libft -I includes libft.a -o $(DNAME)
+	gcc $(DFLAGS) $(OBJ) $(HEAD) libft/libft.a -o $@
 
 clean:
 	rm -f $(OBJ)
+	make -C libft clean
 
 fclean: clean
 	rm -f $(NAME)
 	rm -f $(DNAME)
+	make -C libft fclean
 
-re: fclean $(NAME)
-dre: fclean $(DNAME)
-.PHONY: fclean re
+re: fclean all
+	make -C libft re
+
+re: fclean lib $(DNAME)

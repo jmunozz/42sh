@@ -6,24 +6,22 @@ static int		ft_initerror(void)
 		return (1);
 }
 
-int		main(char **env)
+int		main(int ac, char **av, char **env)
 {
 	t_config	*config;
 	int			i;
 
 	if (!(config = (t_config *)ft_memalloc(sizeof(t_config))))
 		return (ft_initerror());
-	if (!(config->env = ft_strtabdup(env)))
-	{
-		free(config);
+	if (!(config->env = ft_strtabdup(env)) && ft_freegiveone(config))
 		return (ft_initerror());
-	}
-	if (!(config->prompt = ft_strdup("&> ")))
+	if (!(ft_prompt(ft_strtabfind(config->env))))
 	{
 		ft_strtabfree(config->env);
 		free(config);
 		return (ft_initerror());
 	}
 	ft_putstr(config->prompt);
-	return (ft_minishell(config));
+	ft_minishell(config);
+	return (ft_status(0));
 }
