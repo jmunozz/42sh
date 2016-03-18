@@ -6,7 +6,7 @@
 #    By: tboos <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/07 15:35:19 by tboos             #+#    #+#              #
-#    Updated: 2016/03/17 15:22:49 by tboos            ###   ########.fr        #
+#    Updated: 2016/03/18 18:13:31 by tboos            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 .PHONY: fclean re
@@ -15,7 +15,7 @@ NAME = minishell
 DNAME = d_minishell
 FLAGS = -Wall -Wextra -Werror
 DFLAGS = -Wall -Wextra -Weverything
-SRC = main.c ft_minishell.c free.c ft_errors.c
+SRC = main.c minishell.c free.c errors.c prompt.c
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
 HEAD = -I libft -I includes
@@ -23,7 +23,7 @@ HEAD = -I libft -I includes
 all: lib $(NAME)
 
 $(NAME): $(OBJ)
-	gcc $(FLAGS) $(HEAD) $^ -L libft -l ft -o $@
+	gcc $(FLAGS) $^ $(HEAD) -L libft -l ft -o $@
 
 %.o: %.c
 	gcc $(FLAGS) $(HEAD)  -c $^ -o $@
