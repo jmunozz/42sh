@@ -12,10 +12,12 @@
 
 #include "minishell.h"
 
-int		ft_prompt(char *pwd)
+int		ft_prompt(t_config *config)
 {
+	char	*pwd;
 	char	*subrep;
 
+	pwd = ft_strtabfind(config->env, "PWD");
 	if (!pwd)
 		return (0);
 	ft_putstr("\x1b[34m-> \x1b[1;32m");

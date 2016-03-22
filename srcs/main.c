@@ -22,13 +22,15 @@ int		main(int ac, char **av, char **env)
 {
 	t_config	*config;
 
-	ac = 0;
-	(void)av;
+	if (ac)
+		(void)av;
 	if (!(config = (t_config *)ft_memalloc(sizeof(t_config))))
 		return (ft_initerror());
-	if (!(config->env = ft_strtabdup(env)) && ft_freegiveone(config))
-		return (ft_initerror());
-	if (!(ft_prompt(ft_strtabfind(config->env, "PWD"))))
+	config->env = NULL;
+	config->exe = NULL;
+	if (!(config->env = ft_strtabdup(env))
+		|| !(ft_pathtohash(config))
+		|| !(ft_prompt(config)))
 	{
 		ft_free_config(config);
 		return (ft_initerror());

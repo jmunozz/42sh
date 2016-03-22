@@ -14,6 +14,12 @@
 
 void	ft_free_config(t_config *config)
 {
-	ft_strtabfree(config->env);
-	free(config);
+	if (config)
+	{
+		if (config->env)
+			ft_strtabfree(config->env);
+		if (config->exe)
+			ft_strtabfree(config->exe);
+		free(config);
+	}
 }
