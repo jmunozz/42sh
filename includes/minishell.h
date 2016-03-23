@@ -6,13 +6,14 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:23:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 17:59:08 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/23 21:12:10 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <dirent.h>
 # include <stdio.h>
 # include "libft.h"
@@ -30,6 +31,12 @@ typedef struct	s_config
 	t_list		*h_bin[34]; /*map[yr + yo][xr + xo] == '.'*/
 }				t_config;
 
+/*
+**error.c
+*/
+void			ft_lexer_error(char *command);
+int				ft_prompt_error(void);
+void			ft_fork_error(void);
 /*
 **streamscan.c
 */

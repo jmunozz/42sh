@@ -6,24 +6,29 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:54 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/18 18:04:18 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/23 21:17:55 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-int		ft_prompt_error(t_config *config)
+
+void	ft_lexer_error(char *command)
 {
-	ft_free_config(config);
-	ft_putstr_fd("minishell: prompting command error", 2);
+	ft_putstr_str_str_fd("minishell: lexer error: ", command, "\n",2);
+	free(command);
+	ft_status(1);
+}
+
+int		ft_prompt_error(void)
+{
+	ft_status(1);
+	ft_putendl_fd("minishell: error searching pwd for prompt", 2);
+	ft_putstr("\x1b[34m-> \x1b[1;32mLove you anyway : \xb1[0m");
 	return (1);
 }
 
-int		ft_fork_error(t_config *config, char **command)
+void	ft_fork_error(void)
 {
-	ft_free_config(config);
-	ft_strtabfree(command);
+	ft_status(1);
 	ft_putstr_fd("minishell: forking error", 2);
-	return (1);
 }
-*/

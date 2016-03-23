@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 17:51:47 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/23 21:22:40 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 char	*ft_streamscan(t_config *config)
 {
-	char		*command;
-	char		*term;
+	char			*command;
+	char			*n_term;
+	struct termios	term;
 
-	term = ft_strtabfind(config->env, "TERM");
+	if ((n_term = ft_strtabfind(config->env, "TERM")))
+		if (tcgetattr(0, n_term)
 	if (get_next_line(0, &command) <= 0)
 		return(NULL);
 	return (command);

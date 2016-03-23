@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 16:37:59 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 17:59:06 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/23 20:21:26 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ int		ft_prompt(t_config *config)
 	char	*pwd;
 	char	*subrep;
 
-	pwd = ft_strtabfind(config->env, "PWD");
-	if (!pwd)
-		return (0);
+	if (!(pwd = ft_strtabfind(config->env, "PWD")))
+		return (ft_prompt_error());
 	ft_putstr("\x1b[34m-> \x1b[1;32m");
 	if ((subrep = ft_strrchr(pwd, '/')))
 		ft_putstr(subrep + 1);
