@@ -6,7 +6,7 @@
 #    By: tboos <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/07 15:35:19 by tboos             #+#    #+#              #
-#    Updated: 2016/03/18 18:13:31 by tboos            ###   ########.fr        #
+#    Updated: 2016/03/23 17:44:20 by tboos            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 .PHONY: fclean re
@@ -15,10 +15,10 @@ NAME = minishell
 DNAME = d_minishell
 FLAGS = -Wall -Wextra -Werror
 DFLAGS = -Wall -Wextra -Weverything
-SRC = main.c minishell.c free.c errors.c prompt.c
+SRC = main.c minishell.c free.c errors.c prompt.c cmp.c hash.c streamscan.c
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
-HEAD = -I libft -I includes
+HEAD = -I libft/includes -I includes
 
 all: lib $(NAME)
 

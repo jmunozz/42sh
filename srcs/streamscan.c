@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   streamscan.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/18 16:37:59 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 17:59:06 by tboos            ###   ########.fr       */
+/*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
+/*   Updated: 2016/03/23 17:51:47 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_prompt(t_config *config)
+char	*ft_streamscan(t_config *config)
 {
-	char	*pwd;
-	char	*subrep;
+	char		*command;
+	char		*term;
 
-	pwd = ft_strtabfind(config->env, "PWD");
-	if (!pwd)
-		return (0);
-	ft_putstr("\x1b[34m-> \x1b[1;32m");
-	if ((subrep = ft_strrchr(pwd, '/')))
-		ft_putstr(subrep + 1);
-	else
-		ft_putstr(pwd + 4);
-	ft_putstr(" : \x1b[0m");
-	return (1);
+	term = ft_strtabfind(config->env, "TERM");
+	if (get_next_line(0, &command) <= 0)
+		return(NULL);
+	return (command);
 }

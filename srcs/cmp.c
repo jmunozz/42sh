@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   cmp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/18 16:37:59 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 17:59:06 by tboos            ###   ########.fr       */
+/*   Created: 2016/03/22 11:33:35 by tboos             #+#    #+#             */
+/*   Updated: 2016/03/23 13:41:17 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_prompt(t_config *config)
+int			ft_ascii_cmp(t_bin *s1, t_bin *s2)
 {
-	char	*pwd;
-	char	*subrep;
-
-	pwd = ft_strtabfind(config->env, "PWD");
-	if (!pwd)
-		return (0);
-	ft_putstr("\x1b[34m-> \x1b[1;32m");
-	if ((subrep = ft_strrchr(pwd, '/')))
-		ft_putstr(subrep + 1);
-	else
-		ft_putstr(pwd + 4);
-	ft_putstr(" : \x1b[0m");
-	return (1);
+	return (s1->name[0] - s2->name[0]);
 }

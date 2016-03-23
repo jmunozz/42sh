@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:44:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/18 18:37:31 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/23 15:48:40 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ int		main(int ac, char **av, char **env)
 	if (!(config = (t_config *)ft_memalloc(sizeof(t_config))))
 		return (ft_initerror());
 	config->env = NULL;
-	config->exe = NULL;
+	config->bin = NULL;
 	if (!(config->env = ft_strtabdup(env))
-		|| !(ft_pathtohash(config))
-		|| !(ft_prompt(config)))
+		|| !(ft_pathtohash(config)))
 	{
 		ft_free_config(config);
 		return (ft_initerror());

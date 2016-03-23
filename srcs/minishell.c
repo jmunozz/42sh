@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/18 18:11:50 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/23 17:58:43 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,22 @@
 
 void	ft_minishell(t_config *config)
 {
-	/*
-	pid_t	father;
-	char	**command;
+	char	*command;
+	char	**argv;
 
-	while (command = ft_streamscan())
+	while (ft_prompt(config) && (command = ft_streamscan(config)))
 	{
-		if (ft_builin(config, command))
-			ft_strtabfree(command);
-		else if (-1 > (father = fork()))
+		argv = ft_strsplit(command, ' ');
+		free(command);
+		command
+		ft_putchar('\n');
+		if (-1 > (father = fork()))
 			return (ft_fork_error(config, command));
 		else if (father == 0)
 			ft_execve(config, command);
 		else if (father !=  0)
 			ft_waitforson(father);
-		ft_putstr(config->prompt);
 	}
-	return (ft_prompt_error(config));
-	*/
+	ft_putchar('\n');
 	ft_free_config(config);
-	ft_putstr("on est bon");
 }
