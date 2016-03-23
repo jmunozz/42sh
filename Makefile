@@ -12,9 +12,7 @@
 .PHONY: fclean re
 .SUFFIXES:
 NAME = minishell
-DNAME = d_minishell
 FLAGS = -Wall -Wextra -Werror
-DFLAGS = -Wall -Wextra -Weverything
 SRC = main.c minishell.c free.c errors.c prompt.c cmp.c hash.c streamscan.c
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
@@ -31,19 +29,14 @@ $(NAME): $(OBJ)
 lib:
 	make -C libft
 
-$(DNAME): lib
-	gcc $(DFLAGS) $(OBJ) $(HEAD) libft/libft.a -o $@
-
 clean:
 	rm -f $(OBJ)
 	make -C libft clean
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(DNAME)
 	make -C libft fclean
 
 re: fclean all
-	make -C libft re
 
 re: fclean lib $(DNAME)

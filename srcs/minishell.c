@@ -25,17 +25,17 @@ void		ft_minishell(t_config *config)
 		if (!(argv = ft_strsplit(command, ' ')))
 			ft_lexer_error(command);
 		else if (ft_freegiveone((void **)&command)
-			&& (command = ft_return_binpath(config, *argv)))
+				&& (command = ft_return_binpath(config, argv[0])))
 		{
-		free(argv[0]);
-		argv[0] = command;
-		ft_putchar('\n');
-		if (-1 > (father = fork()))
-			ft_fork_error();
-		else if (father == 0)
-			execve(command, argv, config->env);
-		else if (father !=  0)
-			waitpid(father, &stat_loc, 0);
+			free(argv[0]);
+			argv[0] = command;
+			ft_putchar('\n');
+			if (-1 > (father = fork()))
+				ft_fork_error();
+			else if (father == 0)
+				execve(command, argv, config->env);
+			else if (father !=  0)
+				waitpid(father, &stat_loc, 0);
 		}
 		else
 			ft_putstr_fd("no such exe in path !\n", 2);

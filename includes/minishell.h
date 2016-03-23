@@ -16,6 +16,7 @@
 # include <sys/wait.h>
 # include <dirent.h>
 # include <stdio.h>
+# include <termios.h>
 # include "libft.h"
 
 typedef struct	dirent	t_dirent;

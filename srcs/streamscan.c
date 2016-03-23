@@ -19,7 +19,7 @@ char	*ft_streamscan(t_config *config)
 	struct termios	term;
 
 	if ((n_term = ft_strtabfind(config->env, "TERM")))
-		if (tcgetattr(0, n_term)
+		tcgetattr(0, &term);
 	if (get_next_line(0, &command) <= 0)
 		return(NULL);
 	return (command);
