@@ -29,7 +29,6 @@ void		ft_minishell(t_config *config)
 		{
 			free(argv[0]);
 			argv[0] = command;
-			ft_putchar('\n');
 			if (-1 > (father = fork()))
 				ft_fork_error();
 			else if (father == 0)

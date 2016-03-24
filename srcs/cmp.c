@@ -14,6 +14,5 @@
 
 int			ft_ascii_cmp(t_bin *s1, t_bin *s2)
 {
-dprintf(1, "bin = %s     %s\n", s1->name, s2->name);
 	return (s1->name[0] - s2->name[0]);
 }

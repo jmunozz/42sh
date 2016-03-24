@@ -98,7 +98,7 @@ int			ft_pathtohash(t_config *config)
 {
 	char	*path;
 
-	if (!(path = ft_strtabfind(config->env, "PATH"))
+	if (!(path = ft_strtabfindstart(config->env, "PATH="))
 			|| !(ft_create_list_bin(path, config)))
 		return (0);
 	ft_hash_bin(config);
