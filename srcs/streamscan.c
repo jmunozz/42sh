@@ -20,7 +20,6 @@ char	*ft_streamscan(t_config *config)
 
 	if ((n_term = ft_strtabfind(config->env, "TERM")))
 		tcgetattr(0, &term);
-	if (get_next_line(0, &command) <= 0)
-		return(NULL);
+	while (get_next_line(0, &command) <= 0);
 	return (command);
 }

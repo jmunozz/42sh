@@ -28,6 +28,7 @@ int		main(int ac, char **av, char **env)
 		return (ft_initerror());
 	config->env = NULL;
 	config->bin = NULL;
+	ft_bzero(config->history, sizeof(config->history));
 	if (!(config->env = ft_strtabdup(env))
 		|| !(ft_pathtohash(config)))
 	{

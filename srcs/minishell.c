@@ -17,18 +17,21 @@ void		ft_minishell(t_config *config)
 	char	*command;
 	char	**argv;
 
-	ft_usr_exit();
 	while (ft_prompt(config) && (command = ft_streamscan(config)))
 	{
-		if (!(argv = ft_strsplit(command, ' ')))
-			ft_putchar('\n');
+		argv = NULL;
+		ft_push_history(command, config);
+		if (!(argv = ft_strsplit(command, ' ')));
+		else if (!ft_strcmp(argv[1], "exit"))
+			break ;
 		else if (ft_builtin(argv, config))
 			ft_putchar('\n');
 		else if ((command = ft_return_binpath(config, argv[0])))
 			ft_fewef(command, argv, config->env);
 		else
 			ft_access_exec(argv, config->env);
+		if (argv)
+			ft_strtabfree(argv);
 	}
-	ft_putchar('\n');
-	exit(0);
+	exit(ft_status(0));
 }

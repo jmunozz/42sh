@@ -30,10 +30,14 @@ typedef struct	s_bin
 typedef struct	s_config
 {
 	char		**env;
+	char		*history[256];
 	t_list		*bin;
 	t_list		*h_bin[34]; /*map[yr + yo][xr + xo] == '.'*/
 }				t_config;
-
+/*
+**builtin.c
+*/
+void	ft_push_history(char *command, t_config *config);
 /*
 **builtin.c
 */
