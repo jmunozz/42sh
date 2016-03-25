@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+int		ft_malloc_error(char const *path)
+{
+	ft_putstr_str_str_fd("minishell: malloc error: ", (char *)path, "\n",2);
+	ft_status(1);
+	return (0);
+}
+
 void	ft_lexer_error(char *command)
 {
 	ft_putstr_str_str_fd("minishell: lexer error: ", command, "\n",2);
