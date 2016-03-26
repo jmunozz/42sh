@@ -12,6 +12,15 @@
 
 # include "minishell.h"
 
+static void	ft_shell_exit(t_config *config)
+{
+	ft_free_config(config);
+	exit(ft_status(0));
+}
+
+/*
+**Extern while always true !
+*/
 void		ft_minishell(t_config *config)
 {
 	char	*command;
@@ -21,17 +30,17 @@ void		ft_minishell(t_config *config)
 	{
 		argv = NULL;
 		ft_push_history(command, config);
-		if (!(argv = ft_strsplit(command, ' ')));
-		else if (!ft_strcmp(argv[1], "exit"))
-			break ;
-		else if (ft_builtin(argv, config))
-			ft_putchar('\n');
-		else if ((command = ft_return_binpath(config, argv[0])))
-			ft_fewef(command, argv, config->env);
-		else
-			ft_access_exec(argv, config->env);
-		if (argv)
+		while ((argv = ft_strsplit(command, ' ')))
+		{
+			if (!ft_strcmp(argv[0], "exit"))
+				ft_shell_exit(config);
+			else if (ft_builtin(argv, config));
+			else if ((command = ft_return_binpath(config, argv[0])))
+				ft_fewef(command, argv, config->env);
+			else
+				ft_access_exec(argv, config->env);
 			ft_strtabfree(argv);
+			argv = NULL;
+		}
 	}
-	exit(ft_status(0));
 }

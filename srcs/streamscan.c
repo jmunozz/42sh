@@ -20,6 +20,10 @@ char	*ft_streamscan(t_config *config)
 
 	if ((n_term = ft_strtabfind(config->env, "TERM")))
 		tcgetattr(0, &term);
-	while (get_next_line(0, &command) <= 0);
+	if (get_next_line(0, &command) <= 0)
+	{
+		ft_putstr_fd("minishell: error while scanning command", 2);
+		return (NULL);
+	}
 	return (command);
 }

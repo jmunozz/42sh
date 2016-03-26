@@ -2,21 +2,21 @@
 
 static void	ft_clean_path(char *path)
 {
-	int		j;
+	int		i;
 
-	j = 0;
-	while (path && path[j])
+	i = 0;
+	while (path && path[i])
 	{
-		if (path[j] == '/' && path[j + 1] == '.' && path[j + 2] == '/')
-			ft_strcpy(path + j, path + j + 2);
-		if (path[j] == '/' && path[j + 1] == '.' && path[j + 2] == '.'
-				&& j - 2 > 0 && path[j - 1] != '/' && path[j - 2] != '.')
+		if (path[i] == '/' && path[i + 1] == '.' && path[i + 2] == '/')
+			ft_strcpy(path + i, path + i + 2);
+		if (path[i] == '/' && path[i + 1] == '.' && path[i + 2] == '.'
+				&& i - 2 > 0 && path[i - 1] != '/' && path[i - 2] != '.')
 		{
-			while (--j != 0 && path[j] != '/');
-			ft_strcpy(path + j + (path[j] == '/' ? 1 : 0),
-					ft_strchr(path + j + 1, '/') + 3);
+			while (--i != 0 && path[i] != '/');
+			ft_strcpy(path + i + (path[i] == '/' ? 1 : 0),
+					ft_strchr(path + i + 1, '/') + 4);
 		}
-		j++;
+		i++;
 	}
 }
 
@@ -25,6 +25,7 @@ static void	ft_cd(char **argv, t_config *config)
 	char	*path;
 	int		i;
 
+	path = NULL;
 	i = (ft_strcmp(argv[0], "cd") ? 0 : 1);
 	if (!argv[i] && (path = ft_strtabfind(config->env, "HOME=")))
 		path = ft_strdup(path + 5);
@@ -35,30 +36,24 @@ static void	ft_cd(char **argv, t_config *config)
 	if (path)
 	{
 		ft_clean_path(path);
-		if (ft_access_dir(path) && !chdir(path))
-			FT_PUTSTRFD("minishell: chdir error through: ", path, "\0", 2);
-//		else
-//			ft_setenv("PWD", path);
+		if (ft_access_dir(path) && chdir(path))
+			FT_PUTSTRFD("minishell: chdir error through: ", path, "\n", 2);
+		else
+			ft_setenv("PWD", path, config);
 		free(path);
 	}
 	else
-		ft_putstr_fd("minishell: cd: path error, env might be corrupted", 2);
-}
-
-static void	ft_env(char **argv, t_config *config)
-{
-	if (!argv[1])
-		ft_putstrtab((char const **)(config->env), '\n');
+		ft_putstr_fd("minishell: cd: path error, env might be corrupted\n", 2);
 }
 
 static void	ft_pwd(char **argv, char *pwd)
 {
 	if (argv[1])
-		ft_putstr_fd("pwd: too many arguments", 2);
+		ft_putstr_fd("pwd: too many arguments\n", 2);
 	else if (!pwd)
-		ft_putstr_fd("pwd: path in env is corrupted", 2);
+		ft_putstr_fd("pwd: path in env is corrupted\n", 2);
 	else
-		ft_putstr(pwd + 4);
+		ft_putendl(pwd + 4);
 }
 
 int			ft_builtin(char **argv, t_config *config)

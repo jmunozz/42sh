@@ -12,13 +12,14 @@ int		ft_access_dir(char const *path)
 	while ((endl = ft_strchr(endl, '/')))
 	{
 		*endl = '\0';
-		if (-1 == access(cpy, F_OK) && !(endl = NULL))
+		if (*cpy == '\0');
+		else if (-1 == access(cpy, F_OK) && !(endl = NULL))
 			FT_PUTSTRFD("minishell: directory doesn't exist: ", cpy, "\n", 2);
 		else if (-1 == stat(cpy, &buf) && !(endl = NULL))
 			FT_PUTSTRFD("minishell: stat failed on: ", cpy, "\n", 2);
 		else if (!S_ISDIR(buf.st_mode) && !(endl = NULL))
 			FT_PUTSTRFD("minishell: ", cpy, ": not a directory\n", 2);
-		else if (-1 == access(cpy, W_OK) && !(endl = NULL))
+		else if (-1 == access(cpy, X_OK) && !(endl = NULL))
 			FT_PUTSTRFD("minishell: permission denied: ", cpy, "\n", 2);
 		if (!endl && ft_freegiveone((void **)&cpy))
 			return (0);

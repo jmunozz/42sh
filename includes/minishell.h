@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
@@ -21,6 +22,7 @@
 # include <signal.h>
 # include "libft.h"
 # define FT_PUTSTRFD ft_putstr_str_str_fd
+
 typedef struct	dirent	t_dirent;
 typedef struct	s_bin
 {
@@ -32,25 +34,31 @@ typedef struct	s_config
 	char		**env;
 	char		*history[256];
 	t_list		*bin;
-	t_list		*h_bin[34]; /*map[yr + yo][xr + xo] == '.'*/
+	t_list		*h_bin[34];
 }				t_config;
+
+/*
+**environ.c
+*/
+void			ft_setenv(char *name, char *value, t_config *config);
+void			ft_env(char **argv, t_config *config);
+/*
+**history.c
+*/
+void			ft_push_history(char *command, t_config *config);
 /*
 **builtin.c
 */
-void	ft_push_history(char *command, t_config *config);
-/*
-**builtin.c
-*/
-int		ft_builtin(char **argv, t_config *config);
+int				ft_builtin(char **argv, t_config *config);
 /*
 **files.c
 */
-int		ft_access_dir(char const *path);
-void	ft_access_exec(char **argv, char **env);
+int				ft_access_dir(char const *path);
+void			ft_access_exec(char **argv, char **env);
 /*
 **error.c
 */
-int		ft_malloc_error(char const *path);
+int				ft_malloc_error(char const *path);
 void			ft_lexer_error(char *command);
 int				ft_prompt_error(void);
 void			ft_fork_error(void);
@@ -61,9 +69,9 @@ char			*ft_streamscan(t_config *config);
 /*
 **fork.c
 */
-void		ft_fewef(char *command, char **argv, char **env);
-void		ft_usr_exit(void);
-void		ft_kill_father(t_config *config);
+void			ft_fewef(char *command, char **argv, char **env);
+void			ft_usr_exit(void);
+void			ft_kill_father(t_config *config);
 /*
 **hash.c
 */

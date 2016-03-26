@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+void	ft_free_history(char **history)
+{
+	int	i;
+
+	i = -1;
+	while (++i < 256)
+		if (history[i])
+			free(history[i]);
+}
+
 void	ft_freebin(void *data, size_t data_size)
 {
 	if (data_size)
@@ -29,6 +39,7 @@ void	ft_free_config(t_config *config)
 			ft_strtabfree(config->env);
 		if (config->bin)
 			ft_lstdel(&(config->bin), &ft_freebin);
+		ft_free_history(config->history);
 		free(config);
 	}
 }

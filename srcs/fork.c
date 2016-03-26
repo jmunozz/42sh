@@ -12,7 +12,6 @@ void		ft_fewef(char *command, char **argv, char **env)
 		execve(command, argv, env);
 	else if (father !=  0)
 		waitpid(father, &stat_loc, 0);
-	ft_strtabfree(argv);
 }
 
 void		ft_kill_father(t_config *config)
