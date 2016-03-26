@@ -26,31 +26,36 @@ static void	ft_clean_path(char *path)
 		*(path + 1) = '\0';
 }
 
+static void	ft_path_follow(char *path, char **argv, t_config *config, int i)
+{
+	ft_clean_path(path);
+	if (!ft_access_dir(path));
+	else if (!chdir(path))
+		ft_setenv("PWD", path, config);
+	else
+		FT_PUTSTRFD("minishell: no such file: ",
+				(argv[i] ? argv[i] : path), "\n", 2);
+	free(path);
+}
+
 void		ft_cd(char **argv, t_config *config)
 {
 	char	*path;
 	int		i;
 
 	path = NULL;
-	i = (ft_strcmp(argv[0], "cd") ? 0 : 1);
-	if (!argv[i] && (path = ft_strtabfind(config->env, "HOME=")))
+	if ((i = (ft_strcmp(argv[0], "cd") ? 0 : 1)) && ft_strtablen(argv) - i > 1
+		&& (i += 3))
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+	else if (!argv[i] && (path = ft_strtabfind(config->env, "HOME=")))
 		path = ft_strdup(path + 5);
 	else if (argv[i] && argv[i][0] == '/')
 		path = ft_strdup(argv[i]);
 	else if (argv[i] && (path = ft_strtabfind(config->env, "PWD")))
 		path = ft_strslashjoin(path + 4, argv[i]);
 	if (path)
-	{
-		ft_clean_path(path);
-		if (!ft_access_dir(path));
-		else if (!chdir(path))
-			ft_setenv("PWD", path, config);
-		else
-			FT_PUTSTRFD("minishell: no such file: ",
-			(argv[i] ? argv[i] : path), "\n", 2);
-		free(path);
-	}
-	else
+		ft_path_follow(path, argv, config, i);
+	else if (i < 3)
 		ft_putstr_fd("minishell: cd: path error, env might be corrupted\n", 2);
 }
 
@@ -67,7 +72,7 @@ static void	ft_pwd(char **argv, char *pwd)
 int			ft_builtin(char **argv, t_config *config)
 {
 	if (!ft_strcmp(argv[0], "exit"))
-		ft_kill_father(config);
+		ft_shell_exit(config);
 	else if (!ft_strcmp(argv[0], "pwd"))
 		ft_pwd(argv, ft_strtabfind(config->env, "PWD"));
 	else if (!ft_strcmp(argv[0], "env"))

@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+void	ft_shell_exit(t_config *config)
+{
+	ft_free_config(config);
+	exit(ft_status(0));
+}
+
 void	ft_free_history(char **history)
 {
 	int	i;

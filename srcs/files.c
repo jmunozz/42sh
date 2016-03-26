@@ -27,22 +27,22 @@ int		ft_access_dir(char const *path)
 	return (ft_freegiveone((void **)&cpy));
 }
 
-void	ft_access_exec(char **argv, t_config *config)
+void	ft_access_exec(char *path, char **argv, t_config *config)
 {
 	struct stat	buf;
 
-	if (!ft_access_dir(argv[0]))
+	if (!ft_access_dir(path))
 		return ;
-	if (-1 == access(argv[0], F_OK))
-		FT_PUTSTRFD("minishell: command not found:", argv[0], "\n", 2);
-	else if (-1 == stat(argv[0], &buf))
-		FT_PUTSTRFD("minishell: access denied: ", argv[0], "\n", 2);
+	if (-1 == access(path, F_OK))
+		FT_PUTSTRFD("minishell: command not found:", path, "\n", 2);
+	else if (-1 == stat(path, &buf))
+		FT_PUTSTRFD("minishell: access denied: ", path, "\n", 2);
 	else if (S_ISDIR(buf.st_mode))
 		ft_cd(argv, config);
 	else if (!S_ISREG(buf.st_mode))
-		FT_PUTSTRFD("minishell: ", argv[0], ": not a regular file\n", 2);
-	else if (-1 == access(argv[0], W_OK))
-		FT_PUTSTRFD("minishell: ", argv[0], ": permission denied\n", 2);
+		FT_PUTSTRFD("minishell: ", path, ": not a regular file\n", 2);
+	else if (-1 == access(path, X_OK))
+		FT_PUTSTRFD("minishell: ", path, ": permission denied\n", 2);
 	else
-		ft_fewef(argv[0], argv, config->env);
+		ft_fewef(path, argv, config->env);
 }

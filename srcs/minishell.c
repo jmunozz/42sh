@@ -12,36 +12,29 @@
 
 # include "minishell.h"
 
-static void	ft_shell_exit(t_config *config)
-{
-	ft_free_config(config);
-	exit(ft_status(0));
-}
-
 /*
-**Extern while always true !
+**Extern while allways true !
 */
 void		ft_minishell(t_config *config)
 {
-	char	*command;
-	char	**argv;
+	char		*command;
+	t_arguments	av;
 
 	while (ft_prompt(config) && (command = ft_streamscan(config)))
 	{
-		argv = NULL;
 		ft_push_history(command, config);
-		while ((argv = ft_strsplit(command, ' ')))
+		av.argv = ft_strsplit(command, ' ');
+		while (av.argv)
 		{
-			if (!ft_strcmp(argv[0], "exit"))
-				ft_shell_exit(config);
-			else if (ft_builtin(argv, config));
-			else if ((command = ft_return_binpath(config, argv[0])))
-				ft_fewef(command, argv, config->env);
+			av.memo = ft_strtabdiv(av.argv, ";");
+			if (ft_builtin(av.argv, config));
+			else if ((command = ft_return_binpath(config, av.argv[0])))
+				ft_access_exec(command, av.argv, config);
 			else
-				ft_access_exec(argv, config);
-			ft_strtabfree(argv);
+				ft_access_exec(av.argv[0], av.argv, config);
+			ft_strtabfree(av.argv);
+			av.argv = av.memo;
 			command = NULL;
-			argv = NULL;
 		}
 	}
 }

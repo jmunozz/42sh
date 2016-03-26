@@ -29,6 +29,11 @@ typedef struct	s_bin
 	char		*name;
 	char		*path_name;
 }				t_bin;
+typedef struct	s_arguments
+{
+	char		**argv;
+	char		**memo;
+}				t_arguments;
 typedef struct	s_config
 {
 	char		**env;
@@ -54,7 +59,7 @@ void			ft_cd(char **argv, t_config *config);
 **files.c
 */
 int				ft_access_dir(char const *path);
-void			ft_access_exec(char **argv, t_config *config);
+void			ft_access_exec(char *path, char **argv, t_config *config);
 /*
 **error.c
 */
@@ -84,6 +89,8 @@ int				ft_ascii_cmp(t_bin *s1, t_bin *s2);
 /*
 **free.c
 */
+void			ft_free_history(char **history);
+void			ft_shell_exit(t_config *config);
 void			ft_freebin(void *data, size_t data_size);
 void			ft_free_config(t_config *config);
 /*
