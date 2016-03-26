@@ -40,6 +40,7 @@ void		ft_minishell(t_config *config)
 			else
 				ft_access_exec(argv, config->env);
 			ft_strtabfree(argv);
+			command = NULL;
 			argv = NULL;
 		}
 	}

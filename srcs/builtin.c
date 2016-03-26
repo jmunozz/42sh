@@ -10,14 +10,17 @@ static void	ft_clean_path(char *path)
 		if (path[i] == '/' && path[i + 1] == '.' && path[i + 2] == '/')
 			ft_strcpy(path + i, path + i + 2);
 		if (path[i] == '/' && path[i + 1] == '.' && path[i + 2] == '.'
-				&& i - 2 > 0 && path[i - 1] != '/' && path[i - 2] != '.')
+				&& i - 2 > 0 && path[i - 1] != '.' && path[i - 2] != '.')
 		{
 			while (--i != 0 && path[i] != '/');
-			ft_strcpy(path + i + (path[i] == '/' ? 1 : 0),
-					ft_strchr(path + i + 1, '/') + 4);
+			ft_strcpy(path + i + 1, ft_strchr(path + i + 1, '/') + 3);
 		}
+		if (path[i] == '/'&& path[i + 1] == '/')
+			ft_memmove(path, path + 1, strlen(path));
 		i++;
 	}
+	if (path && i && path[i - 1] == '/')
+		path[i - 1] = '\0';
 }
 
 static void	ft_cd(char **argv, t_config *config)
