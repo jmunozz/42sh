@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+int		ft_initerror(void)
+{
+	ft_putstr_fd("minishell: init error", 2);
+	return (1);
+}
+
 int		ft_malloc_error(char const *path)
 {
 	ft_putstr_str_str_fd("minishell: malloc error: ", (char *)path, "\n",2);

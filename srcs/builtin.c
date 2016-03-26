@@ -72,7 +72,7 @@ static void	ft_pwd(char **argv, char *pwd)
 int			ft_builtin(char **argv, t_config *config)
 {
 	if (!ft_strcmp(argv[0], "exit"))
-		ft_shell_exit(config);
+		ft_shell_exit(config, argv);
 	else if (!ft_strcmp(argv[0], "pwd"))
 		ft_pwd(argv, ft_strtabfind(config->env, "PWD"));
 	else if (!ft_strcmp(argv[0], "env"))
