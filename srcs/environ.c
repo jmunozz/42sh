@@ -14,15 +14,15 @@ void	ft_setenv(char *name, char *value, t_config *config)
 		FT_PUTSTRFD("minishell: error while setenv for: ", name, "\n", 2);
 	else if (i >= 0 && !ft_strcmp(name, "PWD"))
 	{
-		ft_setenv("OLD_PWD", memo + 4, config);
+		ft_setenv("OLDPWD", memo + 4, config);
 		free(memo);
 	}
-	else if (!(memo = ft_strchrjoin(name, '=', value)))
+	else if (i < 0 && !(memo = ft_strchrjoin(name, '=', value)))
 		FT_PUTSTRFD("minishell: malloc error during setenv for: ", name, "\n", 2);
-	else if (!(config->env = ft_strtabadd(f, memo))
+	else if ( i < 0 && !(config->env = ft_strtabadd(f, memo))
 		&& ft_freegiveone((void **)&memo) && (config->env = f))
 		FT_PUTSTRFD("minishell: malloc error during setenv for: ", name, "\n", 2);
-	else
+	else if (f && config->env && f != config->env)
 		ft_strtabfree(f);
 }
 

@@ -9,11 +9,10 @@ int		ft_access_dir(char const *path)
 	if (!(cpy = ft_strdup(path)))
 		return (ft_malloc_error(path));
 	endl = cpy;
-	while ((endl = ft_strchr(endl, '/')))
+	while ((endl = ft_strchr(endl + 1, '/')))
 	{
 		*endl = '\0';
-		if (*cpy == '\0');
-		else if (-1 == access(cpy, F_OK) && !(endl = NULL))
+		if (-1 == access(cpy, F_OK) && !(endl = NULL))
 			FT_PUTSTRFD("minishell: directory doesn't exist: ", cpy, "\n", 2);
 		else if (-1 == stat(cpy, &buf) && !(endl = NULL))
 			FT_PUTSTRFD("minishell: stat failed on: ", cpy, "\n", 2);
@@ -24,7 +23,6 @@ int		ft_access_dir(char const *path)
 		if (!endl && ft_freegiveone((void **)&cpy))
 			return (0);
 		*endl = '/';
-		endl++;
 	}
 	return (ft_freegiveone((void **)&cpy));
 }

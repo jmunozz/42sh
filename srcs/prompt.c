@@ -20,7 +20,7 @@ int		ft_prompt(t_config *config)
 	if (!(pwd = ft_strtabfind(config->env, "PWD")))
 		return (ft_prompt_error());
 	ft_putstr("\x1b[34m-> \x1b[1;32m");
-	if ((subrep = ft_strrchr(pwd, '/')))
+	if ((subrep = ft_strrchr(pwd, '/')) && *(subrep + 1))
 		ft_putstr(subrep + 1);
 	else
 		ft_putstr(pwd + 4);
