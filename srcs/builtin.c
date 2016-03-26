@@ -26,7 +26,7 @@ static void	ft_clean_path(char *path)
 		*(path + 1) = '\0';
 }
 
-static void	ft_cd(char **argv, t_config *config)
+void		ft_cd(char **argv, t_config *config)
 {
 	char	*path;
 	int		i;
@@ -46,7 +46,8 @@ static void	ft_cd(char **argv, t_config *config)
 		else if (!chdir(path))
 			ft_setenv("PWD", path, config);
 		else
-			FT_PUTSTRFD("minishell: chdir error through: ", path, "\n", 2);
+			FT_PUTSTRFD("minishell: no such file: ",
+			(argv[i] ? argv[i] : path), "\n", 2);
 		free(path);
 	}
 	else

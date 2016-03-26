@@ -36,7 +36,6 @@ typedef struct	s_config
 	t_list		*bin;
 	t_list		*h_bin[34];
 }				t_config;
-
 /*
 **environ.c
 */
@@ -50,11 +49,12 @@ void			ft_push_history(char *command, t_config *config);
 **builtin.c
 */
 int				ft_builtin(char **argv, t_config *config);
+void			ft_cd(char **argv, t_config *config);
 /*
 **files.c
 */
 int				ft_access_dir(char const *path);
-void			ft_access_exec(char **argv, char **env);
+void			ft_access_exec(char **argv, t_config *config);
 /*
 **error.c
 */

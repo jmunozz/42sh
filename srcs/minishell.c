@@ -38,7 +38,7 @@ void		ft_minishell(t_config *config)
 			else if ((command = ft_return_binpath(config, argv[0])))
 				ft_fewef(command, argv, config->env);
 			else
-				ft_access_exec(argv, config->env);
+				ft_access_exec(argv, config);
 			ft_strtabfree(argv);
 			command = NULL;
 			argv = NULL;
