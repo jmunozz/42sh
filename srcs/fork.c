@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fork.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/03/28 16:20:26 by tboos             #+#    #+#             */
+/*   Updated: 2016/03/28 16:21:08 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void		ft_fewef(char *command, char **argv, char **env)
@@ -16,21 +28,18 @@ void		ft_fewef(char *command, char **argv, char **env)
 			ft_putstr_fd("WARNING : won't be able to send signal", 2);
 		execve(command, argv, env);
 	}
-	while (father !=  0)
+	while (father != 0)
 	{
 		ft_bzero(buf, 3);
-//		if (read(0, buf, 2) && !ft_strcmp(buf, "^C"))
-//			kill(father, SIGKILL);
-//		else if (!ft_strcmp(buf, "^Z")
 		if (waitpid(father, &stat_loc, WNOHANG) > 0)
-			break;
+			break ;
 	}
 }
 
 void		ft_kill_father(t_config *config)
 {
 	ft_free_config(config);
-	if(-1 == kill(getppid(), SIGKILL))
+	if (-1 == kill(getppid(), SIGKILL))
 		ft_putstr_fd("SORRY, I couldn't kill my father, he's a jedi", 2);
 	exit(0);
 }

@@ -6,13 +6,17 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:44:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 18:43:55 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/28 16:26:22 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int				ft_termios_handle(int mode)
+/*
+**		minishell.c_lflag &= ~ECHO;
+*/
+
+int		ft_termios_handle(int mode)
 {
 	struct termios			minishell;
 
@@ -27,7 +31,6 @@ int				ft_termios_handle(int mode)
 		if (!ft_memcpy(&minishell, &termios_backup, sizeof(struct termios)))
 			return (ft_initerror());
 		minishell.c_iflag |= BRKINT;
-//		minishell.c_lflag &= ~ECHO;
 		minishell.c_lflag |= (ICANON | ECHOE | ECHOK | ECHONL);
 		if (tcsetattr(STDIN_FILENO, TCSANOW, &minishell))
 			return (ft_initerror());
@@ -37,9 +40,7 @@ int				ft_termios_handle(int mode)
 	return (0);
 }
 
-/*RETRAIVAILLER ENV SUR MAC*/
-
-int				main(int ac, char **av, char **env)
+int		main(int ac, char **av, char **env)
 {
 	t_config				*config;
 
@@ -55,7 +56,7 @@ int				main(int ac, char **av, char **env)
 		ft_free_config(config);
 		return (ft_initerror());
 	}
-	if(!ft_termios_handle(1))
+	if (!ft_termios_handle(1))
 		ft_minishell(config);
 	ft_free_config(config);
 	ft_termios_handle(0);

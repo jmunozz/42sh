@@ -6,15 +6,16 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 21:22:41 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/28 16:27:11 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 /*
 **Extern while allways true !
 */
+
 void		ft_minishell(t_config *config)
 {
 	char		*cmd;
@@ -27,7 +28,8 @@ void		ft_minishell(t_config *config)
 		while (av.argv)
 		{
 			av.memo = ft_strtabdiv(av.argv, ";");
-			if (ft_builtin(av.argv, config));
+			if (ft_builtin(av.argv, config))
+				;
 			else if ((cmd = ft_return_binpath(config, av.argv[0])))
 				ft_access_exec(cmd, av.argv, config);
 			else

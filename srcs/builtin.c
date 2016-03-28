@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/03/28 16:16:34 by tboos             #+#    #+#             */
+/*   Updated: 2016/03/28 16:16:50 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	ft_clean_path(char *path)
@@ -12,10 +24,11 @@ static void	ft_clean_path(char *path)
 		else if (path[i] == '/' && path[i + 1] == '.' && path[i + 2] == '.'
 				&& i - 2 > 0 && path[i - 1] != '.' && path[i - 2] != '.')
 		{
-			while (--i != 0 && path[i] != '/');
+			while (--i != 0 && path[i] != '/')
+				;
 			ft_strcpy(path + i + 1, ft_strchr(path + i + 1, '/') + 3);
 		}
-		else if (path[i] == '/'&& path[i + 1] == '/')
+		else if (path[i] == '/' && path[i + 1] == '/')
 			ft_memmove(path + i, path + i + 1, strlen(path + i));
 		else
 			i++;
@@ -29,7 +42,8 @@ static void	ft_clean_path(char *path)
 static void	ft_path_follow(char *path, char **argv, t_config *config, int i)
 {
 	ft_clean_path(path);
-	if (!ft_access_dir(path));
+	if (!ft_access_dir(path))
+		;
 	else if (!chdir(path))
 		ft_setenv("PWD", path, config);
 	else
@@ -75,8 +89,12 @@ int			ft_builtin(char **argv, t_config *config)
 		ft_shell_exit(config, argv);
 	else if (!ft_strcmp(argv[0], "pwd"))
 		ft_pwd(argv, ft_strtabfind(config->env, "PWD"));
-	else if (!ft_strcmp(argv[0], "env"))
+	else if (!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
 		ft_env(argv, config);
+	else if (!ft_strcmp(argv[0], "unsetenv") || !ft_strcmp(argv[0], "unset"))
+		ft_unsetenv(argv, config);
+	else if (!ft_strcmp(argv[0], "setenv") || !ft_strcmp(argv[0], "set"))
+		ft_setenv(argv, config);
 	else if (!ft_strcmp(argv[0], "cd"))
 		ft_cd(argv, config);
 	else

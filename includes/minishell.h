@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:23:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 21:12:10 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/28 16:19:26 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # include <signal.h>
 # include "libft.h"
 # define FT_PUTSTRFD ft_putstr_str_str_fd
-typedef struct	dirent	t_dirent;
+
+typedef struct dirent	t_dirent;
 typedef struct	s_bin
 {
 	char		*name;
@@ -48,6 +49,8 @@ int				ft_builtin(char **argv, t_config *config);
 void			ft_cd(char **argv, t_config *config);
 void			ft_setenv(char *name, char *value, t_config *config);
 void			ft_env(char **argv, t_config *config);
+void			ft_setenv(char **argv, t_config *config);
+void			ft_unsetenv(char **argv, t_config *config);
 /*
 **files.c
 */

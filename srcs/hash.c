@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 08:32:24 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 21:18:00 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/28 16:18:43 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char		*ft_return_binpath(t_config *config, char *name)
 	archer = config->h_bin[i];
 	while (archer && (((t_bin *)archer->data)->name[0] - 'a') < i
 			&& ft_strcmp(name, ((t_bin *)archer->data)->name))
-			archer = archer->next;
+		archer = archer->next;
 	if (archer && !(ft_strcmp(name, ((t_bin *)archer->data)->name)))
 		return (((t_bin *)archer->data)->path_name);
 	return (NULL);
@@ -60,11 +60,12 @@ static void	ft_bin_insert(DIR *dir, char *path, t_config *config)
 				|| !(++(bin.name))
 				|| !(new = ft_lstnew(&bin, sizeof(t_bin))))
 			ft_putstr_fd("minishell : error creating path to bin", 2);
-		else if (!ft_strcmp(dirent->d_name, ".") || !ft_strcmp(dirent->d_name, ".."))
+		else if (!ft_strcmp(dirent->d_name, ".")
+				|| !ft_strcmp(dirent->d_name, ".."))
 			ft_lstdel(&new, &ft_freebin);
 		else if (new->data)
 			ft_sorted_list_insert(&(config->bin), new, &ft_ascii_cmp);
-		else 
+		else
 			free(new);
 	}
 }
