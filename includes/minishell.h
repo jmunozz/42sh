@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:23:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/28 16:19:26 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/29 15:47:29 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ struct termios	termios_backup;
 */
 int				ft_builtin(char **argv, t_config *config);
 void			ft_cd(char **argv, t_config *config);
-void			ft_setenv(char *name, char *value, t_config *config);
 void			ft_env(char **argv, t_config *config);
-void			ft_setenv(char **argv, t_config *config);
+void			ft_setenv(char *name, char *value, t_config *config);
+void			ft_readysetenv(char **argv, t_config *config);
 void			ft_unsetenv(char **argv, t_config *config);
 /*
 **files.c

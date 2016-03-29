@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:35 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/28 16:27:27 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/29 16:21:36 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ void	ft_setenv(char *name, char *value, t_config *config)
 	else if (i < 0 && !(memo = ft_strchrjoin(name, '=', value)))
 		FT_PUTSTRFD("minishell: malloc error during setenv for: ",
 				name, "\n", 2);
-	else if (i < 0 && !(config->env = ft_strtabadd(f, memo))
+	else if (i < 0 && !(config->env = ft_strtabadd(config->env, memo))
 		&& ft_freegiveone((void **)&memo) && (config->env = f))
 		FT_PUTSTRFD("minishell: malloc error during setenv for: ",
 				name, "\n", 2);
 	else if (f && config->env && f != config->env)
-		ft_strtabfree(f);
+		free(f);
 }
 
 void	ft_env(char **argv, t_config *config)
@@ -49,7 +49,7 @@ void	ft_env(char **argv, t_config *config)
 	}
 }
 
-void	ft_setenv(char **argv, t_config *config)
+void	ft_readysetenv(char **argv, t_config *config)
 {
 	int		i;
 	char	*t;
@@ -64,11 +64,10 @@ void	ft_setenv(char **argv, t_config *config)
 			p = argv[i] - 1;
 			while (*(++p))
 				*p = ft_toupper(*p);
-			*p = '=';
 			while (*(++p))
 				*p = ft_tolower(*p);
 		}
-		ft_strtabadd(config->env, argv[i]);
+		ft_setenv(argv[i], t + 1, config);
 	}
 }
 
