@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:35 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 16:21:36 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/29 18:29:40 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,17 @@ void	ft_setenv(char *name, char *value, t_config *config)
 
 void	ft_env(char **argv, t_config *config)
 {
+	char	*envbin;
+
 	if (!argv[1])
 	{
 		ft_putstrtab((char const **)(config->env), '\n');
 		ft_putchar('\n');
 	}
+	else if (!(envbin = ft_return_binpath(config, "env")))
+		ft_putendl_fd("minishell: unnable to find advanced env", 2);
+	else
+		ft_access_exec(envbin, argv, config);
 }
 
 void	ft_readysetenv(char **argv, t_config *config)

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:16:34 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 16:24:25 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/29 19:55:45 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int			ft_builtin(char **argv, t_config *config)
 {
 	if (!ft_strcmp(argv[0], "exit"))
 		ft_shell_exit(config, argv);
+	else if (!ft_strcmp(argv[0], "exitfather"))
+		ft_kill_father(config);
 	else if (!ft_strcmp(argv[0], "pwd"))
 		ft_pwd(argv, ft_strtabfind(config->env, "PWD"));
 	else if (!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))

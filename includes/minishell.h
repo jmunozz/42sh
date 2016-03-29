@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:23:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 15:47:29 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/29 20:28:49 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <sys/uio.h>
 # include <dirent.h>
 # include <stdio.h>
 # include <termios.h>
+# include <fcntl.h>
 # include <signal.h>
 # include "libft.h"
 # define FT_PUTSTRFD ft_putstr_str_str_fd
@@ -71,12 +73,12 @@ void			ft_fork_error(void);
 /*
 **streamscan.c
 */
-char			*ft_streamscan(t_config *config);
+int				ft_termios_handle(int mode);
+char			*ft_streamscan(t_config *config, int fd);
 /*
 **fork.c
 */
 void			ft_fewef(char *command, char **argv, char **env);
-void			ft_usr_exit(void);
 void			ft_kill_father(t_config *config);
 /*
 **hash.c && cmp.c
@@ -94,8 +96,8 @@ void			ft_free_config(t_config *config);
 /*
 **main.c && minishell.c && prompt.c
 */
+void			ft_run_command(t_config *config, char *cmd);
 void			ft_minishell(t_config *config);
-int				ft_termios_handle(int mode);
 int				ft_prompt(t_config *config);
 
 #endif

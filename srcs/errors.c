@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:54 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/28 16:23:42 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/29 19:55:57 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		ft_initerror(void)
 {
-	ft_putstr_fd("minishell: init error", 2);
+	ft_putstr_fd("minishell: init error\n", 2);
 	return (1);
 }
 
@@ -43,5 +43,5 @@ int		ft_prompt_error(void)
 void	ft_fork_error(void)
 {
 	ft_status(1);
-	ft_putstr_fd("minishell: forking error", 2);
+	ft_putstr_fd("minishell: forking error\n", 2);
 }

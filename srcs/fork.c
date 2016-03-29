@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:20:26 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/28 16:21:08 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/29 19:22:25 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		ft_fewef(char *command, char **argv, char **env)
 	{
 		if (SIG_ERR == signal(SIGINT, SIG_IGN)
 			|| SIG_ERR == signal(SIGTSTP, SIG_IGN))
-			ft_putstr_fd("WARNING : won't be able to send signal", 2);
+			ft_putstr_fd("WARNING : won't be able to send signal\n", 2);
 		execve(command, argv, env);
 	}
 	while (father != 0)
@@ -40,23 +40,6 @@ void		ft_kill_father(t_config *config)
 {
 	ft_free_config(config);
 	if (-1 == kill(getppid(), SIGKILL))
-		ft_putstr_fd("SORRY, I couldn't kill my father, he's a jedi", 2);
+		ft_putstr_fd("SORRY, I couldn't kill my father, he's a jedi\n", 2);
 	exit(0);
-}
-
-void		ft_usr_exit(void)
-{
-	pid_t	child_id;
-	int		status;
-
-	status = 0;
-	while (1)
-	{
-		if ((child_id = fork()) == -1)
-			ft_fork_error();
-		else if (child_id == 0)
-			return ;
-		else
-			waitpid(child_id, &status, 0);
-	}
 }

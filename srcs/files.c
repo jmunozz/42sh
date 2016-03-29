@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:27 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/28 16:21:29 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/29 20:35:51 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_access_exec(char *path, char **argv, t_config *config)
 	if (!ft_access_dir(path))
 		return ;
 	if (-1 == access(path, F_OK))
-		FT_PUTSTRFD("minishell: command not found:", path, "\n", 2);
+		FT_PUTSTRFD("minishell: command not found: ", path, "\n", 2);
 	else if (-1 == stat(path, &buf))
 		FT_PUTSTRFD("minishell: access denied: ", path, "\n", 2);
 	else if (S_ISDIR(buf.st_mode))
