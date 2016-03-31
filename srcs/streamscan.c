@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 20:43:00 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/31 13:21:49 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		ft_termios_handle(int mode)
 			return (1);
 		state = 'y';
 	}
-	else
+	else if (state == 'y')
 		tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
 	return (1);
 }
@@ -42,12 +42,12 @@ char	*ft_streamscan(t_config *config, int fd)
 {
 	char			*command;
 
-dprintf(1, "scanning \n");
+	command = NULL;
 	if (config)
 		ft_termios_handle(1);
 	if (get_next_line(fd, &command) < 0)
 	{
-		ft_putstr_fd("minishell: error while scanning command", 2);
+		ft_putstr_fd("minishell: error while scanning command\n", 2);
 		return (NULL);
 	}
 	return (command);

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:44:02 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 20:28:24 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/31 13:15:38 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	ft_shell_exit(t_config *config, char **argv)
 {
-	ft_strtabfree(argv);
+	if (argv)
+		ft_strtabfree(argv);
 	ft_free_config(config);
 	ft_termios_handle(0);
 	exit(ft_status(0));
