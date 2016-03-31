@@ -6,13 +6,14 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:44:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/31 13:23:56 by tboos            ###   ########.fr       */
+/*   Updated: 2016/03/31 14:43:21 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_signal(void){
+static int	ft_signal(void)
+{
 	if (SIG_ERR == signal(SIGINT, SIG_IGN))
 		return (ft_initerror());
 	if (SIG_ERR == signal(SIGTSTP, SIG_IGN))
