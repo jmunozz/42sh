@@ -43,7 +43,29 @@ typedef struct	s_config
 	t_list		*bin;
 	t_list		*h_bin[34];
 }				t_config;
-struct termios	termios_backup;
+typedef struct	s_stream
+{
+	int			fd;
+	int			ret;
+	int			state;
+	char		buf[5];
+	char		*command;
+	char		*tail;
+	char		*kill;
+	size_t		pos;
+	t_config	*config;
+}				t_stream;
+struct termios	termios_backup;/*
+**streamscan.c
+*/
+int				ft_termios_handle(int mode);
+char			*ft_streamscan(t_config *config, int fd);
+
+/*
+**chrparse.c
+*/
+int				ft_autocomp(t_stream *stream);
+int				ft_chrparse(t_stream *stream);
 /*
 **builtin.c && environ.c
 */
@@ -70,11 +92,6 @@ int				ft_malloc_error(char const *path);
 void			ft_lexer_error(char *command);
 int				ft_prompt_error(void);
 void			ft_fork_error(void);
-/*
-**streamscan.c
-*/
-int				ft_termios_handle(int mode);
-char			*ft_streamscan(t_config *config, int fd);
 /*
 **fork.c
 */

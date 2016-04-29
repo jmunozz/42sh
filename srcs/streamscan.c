@@ -12,43 +12,67 @@
 
 #include "minishell.h"
 
-/*
-**		minishell.c_lflag &= ~ECHO;
-*/
-
-int		ft_termios_handle(int mode)
+int			ft_termios_handle(int mode)
 {
 	struct termios	minishell;
 	static char		state = 'n';
 
 	if (mode && state == 'n')
 	{
-		if (tcgetattr(STDIN_FILENO, &termios_backup))
+		if (tcgetattr(STDIN_FILENO, &termios_backup)
+			|| !ft_memcpy(&minishell, &termios_backup, sizeof(struct termios)))
 			return (1);
-		if (!ft_memcpy(&minishell, &termios_backup, sizeof(struct termios)))
-			return (1);
-		minishell.c_iflag |= BRKINT;
-		minishell.c_lflag |= (ICANON | ECHOE | ECHOK | ECHONL);
+		minishell.c_lflag &= (~ICANON & ~ECHO);
+		minishell.c_cc[VMIN] = 1;
+		minishell.c_cc[VTIME] = 0;
 		if (tcsetattr(STDIN_FILENO, TCSANOW, &minishell))
 			return (1);
 		state = 'y';
 	}
 	else if (state == 'y')
+	{
 		tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
+		state = 'n';
+	}
 	return (1);
 }
 
-char	*ft_streamscan(t_config *config, int fd)
+static void	ft_arrow(t_stream *stream)
 {
-	char			*command;
+	ft_bzero(stream->buf, 4);
+}
 
-	command = NULL;
+static void	ft_scan(t_stream *stream)
+{
+	while (1)
+	{
+		while ((stream->ret = read(stream->fd, stream->buf, 4)) <= 0)
+			if (stream->ret < 0 && (stream->state = -1))
+				break ;
+dprintf(1, "%s\n", stream->buf);
+		if (stream->ret == 4)
+			ft_arrow(stream);
+		else if (!ft_chrparse(stream) || stream->state < 0)
+			break ;
+		ft_bzero(stream->buf, 4);
+	}
+}
+
+char		*ft_streamscan(t_config *config, int fd)
+{
+	t_stream		stream;
+
+	ft_bzero(&stream, sizeof(t_stream));
+	stream.fd = fd;
+	stream.config = config;
 	if (config)
 		ft_termios_handle(1);
-	if (get_next_line(fd, &command) < 0)
+	ft_scan(&stream);
+	if (stream.state < 0)
 	{
 		ft_putstr_fd("minishell: error while scanning command\n", 2);
 		return (NULL);
 	}
-	return (command);
+	ft_putchar('\n');
+	return (stream.command);
 }

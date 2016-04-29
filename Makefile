@@ -14,7 +14,7 @@
 NAME = minishell
 FLAGS = -Wall -Wextra -Werror
 SRC = main.c minishell.c free.c errors.c prompt.c cmp.c hash.c streamscan.c \
-	fork.c builtin.c files.c history.c environ.c
+	fork.c builtin.c files.c history.c environ.c chrparse.c
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
 HEAD = -I libft/includes -I includes
