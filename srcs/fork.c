@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:20:26 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 19:22:25 by tboos            ###   ########.fr       */
+/*   Updated: 2016/04/29 12:21:42 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void		ft_fewef(char *command, char **argv, char **env)
 	char		buf[3];
 
 	stat_loc = 0;
+	ft_termios_handle(0);
 	if (-1 > (father = fork()))
 		ft_fork_error();
 	else if (father == 0)

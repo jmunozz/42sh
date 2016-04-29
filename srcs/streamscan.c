@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/31 13:21:49 by tboos            ###   ########.fr       */
+/*   Updated: 2016/04/29 12:17:32 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int			ft_termios_handle(int mode)
 
 	if (mode && state == 'n')
 	{
-		if (tcgetattr(STDIN_FILENO, &termios_backup)
+		if (tcgetattr(STDIN_FILENO, &termios_backup) == -1
 			|| !ft_memcpy(&minishell, &termios_backup, sizeof(struct termios)))
 			return (1);
-		minishell.c_lflag &= (~ICANON & ~ECHO);
+		minishell.c_lflag &= ~(ICANON | ECHO);
 		minishell.c_cc[VMIN] = 1;
 		minishell.c_cc[VTIME] = 0;
-		if (tcsetattr(STDIN_FILENO, TCSANOW, &minishell))
+		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &minishell) == -1)
 			return (1);
 		state = 'y';
 	}
@@ -46,10 +46,9 @@ static void	ft_scan(t_stream *stream)
 {
 	while (1)
 	{
-		while ((stream->ret = read(stream->fd, stream->buf, 4)) <= 0)
-			if (stream->ret < 0 && (stream->state = -1))
-				break ;
-dprintf(1, "%s\n", stream->buf);
+		if ((stream->ret = read(stream->fd, stream->buf, 4)) < 0 && (stream->state = -1))
+			break ;
+//dprintf(1, "%s\n", stream->buf);
 		if (stream->ret == 4)
 			ft_arrow(stream);
 		else if (!ft_chrparse(stream) || stream->state < 0)
