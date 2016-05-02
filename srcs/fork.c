@@ -19,7 +19,6 @@ void		ft_fewef(char *command, char **argv, char **env)
 	char		buf[3];
 
 	stat_loc = 0;
-	ft_termios_handle(0);
 	if (-1 > (father = fork()))
 		ft_fork_error();
 	else if (father == 0)
