@@ -55,9 +55,9 @@ typedef struct	s_stream
 	int			fd;
 	int			ret;
 	int			state;
+	int			spa;
 	char		buf[5];
 	char		*command;
-	char		*tail;
 	char		*kill;
 	size_t		pos;
 	t_config	*config;

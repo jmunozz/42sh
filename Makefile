@@ -12,7 +12,7 @@
 .PHONY: fclean re
 .SUFFIXES:
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -lm -lncurses
 SRC = main.c minishell.c free.c errors.c prompt.c cmp.c hash.c streamscan.c \
 	fork.c builtin.c files.c history.c environ.c chrparse.c autocomp.c \
 	fchrtab.c
