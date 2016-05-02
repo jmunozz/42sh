@@ -1,9 +1,11 @@
 #include "minishell.h"
 
-int				ft_autocomp(t_stream *stream)
+void	ft_space(t_stream *stream)
 {
-	ft_bzero(stream->buf, 4);
-	return (1);
+	stream->spa++;
+	stream->pos++;
+	ft_putchar(' ');
+	ft_append(stream);
 }
 
 static void		ft_append(t_stream *stream)
@@ -20,8 +22,7 @@ static void		ft_append(t_stream *stream)
 
 static int		ft_chrmatch(t_stream *stream)
 {
-	static int	match[] = {CLF, CBS, CHT, SPA, DQU, SQU, POP, PCL, COP, CCL,
-							AOP, ACL, DEL, NUL};
+	static int	match[] = {CLF, CBS, CHT, SPA, DEL, NUL};
 	int			i;
 
 	i = 0;
@@ -39,10 +40,18 @@ static int		ft_chrmatch(t_stream *stream)
 int				ft_chrparse(t_stream *stream)
 {
 	int			match;
+	static void tab[5](t_stream *) = {&ft_clf, &ft_cbs, &ft_autocomp,
+										&ft_space, &ft_del};
 
 	if (!(match = stream->buf[0]))
 		return (0);
-	ft_putstr(stream->buf);
-	ft_append(stream);
+	if (match == -1)
+	{
+		ft_putstr(stream->buf);
+		stream->pos++;
+		ft_append(stream);
+	}
+	if (match > 0 && match <= 5)
+		(*ftab[match - 1])(config);
 	return (1);
 }

@@ -29,17 +29,9 @@
 # define CHT 0x09000000 //\t
 # define CLF 0x0A000000 //\n
 # define SPA 0x20000000 // 
-# define DQU 0x22000000 //"
-# define SQU 0x27000000 //'
-# define POP 0x28000000 //(
-# define PCL 0x29000000 //)
-# define COP 0x5B000000 //[
-# define CCL 0x5D000000 //]
-# define AOP 0x7B000000 //{
-# define ACL 0x7D000000 //}
 # define DEL 0x7F000000 //Suppr?
-tq
-ypedef struct dirent	t_dirent;
+
+typedef struct dirent	t_dirent;
 typedef struct	s_bin
 {
 	char		*name;
