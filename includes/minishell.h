@@ -24,8 +24,22 @@
 # include <signal.h>
 # include "libft.h"
 # define FT_PUTSTRFD ft_putstr_str_str_fd
-
-typedef struct dirent	t_dirent;
+# define NUL 0x00000000 //\0
+# define CBS 0x08000000 //backspace
+# define CHT 0x09000000 //\t
+# define CLF 0x0A000000 //\n
+# define SPA 0x20000000 // 
+# define DQU 0x22000000 //"
+# define SQU 0x27000000 //'
+# define POP 0x28000000 //(
+# define PCL 0x29000000 //)
+# define COP 0x5B000000 //[
+# define CCL 0x5D000000 //]
+# define AOP 0x7B000000 //{
+# define ACL 0x7D000000 //}
+# define DEL 0x7F000000 //Suppr?
+tq
+ypedef struct dirent	t_dirent;
 typedef struct	s_bin
 {
 	char		*name;
@@ -40,6 +54,7 @@ typedef struct	s_config
 {
 	char		**env;
 	char		*history[256];
+	size_t		prompt_len;
 	t_list		*bin;
 	t_list		*h_bin[34];
 }				t_config;
@@ -90,7 +105,6 @@ void			ft_push_history(char *command, t_config *config);
 int				ft_initerror(void);
 int				ft_malloc_error(char const *path);
 void			ft_lexer_error(char *command);
-int				ft_prompt_error(void);
 void			ft_fork_error(void);
 /*
 **fork.c

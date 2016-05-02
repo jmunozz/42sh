@@ -32,14 +32,6 @@ void	ft_lexer_error(char *command)
 	ft_status(1);
 }
 
-int		ft_prompt_error(void)
-{
-	ft_status(1);
-	ft_putendl_fd("minishell: error searching pwd for prompt\n", 2);
-	ft_putstr("\x1b[34m-> \x1b[1;32mLove you anyway : \xb1[0m");
-	return (1);
-}
-
 void	ft_fork_error(void)
 {
 	ft_status(1);

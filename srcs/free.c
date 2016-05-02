@@ -17,7 +17,6 @@ void	ft_shell_exit(t_config *config, char **argv)
 	if (argv)
 		ft_strtabfree(argv);
 	ft_free_config(config);
-	ft_termios_handle(0);
 	exit(ft_status(0));
 }
 

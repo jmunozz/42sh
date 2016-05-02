@@ -37,21 +37,14 @@ int			ft_termios_handle(int mode)
 	return (1);
 }
 
-static void	ft_arrow(t_stream *stream)
-{
-	ft_bzero(stream->buf, 4);
-}
-
 static void	ft_scan(t_stream *stream)
 {
 	while (1)
 	{
-		if ((stream->ret = read(stream->fd, stream->buf, 4)) < 0 && (stream->state = -1))
-			break ;
-//dprintf(1, "%s\n", stream->buf);
-		if (stream->ret == 4)
-			ft_arrow(stream);
-		else if (!ft_chrparse(stream) || stream->state < 0)
+		if (((stream->ret = read(stream->fd, stream->buf, 4)) < 0
+			&& (stream->state = -1))
+			|| !ft_chrparse(stream)
+			|| stream->state < 0)
 			break ;
 		ft_bzero(stream->buf, 4);
 	}
@@ -69,6 +62,8 @@ char		*ft_streamscan(t_config *config, int fd)
 	ft_scan(&stream);
 	if (stream.state < 0)
 	{
+		if (stream->command)
+			ft_freegiveone((void **)(&(stream->command));
 		ft_putstr_fd("minishell: error while scanning command\n", 2);
 		return (NULL);
 	}

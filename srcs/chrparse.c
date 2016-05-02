@@ -2,8 +2,6 @@
 
 int				ft_autocomp(t_stream *stream)
 {
-	if (stream->buf[0] != '\t')
-		return (0);
 	ft_bzero(stream->buf, 4);
 	return (1);
 }
@@ -20,11 +18,29 @@ static void		ft_append(t_stream *stream)
 		stream->state = -2;
 }
 
+static int		ft_chrmatch(t_stream *stream)
+{
+	static int	match[] = {CLF, CBS, CHT, SPA, DQU, SQU, POP, PCL, COP, CCL,
+							AOP, ACL, DEL, NUL};
+	int			i;
+
+	i = 0;
+	while (match[i] != 0)
+	{
+		if ((int)stream->buf[0] == match[i])
+			return (i);
+		i++;
+	}
+	if (ft_isprint(stream->buf[0])
+		return (-1);
+	return (-2);
+}
+
 int				ft_chrparse(t_stream *stream)
 {
-	if (ft_autocomp(stream))
-		return (1);
-	if (stream->buf[0] == '\n')
+	int			match;
+
+	if (!(match = stream->buf[0]))
 		return (0);
 	ft_putstr(stream->buf);
 	ft_append(stream);
