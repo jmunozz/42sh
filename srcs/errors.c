@@ -37,3 +37,10 @@ void	ft_fork_error(void)
 	ft_status(1);
 	ft_putstr_fd("minishell: forking error\n", 2);
 }
+
+void	ft_term_error(t_config *config)
+{
+	ft_status(1);
+	ft_putstr_fd("minishell: unable to get working terminal\n", 2);
+	config->term_state = 1;
+}

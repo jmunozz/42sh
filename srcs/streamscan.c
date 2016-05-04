@@ -57,13 +57,15 @@ char		*ft_streamscan(t_config *config, int fd)
 	ft_bzero(&stream, sizeof(t_stream));
 	stream.fd = fd;
 	stream.config = config;
-	if (config)
-		ft_termios_handle(1);
+	ft_termios_handle(1);
+	if (!config->term_state && (!(stream.term = getenv("TERM"))
+		|| !tgetent(NULL, stream.term)))
+		ft_term_error(config);
 	ft_scan(&stream);
 	if (stream.state < 0)
 	{
-		if (stream->command)
-			ft_freegiveone((void **)(&(stream->command));
+		if (stream.command)
+			ft_freegiveone((void **)(&(stream.command)));
 		ft_putstr_fd("minishell: error while scanning command\n", 2);
 		return (NULL);
 	}

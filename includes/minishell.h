@@ -17,6 +17,8 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <sys/uio.h>
+# include <term.h>
+# include <curses.h>
 # include <dirent.h>
 # include <stdio.h>
 # include <termios.h>
@@ -28,7 +30,6 @@
 # define CBS 0x08000000 //backspace
 # define CHT 0x09000000 //\t
 # define CLF 0x0A000000 //\n
-# define SPA 0x20000000 // 
 # define DEL 0x7F000000 //Suppr?
 
 typedef struct dirent	t_dirent;
@@ -49,13 +50,15 @@ typedef struct	s_config
 	size_t		prompt_len;
 	t_list		*bin;
 	t_list		*h_bin[34];
+	int			term_state;
 }				t_config;
 typedef struct	s_stream
 {
+	char		*term;
+	char		*tput;
 	int			fd;
 	int			ret;
 	int			state;
-	int			spa;
 	char		buf[5];
 	char		*command;
 	char		*kill;
@@ -71,7 +74,9 @@ char			*ft_streamscan(t_config *config, int fd);
 /*
 **chrparse.c
 */
-int				ft_autocomp(t_stream *stream);
+void			ft_cbs(t_stream *stream);
+void			ft_del(t_stream *stream);
+void			ft_autocomp(t_stream *stream);
 int				ft_chrparse(t_stream *stream);
 /*
 **builtin.c && environ.c
@@ -98,6 +103,7 @@ int				ft_initerror(void);
 int				ft_malloc_error(char const *path);
 void			ft_lexer_error(char *command);
 void			ft_fork_error(void);
+void			ft_term_error(t_config *config);
 /*
 **fork.c
 */
