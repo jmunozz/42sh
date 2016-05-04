@@ -15,25 +15,26 @@ static void		ft_append(t_stream *stream)
 
 static int		ft_chrmatch(t_stream *stream)
 {
-	static int	match[] = {CLF, CBS, CHT, DEL, NUL};
-	int			i;
+	static unsigned int	match[] = {CLF, SUP, CHT, DEL, LEF, RIG, UPP, DOW, NUL};
+	int					i;
 
 	i = 0;
-	while (match[i] != 0)
+//printf("\nint = %x\n", ((unsigned int *)(stream->buf))[0]);
+	while (match[i])
 	{
-		if ((int)stream->buf[0] == match[i])
+		if (((unsigned int *)(stream->buf))[0] == match[i])
 			return (i);
 		i++;
 	}
-	if (ft_isprint(stream->buf[0])
+	if (ft_isprint(stream->buf[0]))
 		return (-1);
 	return (-2);
 }
 
 int				ft_chrparse(t_stream *stream)
 {
-	int			match;
-	static void tab[3](t_stream *) = {&ft_cbs, &ft_autocomp, &ft_del};
+	int					match;
+	static void (*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp, &ft_del, &ft_left, &ft_right, &ft_up, &ft_down};
 
 	if (!(match = ft_chrmatch(stream)))
 		return (0);
@@ -43,6 +44,6 @@ int				ft_chrparse(t_stream *stream)
 		ft_append(stream);
 	}
 	else if (match > 0 && match <= 5)
-		(*ftab[match - 1])(config);
+		(*ftab[match - 1])(stream);
 	return (1);
 }

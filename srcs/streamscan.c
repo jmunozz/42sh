@@ -50,6 +50,14 @@ static void	ft_scan(t_stream *stream)
 	}
 }
 
+static void	ft_winrec(t_stream *stream)
+{
+	struct winsize	w;
+
+	ioctl(stream->fd, TIOCGWINSZ, &w);
+	stream->col = w.ws_col;
+}
+
 char		*ft_streamscan(t_config *config, int fd)
 {
 	t_stream		stream;
@@ -61,6 +69,7 @@ char		*ft_streamscan(t_config *config, int fd)
 	if (!config->term_state && (!(stream.term = getenv("TERM"))
 		|| !tgetent(NULL, stream.term)))
 		ft_term_error(config);
+	ft_winrec(&stream);
 	ft_scan(&stream);
 	if (stream.state < 0)
 	{

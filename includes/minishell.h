@@ -17,6 +17,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <sys/uio.h>
+# include <sys/ioctl.h>
 # include <term.h>
 # include <curses.h>
 # include <dirent.h>
@@ -26,11 +27,15 @@
 # include <signal.h>
 # include "libft.h"
 # define FT_PUTSTRFD ft_putstr_str_str_fd
-# define NUL 0x00000000 //\0
-# define CBS 0x08000000 //backspace
-# define CHT 0x09000000 //\t
-# define CLF 0x0A000000 //\n
-# define DEL 0x7F000000 //Suppr?
+# define CLF 0x0A //\n
+# define SUP 0x7E335B1B //sup
+# define CHT 0x09 //\t
+# define DEL 0x7F //DEL
+# define LEF 0x445B1B//left
+# define RIG 0x435B1B //right
+# define UPP 0x415B1B //up
+# define DOW 0x425B1B //down
+# define NUL 0x00 //\0
 
 typedef struct dirent	t_dirent;
 typedef struct	s_bin
@@ -63,18 +68,35 @@ typedef struct	s_stream
 	char		*command;
 	char		*kill;
 	size_t		pos;
+	size_t		col;
 	t_config	*config;
 }				t_stream;
-struct termios	termios_backup;/*
+struct termios	termios_backup;
+/*
 **streamscan.c
 */
 int				ft_termios_handle(int mode);
 char			*ft_streamscan(t_config *config, int fd);
-
+/*
+**termcaps.c
+*/
+void			ft_erase(t_stream *stream);
+int				ft_putcharint(int	i);
+void			ft_tputs(t_stream *stream);
+void			ft_mvleft(t_stream *stream);
+void			ft_mvright(t_stream *stream);
+/*
+**arrow.c
+*/
+void			ft_left(t_stream *stream);
+void			ft_right(t_stream *stream);
+void			ft_up(t_stream *stream);
+void			ft_down(t_stream *stream);
 /*
 **chrparse.c
 */
-void			ft_cbs(t_stream *stream);
+int				ft_putcharint(int	i);
+void			ft_sup(t_stream *stream);
 void			ft_del(t_stream *stream);
 void			ft_autocomp(t_stream *stream);
 int				ft_chrparse(t_stream *stream);

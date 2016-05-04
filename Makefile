@@ -12,21 +12,22 @@
 .PHONY: fclean re
 .SUFFIXES:
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror -lm -lncurses
+FLAGS = -Wall -Wextra -Werror
 SRC = main.c minishell.c free.c errors.c prompt.c cmp.c hash.c streamscan.c \
 	fork.c builtin.c files.c history.c environ.c chrparse.c autocomp.c \
-	fchrtab.c
+	deletion.c arrow.c termcaps.c
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
+TERMCAPS = -lm -lncurses
 HEAD = -I libft/includes -I includes
 
 all: lib $(NAME)
 
 $(NAME): $(OBJ)
-	gcc $(FLAGS) $^ $(HEAD) -L libft -l ft -o $@
+	gcc $(FLAGS) $(HEAD) $^ -L libft -l ft -o $@ $(TERMCAPS)
 
 %.o: %.c libft/libft.a
-	gcc $(FLAGS) $(HEAD)  -c $< -o $@
+	gcc $(FLAGS) $(HEAD)  -c $< -o $@ $(TERMCAPS)
 
 lib:
 	make -C libft
