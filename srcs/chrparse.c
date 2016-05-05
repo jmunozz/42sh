@@ -1,5 +1,14 @@
 #include "minishell.h"
 
+int				ft_putcharint(int	i)
+{
+	char		c;
+
+	c = i;
+	ft_putchar(c);
+	return(c);
+}
+
 void			ft_flush(t_stream *stream)
 {
 	size_t		size;
@@ -44,7 +53,7 @@ static void		ft_append(t_stream *stream)
 static int		ft_chrmatch(t_stream *stream)
 {
 	static ssize_t	match[] = {CLF, SUP, CHT, DEL, LEF, RIG, UPP, DOW,
-		CLEF, CRIG, CUPP, CDOW, NUL};
+		CLEF, CRIG, CUPP, CDOW, END, HOM, NUL};
 	int					i;
 
 	i = 0;
@@ -66,7 +75,7 @@ int				ft_chrparse(t_stream *stream)
 	int					match;
 	static void (*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp, &ft_del,
 		&ft_left, &ft_right, &ft_up, &ft_down, &ft_ctrlleft, &ft_ctrlright,
-		&ft_ctrlup, &ft_ctrldown};
+		&ft_ctrlup, &ft_ctrldown, &ft_goend, &ft_gohome};
 
 	if (!(match = ft_chrmatch(stream)))
 		return (0);

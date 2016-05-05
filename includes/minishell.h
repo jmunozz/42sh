@@ -39,9 +39,12 @@
 # define CRIG 0x43353B315B1B //CTRL up
 # define CUPP 0x41353B315B1B //CTRL right
 # define CDOW 0x42353B315B1B //CTRL down
+# define END 0x464F1B //end
+# define HOM 0x484F1B //home
 # define NUL 0x00 //\0
 
 typedef struct dirent	t_dirent;
+typedef struct termios	t_termios;
 typedef struct	s_bin
 {
 	char		*name;
@@ -59,7 +62,9 @@ typedef struct	s_config
 	size_t		prompt_len;
 	t_list		*bin;
 	t_list		*h_bin[34];
+	t_termios	termios;
 	int			term_state;
+	t_termios	termios_backup;
 }				t_config;
 typedef struct	s_stream
 {
@@ -75,11 +80,9 @@ typedef struct	s_stream
 	size_t		col;
 	t_config	*config;
 }				t_stream;
-struct termios	termios_backup;
 /*
 **streamscan.c
 */
-int				ft_termios_handle(int mode);
 char			*ft_streamscan(t_config *config, int fd);
 /*
 **termcaps.c
@@ -95,8 +98,8 @@ void			ft_ctrlleft(t_stream *stream);
 void			ft_ctrlright(t_stream *stream);
 void			ft_left(t_stream *stream);
 void			ft_right(t_stream *stream);
-void			ft_up(t_stream *stream);
-void			ft_down(t_stream *stream);
+void			ft_goend(t_stream *stream);
+void			ft_gohome(t_stream *stream);
 void			ft_ctrlup(t_stream *stream);
 void			ft_ctrldown(t_stream *stream);
 void			ft_erase(t_stream *stream);
@@ -105,10 +108,13 @@ void			ft_del(t_stream *stream);
 /*
 **chrparse.c
 */
-void			ft_flush(t_stream *stream);
 int				ft_putcharint(int	i);
-void			ft_autocomp(t_stream *stream);
+void			ft_flush(t_stream *stream);
 int				ft_chrparse(t_stream *stream);
+/*
+**autocomp.c
+*/
+void			ft_autocomp(t_stream *stream);
 /*
 **builtin.c && environ.c
 */
@@ -126,6 +132,8 @@ void			ft_access_exec(char *path, char **argv, t_config *config);
 /*
 **history.c
 */
+void			ft_up(t_stream *stream);
+void			ft_down(t_stream *stream);
 void			ft_push_history(char *command, t_config *config);
 /*
 **error.c

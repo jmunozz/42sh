@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+void	ft_up(t_stream *stream)
+{
+	ft_bzero(stream->buf, 4);
+}
+
+void	ft_down(t_stream *stream)
+{
+	ft_bzero(stream->buf, 4);
+}
+
 void	ft_push_history(char *command, t_config *config)
 {
 	static short	i = 0;

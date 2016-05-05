@@ -42,7 +42,6 @@ void		ft_minishell(t_config *config)
 	while (ft_prompt(config))
 	{
 		cmd = ft_streamscan(config, 0);
-		ft_termios_handle(0);
 		if (cmd)
 			ft_run_command(config, cmd);
 	}

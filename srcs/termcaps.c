@@ -1,14 +1,5 @@
 #include "minishell.h"
 
-int				ft_putcharint(int	i)
-{
-	char		c;
-
-	c = i;
-	ft_putchar(c);
-	return(c);
-}
-
 void			ft_tputs(t_stream *stream)
 {
 	tputs(stream->tput, stream->fd, &ft_putcharint);

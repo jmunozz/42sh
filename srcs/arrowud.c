@@ -1,21 +1,31 @@
 #include "minishell.h"
 
-void	ft_up(t_stream *stream)
+void	ft_goend(t_stream *stream)
 {
-	ft_bzero(stream->buf, 4);
+	while (stream->command[stream->pos])
+		ft_right(stream);
 }
 
-void	ft_down(t_stream *stream)
+void	ft_gohome(t_stream *stream)
 {
-	ft_bzero(stream->buf, 4);
+	while (stream->pos)
+		ft_left(stream);
 }
 
 void	ft_ctrlup(t_stream *stream)
 {
-	ft_bzero(stream->buf, 4);
+	size_t		col;
+
+	col = stream->col;
+	while (col--)
+		ft_left(stream);
 }
 
 void	ft_ctrldown(t_stream *stream)
 {
-	ft_bzero(stream->buf, 4);
+	size_t		col;
+
+	col = stream->col;
+	while (col--)
+		ft_right(stream);
 }

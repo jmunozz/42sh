@@ -12,15 +12,16 @@
 
 #include "minishell.h"
 
-int			ft_termios_handle(int mode)
+static int	ft_termios_handle(t_config *config, int mode)
 {
-	struct termios	minishell;
+	t_termios		minishell;
 	static char		state = 'n';
 
 	if (mode && state == 'n')
 	{
-		if (tcgetattr(STDIN_FILENO, &termios_backup) == -1
-			|| !ft_memcpy(&minishell, &termios_backup, sizeof(struct termios)))
+		if (tcgetattr(STDIN_FILENO, &(config->termios_backup)) == -1
+			|| !ft_memcpy(&minishell, &(config->termios_backup),
+			sizeof(t_termios)))
 			return (1);
 		minishell.c_lflag &= ~(ICANON | ECHO);
 		minishell.c_cc[VMIN] = 1;
@@ -31,7 +32,7 @@ int			ft_termios_handle(int mode)
 	}
 	else if (state == 'y')
 	{
-		tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
+		tcsetattr(STDIN_FILENO, TCSANOW, &(config->termios_backup));
 		state = 'n';
 	}
 	return (1);
@@ -65,12 +66,13 @@ char		*ft_streamscan(t_config *config, int fd)
 	ft_bzero(&stream, sizeof(t_stream));
 	stream.fd = fd;
 	stream.config = config;
-	ft_termios_handle(1);
+	ft_termios_handle(config, 1);
 	if (!config->term_state && (!(stream.term = getenv("TERM"))
 		|| !tgetent(NULL, stream.term)))
 		ft_term_error(config);
 	ft_winrec(&stream);
 	ft_scan(&stream);
+	ft_termios_handle(config, 0);
 	if (stream.state < 0)
 	{
 		if (stream.command)
