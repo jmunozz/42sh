@@ -27,13 +27,13 @@ static void		ft_append(t_stream *stream)
 	if ((kill = stream->command))
 	{
 		pos = stream->pos;
-		if (!(stream->command = ft_strnew(ft_strlen(stream->command + 1)))
+		if (!(stream->command = ft_strnew(ft_strlen(stream->command) + 1))
 			&& (stream->state = -2))
 			return ;
 		ft_strncpy(stream->command, kill, pos);
 		stream->command[pos] = stream->buf[0];
 		ft_strcpy(stream->command + pos + 1, kill + pos);
-		ft_freegiveone((void **)&(kill));
+		free(kill);
 	}
 	else if (!(stream->command = ft_strdup(stream->buf)))
 		stream->state = -2;
