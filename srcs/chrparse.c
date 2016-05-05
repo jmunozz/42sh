@@ -1,16 +1,44 @@
 #include "minishell.h"
 
+void			ft_flush(t_stream *stream)
+{
+	size_t		size;
+	size_t		pos;
+
+	pos = stream->pos;
+	size = ft_strlen(stream->command + pos);
+	ft_putstr(stream->command + pos);
+	stream->pos += size;
+	if (!((stream->pos + stream->config->prompt_len) % stream->col))
+	{
+		ft_putchar(' ');
+		stream->pos++;
+	}
+	ft_erase(stream);
+	while (stream->pos != pos)
+		ft_mvleft(stream);
+}
+
 static void		ft_append(t_stream *stream)
 {
-	if ((stream->kill = stream->command))
+	size_t				pos;
+	char				*kill;
+
+	if ((kill = stream->command))
 	{
-		if (!(stream->command = ft_strjoin(stream->command, stream->buf)))
-			stream->state = -2;
-		free(stream->kill);
+		pos = stream->pos;
+		if (!(stream->command = ft_strnew(ft_strlen(stream->command + 1)))
+			&& (stream->state = -2))
+			return ;
+		ft_strncpy(stream->command, kill, pos);
+		stream->command[pos] = stream->buf[0];
+		ft_strcpy(stream->command + pos + 1, kill + pos);
+		ft_freegiveone((void **)&(kill));
 	}
 	else if (!(stream->command = ft_strdup(stream->buf)))
 		stream->state = -2;
-	stream->pos++;
+	ft_flush(stream);
+	ft_mvright(stream);
 }
 
 static int		ft_chrmatch(t_stream *stream)
@@ -43,10 +71,7 @@ int				ft_chrparse(t_stream *stream)
 	if (!(match = ft_chrmatch(stream)))
 		return (0);
 	if (match == -1)
-	{
-		ft_putstr(stream->buf);
 		ft_append(stream);
-	}
 	else if (match > 0)
 		(*ftab[match - 1])(stream);
 	return (1);
