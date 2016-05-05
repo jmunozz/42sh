@@ -105,7 +105,7 @@ void			ft_del(t_stream *stream);
 /*
 **chrparse.c
 */
-void			ft_print(t_stream *stream);
+void			ft_flush(t_stream *stream);
 int				ft_putcharint(int	i);
 void			ft_autocomp(t_stream *stream);
 int				ft_chrparse(t_stream *stream);
