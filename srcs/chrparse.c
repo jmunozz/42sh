@@ -15,14 +15,16 @@ static void		ft_append(t_stream *stream)
 
 static int		ft_chrmatch(t_stream *stream)
 {
-	static unsigned int	match[] = {CLF, SUP, CHT, DEL, LEF, RIG, UPP, DOW, NUL};
+	static ssize_t	match[] = {CLF, SUP, CHT, DEL, LEF, RIG, UPP, DOW,
+		CLEF, CRIG, CUPP, CDOW, NUL};
 	int					i;
 
 	i = 0;
-//printf("\nint = %x\n", ((unsigned int *)(stream->buf))[0]);
+//printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
 	while (match[i])
 	{
-		if (((unsigned int *)(stream->buf))[0] == match[i])
+//printf("\nmatch = %lx\n", match[i]);
+		if (((ssize_t *)(stream->buf))[0] == match[i])
 			return (i);
 		i++;
 	}
@@ -34,7 +36,9 @@ static int		ft_chrmatch(t_stream *stream)
 int				ft_chrparse(t_stream *stream)
 {
 	int					match;
-	static void (*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp, &ft_del, &ft_left, &ft_right, &ft_up, &ft_down};
+	static void (*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp, &ft_del,
+		&ft_left, &ft_right, &ft_up, &ft_down, &ft_ctrlleft, &ft_ctrlright,
+		&ft_ctrlup, &ft_ctrldown};
 
 	if (!(match = ft_chrmatch(stream)))
 		return (0);
@@ -43,7 +47,7 @@ int				ft_chrparse(t_stream *stream)
 		ft_putstr(stream->buf);
 		ft_append(stream);
 	}
-	else if (match > 0 && match <= 5)
+	else if (match > 0)
 		(*ftab[match - 1])(stream);
 	return (1);
 }

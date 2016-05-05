@@ -31,10 +31,14 @@
 # define SUP 0x7E335B1B //sup
 # define CHT 0x09 //\t
 # define DEL 0x7F //DEL
-# define LEF 0x445B1B//left
+# define LEF 0x445B1B //left
 # define RIG 0x435B1B //right
 # define UPP 0x415B1B //up
 # define DOW 0x425B1B //down
+# define CLEF 0x44353B315B1B //CTRL left
+# define CRIG 0x43353B315B1B //CTRL up
+# define CUPP 0x41353B315B1B //CTRL right
+# define CDOW 0x42353B315B1B //CTRL down
 # define NUL 0x00 //\0
 
 typedef struct dirent	t_dirent;
@@ -64,7 +68,7 @@ typedef struct	s_stream
 	int			fd;
 	int			ret;
 	int			state;
-	char		buf[5];
+	char		buf[9];
 	char		*command;
 	char		*kill;
 	size_t		pos;
@@ -80,24 +84,28 @@ char			*ft_streamscan(t_config *config, int fd);
 /*
 **termcaps.c
 */
-void			ft_erase(t_stream *stream);
 int				ft_putcharint(int	i);
 void			ft_tputs(t_stream *stream);
 void			ft_mvleft(t_stream *stream);
 void			ft_mvright(t_stream *stream);
 /*
-**arrow.c
+**arrowlr.c && arrowud.c && deletion.c
 */
+void			ft_ctrlleft(t_stream *stream);
+void			ft_ctrlright(t_stream *stream);
 void			ft_left(t_stream *stream);
 void			ft_right(t_stream *stream);
 void			ft_up(t_stream *stream);
 void			ft_down(t_stream *stream);
+void			ft_ctrlup(t_stream *stream);
+void			ft_ctrldown(t_stream *stream);
+void			ft_erase(t_stream *stream);
+void			ft_sup(t_stream *stream);
+void			ft_del(t_stream *stream);
 /*
 **chrparse.c
 */
 int				ft_putcharint(int	i);
-void			ft_sup(t_stream *stream);
-void			ft_del(t_stream *stream);
 void			ft_autocomp(t_stream *stream);
 int				ft_chrparse(t_stream *stream);
 /*

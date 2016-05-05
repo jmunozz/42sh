@@ -14,12 +14,6 @@ void			ft_tputs(t_stream *stream)
 	tputs(stream->tput, stream->fd, &ft_putcharint);
 }
 
-void			ft_erase(t_stream *stream)
-{
-	stream->tput = tgetstr("dc", NULL);
-	ft_tputs(stream);
-}
-
 void			ft_mvleft(t_stream *stream)
 {
 	int			i;
@@ -50,7 +44,7 @@ void			ft_mvright(t_stream *stream)
 
 	if (stream->command)
 	{
-		if ((stream->config->prompt_len + stream->pos) != stream->col)
+		if (((stream->config->prompt_len + stream->pos) % stream->col) != stream->col - 1)
 		{
 			stream->tput = tgetstr("nd", NULL);
 			ft_tputs(stream);

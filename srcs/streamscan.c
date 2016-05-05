@@ -41,12 +41,12 @@ static void	ft_scan(t_stream *stream)
 {
 	while (1)
 	{
-		if (((stream->ret = read(stream->fd, stream->buf, 4)) < 0
+		if (((stream->ret = read(stream->fd, stream->buf, 8)) < 0
 			&& (stream->state = -1))
 			|| !ft_chrparse(stream)
 			|| stream->state < 0)
 			break ;
-		ft_bzero(stream->buf, 4);
+		ft_bzero(stream->buf, 9);
 	}
 }
 
