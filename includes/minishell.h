@@ -26,6 +26,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include "libft.h"
+# define HISTORY_SIZE 256
 # define FT_PUTSTRFD ft_putstr_str_str_fd
 # define CLF 0x0A //\n
 # define SUP 0x7E335B1B //sup
@@ -58,13 +59,14 @@ typedef struct	s_arguments
 typedef struct	s_config
 {
 	char		**env;
-	char		*history[256];
 	size_t		prompt_len;
 	t_list		*bin;
 	t_list		*h_bin[34];
 	t_termios	termios;
-	int			term_state;
 	t_termios	termios_backup;
+	int			term_state;
+	char		*history[HISTORY_SIZE + 1];
+	int			hindex;
 }				t_config;
 typedef struct	s_stream
 {
@@ -72,6 +74,7 @@ typedef struct	s_stream
 	char		*tput;
 	int			fd;
 	int			ret;
+	int			shindex;
 	int			state;
 	char		buf[9];
 	char		*command;
@@ -92,7 +95,7 @@ void			ft_tputs(t_stream *stream);
 void			ft_mvleft(t_stream *stream);
 void			ft_mvright(t_stream *stream);
 /*
-**arrowlr.c && arrowud.c && deletion.c
+**arrowlr.c && arrowud.c
 */
 void			ft_ctrlleft(t_stream *stream);
 void			ft_ctrlright(t_stream *stream);
@@ -102,13 +105,17 @@ void			ft_goend(t_stream *stream);
 void			ft_gohome(t_stream *stream);
 void			ft_ctrlup(t_stream *stream);
 void			ft_ctrldown(t_stream *stream);
+/*
+**deletion.c
+*/
+void			ft_clean_field(t_stream *stream);
 void			ft_erase(t_stream *stream);
 void			ft_sup(t_stream *stream);
 void			ft_del(t_stream *stream);
 /*
 **chrparse.c
 */
-int				ft_putcharint(int	i);
+void			ft_flushend(t_stream *stream);
 void			ft_flush(t_stream *stream);
 int				ft_chrparse(t_stream *stream);
 /*
@@ -134,7 +141,9 @@ void			ft_access_exec(char *path, char **argv, t_config *config);
 */
 void			ft_up(t_stream *stream);
 void			ft_down(t_stream *stream);
-void			ft_push_history(char *command, t_config *config);
+void			ft_decr_history(int *hindex);
+void			ft_incr_history(int *hindex);
+void			ft_push_history(t_stream *stream, t_config *config);
 /*
 **error.c
 */

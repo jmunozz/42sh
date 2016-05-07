@@ -12,7 +12,7 @@ void	ft_right(t_stream *stream)
 		ft_mvright(stream);
 }
 
-void			ft_ctrlleft(t_stream *stream)
+void	ft_ctrlleft(t_stream *stream)
 {
 	ft_left(stream);
 	while (stream->command && stream->pos
@@ -21,7 +21,7 @@ void			ft_ctrlleft(t_stream *stream)
 		ft_mvleft(stream);
 }
 
-void			ft_ctrlright(t_stream *stream)
+void	ft_ctrlright(t_stream *stream)
 {
 	ft_right(stream);
 	while (stream->command && stream->command[stream->pos]

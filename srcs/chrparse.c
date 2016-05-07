@@ -1,22 +1,11 @@
 #include "minishell.h"
 
-int				ft_putcharint(int	i)
-{
-	char		c;
-
-	c = i;
-	ft_putchar(c);
-	return(c);
-}
-
-void			ft_flush(t_stream *stream)
+void			ft_flushend(t_stream *stream)
 {
 	size_t		size;
-	size_t		pos;
 
-	pos = stream->pos;
-	size = ft_strlen(stream->command + pos);
-	ft_putstr(stream->command + pos);
+	size = ft_strlen(stream->command + stream->pos);
+	ft_putstr(stream->command + stream->pos);
 	stream->pos += size;
 	if (!((stream->pos + stream->config->prompt_len) % stream->col))
 	{
@@ -24,6 +13,14 @@ void			ft_flush(t_stream *stream)
 		stream->pos++;
 	}
 	ft_erase(stream);
+}
+
+void			ft_flush(t_stream *stream)
+{
+	size_t		pos;
+
+	pos = stream->pos;
+	ft_flushend(stream);
 	while (stream->pos != pos)
 		ft_mvleft(stream);
 }
@@ -42,10 +39,10 @@ static void		ft_append(t_stream *stream)
 		ft_strncpy(stream->command, kill, pos);
 		stream->command[pos] = stream->buf[0];
 		ft_strcpy(stream->command + pos + 1, kill + pos);
-		free(kill);
 	}
 	else if (!(stream->command = ft_strdup(stream->buf)))
 		stream->state = -2;
+	ft_push_history(stream, stream->config);
 	ft_flush(stream);
 	ft_mvright(stream);
 }
@@ -73,10 +70,10 @@ static int		ft_chrmatch(t_stream *stream)
 int				ft_chrparse(t_stream *stream)
 {
 	int					match;
-	static void (*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp, &ft_del,
-		&ft_left, &ft_right, &ft_up, &ft_down, &ft_ctrlleft, &ft_ctrlright,
-		&ft_ctrlup, &ft_ctrldown, &ft_goend, &ft_gohome};
-
+	static void			(*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp,
+			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
+			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
+			&ft_goend, &ft_gohome};
 	if (!(match = ft_chrmatch(stream)))
 		return (0);
 	if (match == -1)

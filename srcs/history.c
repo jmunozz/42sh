@@ -14,26 +14,52 @@
 
 void	ft_up(t_stream *stream)
 {
-	ft_bzero(stream->buf, 4);
+	ft_decr_history(&(stream->shindex));
+	if (stream->shindex != stream->config->hindex
+		&& stream->config->history[stream->shindex])
+	{
+		ft_clean_field(stream);
+		stream->command = ft_strdup(stream->config->history[stream->shindex]);
+		ft_flushend(stream);
+	}
+	else
+		ft_incr_history(&(stream->shindex));
 }
 
 void	ft_down(t_stream *stream)
 {
-	ft_bzero(stream->buf, 4);
+	if (stream->shindex != stream->config->hindex)
+	{
+		ft_incr_history(&(stream->shindex));
+		ft_clean_field(stream);
+		stream->command = ft_strdup(stream->config->history[stream->shindex]);
+		ft_flushend(stream);
+	}
 }
 
-void	ft_push_history(char *command, t_config *config)
+void	ft_decr_history(int *hindex)
 {
-	static short	i = 0;
-
-	if (command && *command)
-	{
-		if (config->history[i])
-			free(config->history[i]);
-		config->history[i] = command;
-	}
-	if (i < 254)
-		i++;
+	if (*hindex > 0)
+		(*hindex)--;
 	else
-		i = 0;
+		*hindex = HISTORY_SIZE;
+}
+
+void	ft_incr_history(int *hindex)
+{
+	if (*hindex < HISTORY_SIZE - 1)
+		(*hindex)++;
+	else
+		*hindex = 0;
+}
+
+void	ft_push_history(t_stream *stream, t_config *config)
+{
+	stream->shindex = config->hindex;
+	if (stream->command && stream->command[0])
+	{
+		if (config->history[config->hindex])
+			ft_freegiveone((void **)&(config->history[config->hindex]));
+		config->history[config->hindex] = stream->command;
+	}
 }

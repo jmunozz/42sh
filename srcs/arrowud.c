@@ -2,8 +2,9 @@
 
 void	ft_goend(t_stream *stream)
 {
-	while (stream->command[stream->pos])
-		ft_right(stream);
+	if (stream->command)
+		while (stream->command[stream->pos])
+			ft_right(stream);
 }
 
 void	ft_gohome(t_stream *stream)

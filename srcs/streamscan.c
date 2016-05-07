@@ -40,6 +40,7 @@ static int	ft_termios_handle(t_config *config, int mode)
 
 static void	ft_scan(t_stream *stream)
 {
+	stream->shindex = stream->config->hindex;
 	while (1)
 	{
 		if (((stream->ret = read(stream->fd, stream->buf, 8)) < 0
@@ -75,11 +76,13 @@ char		*ft_streamscan(t_config *config, int fd)
 	ft_termios_handle(config, 0);
 	if (stream.state < 0)
 	{
-		if (stream.command)
-			ft_freegiveone((void **)(&(stream.command)));
+		if (config->history[config->hindex])
+			ft_freegiveone((void **)(&(config->history[config->hindex])));
 		ft_putstr_fd("minishell: error while scanning command\n", 2);
 		return (NULL);
 	}
+	if (stream.command)
+		ft_incr_history(&(config->hindex));
 	ft_putchar('\n');
 	return (stream.command);
 }

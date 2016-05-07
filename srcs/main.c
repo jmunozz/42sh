@@ -53,17 +53,15 @@ static void	ft_tricase(int ac, char **av, t_config *config)
 
 int			main(int ac, char **av, char **env)
 {
-	t_config	*config;
+	t_config	config;
 
-	if (!(config = (t_config *)ft_memalloc(sizeof(t_config))))
-		return (ft_initerror());
-	ft_bzero(config->history, sizeof(config->history));
-	if (!(config->env = ft_strtabdup(env))
-			|| !ft_pathtohash(config))
+	ft_bzero(&config, sizeof(t_config));
+	if (!(config.env = ft_strtabdup(env))
+			|| !ft_pathtohash(&config))
 	{
-		ft_free_config(config);
+		ft_free_config(&config);
 		return (ft_initerror());
 	}
-	ft_tricase(ac, av, config);
+	ft_tricase(ac, av, &config);
 	return (0);
 }

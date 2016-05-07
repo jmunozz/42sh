@@ -25,7 +25,7 @@ void	ft_free_history(char **history)
 	int	i;
 
 	i = -1;
-	while (++i < 256)
+	while (++i < HISTORY_SIZE)
 		if (history[i])
 			free(history[i]);
 }
@@ -48,6 +48,5 @@ void	ft_free_config(t_config *config)
 		if (config->bin)
 			ft_lstdel(&(config->bin), &ft_freebin);
 		ft_free_history(config->history);
-		free(config);
 	}
 }
