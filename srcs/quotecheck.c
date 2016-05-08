@@ -1,5 +1,25 @@
 #include "minishell.h"
 
+int			ft_underline_mess(char *mess, t_stream *stream)
+{
+	size_t	i;
+
+	i = ft_strlen(mess);
+	ft_goend(stream);
+	while ((stream->pos + stream->config->prompt_len) % stream->col)
+		ft_left(stream);
+	stream->tput = tgetstr("do");
+	ft_tputs(stream);
+	ft_putstr(mess);
+	stream->tput = tgetstr("up");
+	ft_tputs(stream);
+	stream->tput = tgetstr("le");
+	while (i--)
+		ft_tputs(stream);
+	ft_goend(stream);
+	return (0);
+}
+
 static char	*ft_gonext(char *str, char c)
 {
 	while (*str)
@@ -17,30 +37,25 @@ static char	*ft_gonext(char *str, char c)
 int			ft_quotecheck(t_stream *stream)
 {
 	char	*c;
-	int		cro;
-	int		par;
-	int		acc;
+	t_coord	par;
 
-	par = 0;
-	cro = 0;
-	acc = 0;
+	ft_bzero(&par, sizeof(t_coord));
 	c = stream->command;
 	while (*c)
 	{
 		if ((*c == '"' || *c == ''') && !(c = ft_gonext(c + 1, *c)))
-			return (ft_underline_mess("please end your quote to run command");
+			return (ft_underline_mess(QUOTE_ERR, stream);
 		if (*c == '[' || *c == ']')
-			cro += (*c == '[' ? 1 : -1);
+			par.x += (*c == '[' ? 1 : -1);
 		else if (*c == '(' || *c == ')')
-			par += (*c == '[' ? 1 : -1);
+			par.y += (*c == '(' ? 1 : -1);
 		else if (*c == '{' || *c == '}')
-			acc += (*c == '[' ? 1 : -1);
+			par.z += (*c == '{' ? 1 : -1);
 		else if (*c == '\')
-			c += 2;
-		else
 			++c;
+		++c;
 	}
-	if (par || cro || acc)
-		return (ft_underline_mess("missing '(' ')' '{' '}' '[' or ']' to run command");
+	if (par.x || par.y || par.z)
+		return (ft_underline_mess(PAR_ERR, stream);
 	return (1);
 }

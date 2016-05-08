@@ -85,10 +85,18 @@ typedef struct	s_stream
 	size_t		col;
 	t_config	*config;
 }				t_stream;
+typedef struct	s_coord
+{
+	int			x;
+	int			y;
+	int			z;
+}				t_coord;
 /*
 **streamscan.c
 */
 char			*ft_streamscan(t_config *config, int fd);
+int			ft_underline_mess(char *mess, t_stream *stream);
+int			ft_quotecheck(t_stream *stream);
 /*
 **termcaps.c
 */
