@@ -86,12 +86,6 @@ typedef struct	s_stream
 	size_t		col;
 	t_config	*config;
 }				t_stream;
-typedef struct	s_coord
-{
-	int			x;
-	int			y;
-	int			z;
-}				t_coord;
 /*
 **streamscan.c
 */

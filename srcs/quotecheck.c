@@ -41,30 +41,53 @@ static char	*ft_gonext(char *str, char c)
 	return (NULL);
 }
 
+static int	ft_par(char c)
+{
+	static int	cro = 0;
+	static int	par = 0;
+	static int	acc = 0;
+	int			ret;
+
+	ret = 0;
+	if (!c)
+	{
+		if (cro | par | acc)
+			++ret;
+		cro = 0;
+		acc = 0;
+		par = 0;
+	}
+	else if (c == '[' || c == ']')
+		cro += (c == '[' ? 1 : -1);
+	else if (c == '(' || c == ')')
+		par += (c == '(' ? 1 : -1);
+	else if (c == '{' || c == '}')
+		acc += (c == '{' ? 1 : -1);
+	return (ret);
+}
+
 int			ft_quotecheck(t_stream *stream)
 {
 	char	*c;
-	t_coord	par;
 
-	ft_bzero(&par, sizeof(t_coord));
+	ft_par(0);
 	c = stream->command;
 	while (*c)
 	{
+		ft_par(*c);
 		if ((*c == '\"' || *c == '\'') && !(c = ft_gonext(c + 1, *c)))
 			return (ft_underline_mess(QUOTE_ERR, stream));
-		if (*c == '[' || *c == ']')
-			par.x += (*c == '[' ? 1 : -1);
-		else if (*c == '(' || *c == ')')
-			par.y += (*c == '(' ? 1 : -1);
-		else if (*c == '{' || *c == '}')
-			par.z += (*c == '{' ? 1 : -1);
-		else if (*c == '\\' && !*(c + 1))
+		if (*c == '\\' && !*(c + 1))
 			return (ft_underline_mess(BACK_ERR, stream));
-		else if (*c == '\\')
+		if (*c == '#' && !ft_par(0))
+			return (1);
+		if (*c == '#')
+			return (ft_underline_mess(PAR_ERR, stream));
+		if (*c == '\\')
 			++c;
 		++c;
 	}
-	if (par.x || par.y || par.z)
+	if (ft_par(0))
 		return (ft_underline_mess(PAR_ERR, stream));
 	return (1);
 }
