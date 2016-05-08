@@ -45,7 +45,7 @@ static void	ft_scan(t_stream *stream)
 	{
 		if (((stream->ret = read(stream->fd, stream->buf, 8)) < 0
 			&& (stream->state = -1))
-			|| !ft_chrparse(stream)
+			|| (!ft_chrparse(stream) && ft_quotecheck(stream))
 			|| stream->state < 0)
 			break ;
 		ft_bzero(stream->buf, 9);
