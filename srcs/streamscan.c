@@ -50,6 +50,7 @@ static void	ft_scan(t_stream *stream)
 			break ;
 		ft_bzero(stream->buf, 9);
 	}
+	ft_underline_mess(" ", stream);
 }
 
 static void	ft_winrec(t_stream *stream)

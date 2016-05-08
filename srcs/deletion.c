@@ -1,14 +1,5 @@
 #include "minishell.h"
 
-int		ft_putcharint(int	i)
-{
-	char		c;
-
-	c = i;
-	ft_putchar(c);
-	return(c);
-}
-
 void	ft_clean_field(t_stream *stream)
 {
 	ft_goend(stream);

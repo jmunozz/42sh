@@ -43,8 +43,9 @@
 # define END 0x464F1B //end
 # define HOM 0x484F1B //home
 # define NUL 0x00 //\0
-# define PAR_ERR "please end your quote before running command"
-# define QUOTE_ERR "missing '(' ')' '[' ']' '{' '}' character"
+# define QUOTE_ERR "please end your quote before running command"
+# define PAR_ERR "missing '(' ')' '[' ']' '{' '}' character"
+# define BACK_ERR "missing character after backslash"
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
