@@ -1,0 +1,2 @@
+! : attention segfault  quand lance cmd depuis historique puis réessaie delancer depuis historique again!
+incorporer le ft_select comme autocomp.
