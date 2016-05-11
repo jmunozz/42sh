@@ -6,7 +6,7 @@
 #    By: tboos <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/07 15:35:19 by tboos             #+#    #+#              #
-#    Updated: 2016/03/29 16:15:29 by tboos            ###   ########.fr        #
+#    Updated: 2016/05/11 14:51:10 by tboos            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 .PHONY: fclean re
@@ -27,7 +27,7 @@ $(NAME): $(OBJ)
 	gcc $(FLAGS) $(HEAD) $^ -L libft -l ft -o $@ $(TERMCAPS)
 
 %.o: %.c libft/libft.a
-	gcc $(FLAGS) $(HEAD)  -c $< -o $@ $(TERMCAPS)
+	gcc $(FLAGS) $(HEAD)  -c $< -o $@
 
 lib:
 	make -C libft
