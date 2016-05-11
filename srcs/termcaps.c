@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/05/11 14:28:46 by tboos            ###   ########.fr       */
+/*   Updated: 2016/05/11 15:57:34 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void			ft_mvleft(t_stream *stream)
 		}
 		else
 		{
-			stream->tput = tgetstr("up", NULL);
-			ft_tputs(stream);
 			i = -1;
 			stream->tput = tgetstr("nd", NULL);
 			while ((unsigned int)++i < stream->col)
 				ft_tputs(stream);
+			stream->tput = tgetstr("up", NULL);
+			ft_tputs(stream);
 		}
 		stream->pos--;
 	}
@@ -64,12 +64,12 @@ void			ft_mvright(t_stream *stream)
 		}
 		else
 		{
-			stream->tput = tgetstr("do", NULL);
-			ft_tputs(stream);
 			i = -1;
 			stream->tput = tgetstr("le", NULL);
 			while ((unsigned int)++i < stream->col)
 				ft_tputs(stream);
+			stream->tput = tgetstr("do", NULL);
+			ft_tputs(stream);
 		}
 		stream->pos++;
 	}

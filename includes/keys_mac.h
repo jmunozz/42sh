@@ -6,12 +6,12 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:51:46 by tboos             #+#    #+#             */
-/*   Updated: 2016/05/11 14:52:52 by tboos            ###   ########.fr       */
+/*   Updated: 2016/05/11 15:35:28 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KEY_LINUX_H
-# define KEY_LINUX_H
+#ifndef KEYS_MAC_H
+# define KEYS_MAC_H
 
 # define CLF 0x0A //\n
 # define SUP 0x7E335B1B //sup
@@ -21,12 +21,12 @@
 # define RIG 0x435B1B //right
 # define UPP 0x415B1B //up
 # define DOW 0x425B1B //down
-# define CLEF 0x44353B315B1B //CTRL left
-# define CRIG 0x43353B315B1B //CTRL up
-# define CUPP 0x41353B315B1B //CTRL right
-# define CDOW 0x42353B315B1B //CTRL down
-# define END 0x464F1B //end
-# define HOM 0x484F1B //home
+# define CLEF 0x445B1B1B //ALT left
+# define CUPP 0x415B1B1B //ALT up
+# define CRIG 0x435B1B1B //ALT right
+# define CDOW 0x425B1B1B //ALT down
+# define END 0x465B1B //end
+# define HOM 0x485B1B //home
 # define NUL 0x00 //\0
 
 #endif

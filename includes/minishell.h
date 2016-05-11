@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:23:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/05/11 14:54:45 by tboos            ###   ########.fr       */
+/*   Updated: 2016/05/11 14:58:14 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # include "libft.h"
 # ifdef LINUX
 #  include "keys_linux.h"
-# elif
-#  include "key_mac.h"
+# else
+#  include "keys_mac.h"
 # endif
 # define HISTORY_SIZE 256
 # define FT_PUTSTRFD ft_putstr_str_str_fd
