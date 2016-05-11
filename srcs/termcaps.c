@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   termcaps.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
+/*   Updated: 2016/05/11 14:28:46 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int		ft_putcharint(int	i)
+int				ft_putcharint(int i)
 {
 	char		c;
 
 	c = i;
 	ft_putchar(c);
-	return(c);
+	return (c);
 }
 
 void			ft_tputs(t_stream *stream)
@@ -44,7 +56,8 @@ void			ft_mvright(t_stream *stream)
 
 	if (stream->command)
 	{
-		if (((stream->config->prompt_len + stream->pos) % stream->col) != stream->col - 1)
+		if (((stream->config->prompt_len + stream->pos) % stream->col)
+			!= stream->col - 1)
 		{
 			stream->tput = tgetstr("nd", NULL);
 			ft_tputs(stream);

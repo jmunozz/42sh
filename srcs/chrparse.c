@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   chrparse.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
+/*   Updated: 2016/05/11 14:31:07 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void			ft_flushend(t_stream *stream)
@@ -49,7 +61,8 @@ static void		ft_append(t_stream *stream)
 
 static int		ft_chrmatch(t_stream *stream)
 {
-	static ssize_t	match[] = {CLF, SUP, CHT, DEL, LEF, RIG, UPP, DOW,
+	static ssize_t		match[] = {CLF, SUP, CHT, DEL,
+		LEF, RIG, UPP, DOW,
 		CLEF, CRIG, CUPP, CDOW, END, HOM, NUL};
 	int					i;
 
@@ -74,6 +87,7 @@ int				ft_chrparse(t_stream *stream)
 			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
 			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
 			&ft_goend, &ft_gohome};
+
 	if (!(match = ft_chrmatch(stream)))
 		return (0);
 	if (match == -1)

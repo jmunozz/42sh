@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:23:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 20:28:49 by tboos            ###   ########.fr       */
+/*   Updated: 2016/05/11 14:26:57 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ typedef struct	s_stream
 **streamscan.c
 */
 char			*ft_streamscan(t_config *config, int fd);
-int			ft_underline_mess(char *mess, t_stream *stream);
-int			ft_quotecheck(t_stream *stream);
+int				ft_underline_mess(char *mess, t_stream *stream);
+int				ft_quotecheck(t_stream *stream);
 /*
 **termcaps.c
 */
