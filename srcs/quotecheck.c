@@ -58,16 +58,18 @@ static int	ft_par(char c)
 	static int	cro = 0;
 	static int	par = 0;
 	static int	acc = 0;
+	static int	bqu = 0;
 	int			ret;
 
 	ret = 0;
 	if (!c)
 	{
-		if (cro | par | acc)
+		if (cro | par | acc | bqu)
 			++ret;
 		cro = 0;
 		acc = 0;
 		par = 0;
+		bqu = 0;
 	}
 	else if (c == '[' || c == ']')
 		cro += (c == '[' ? 1 : -1);
@@ -75,6 +77,8 @@ static int	ft_par(char c)
 		par += (c == '(' ? 1 : -1);
 	else if (c == '{' || c == '}')
 		acc += (c == '{' ? 1 : -1);
+	else if (c == '`')
+		acc ^= 1;
 	return (ret);
 }
 

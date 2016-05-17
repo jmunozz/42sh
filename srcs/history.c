@@ -19,6 +19,8 @@ void	ft_up(t_stream *stream)
 		&& stream->config->history[stream->shindex])
 	{
 		ft_clean_field(stream);
+		if (stream->command)
+			free(stream->command);
 		stream->command = ft_strdup(stream->config->history[stream->shindex]);
 		ft_flushend(stream);
 	}
@@ -32,6 +34,8 @@ void	ft_down(t_stream *stream)
 	{
 		ft_incr_history(&(stream->shindex));
 		ft_clean_field(stream);
+		if (stream->command)
+			free(stream->command);
 		stream->command = ft_strdup(stream->config->history[stream->shindex]);
 		ft_flushend(stream);
 	}
