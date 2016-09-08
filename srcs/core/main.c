@@ -35,8 +35,11 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 					av[i], "\n", 2);
 		else
 		{
-			while ((cmd = ft_streamscan(config, fd)))
+			while ((get_next_line(fd, &cmd)))
+			{
 				ft_run_command(config, cmd);
+				free(cmd);
+			}
 			close(fd);
 		}
 	}

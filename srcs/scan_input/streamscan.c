@@ -61,29 +61,27 @@ static void	ft_winrec(t_stream *stream)
 	stream->col = w.ws_col;
 }
 
-char		*ft_streamscan(t_config *config, int fd)
+char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 {
-	t_stream		stream;
-
-	ft_bzero(&stream, sizeof(t_stream));
-	stream.fd = fd;
-	stream.config = config;
+	ft_bzero(stream, sizeof(t_stream));
+	stream->fd = fd;
+	stream->config = config;
 	ft_termios_handle(config, 1);
-	if (!config->term_state && (!(stream.term = getenv("TERM"))
-		|| !tgetent(NULL, stream.term)))
+	if (!config->term_state && (!(stream->term = getenv("TERM"))
+		|| !tgetent(NULL, stream->term)))
 		ft_term_error(config);
-	ft_winrec(&stream);
-	ft_scan(&stream);
+	ft_winrec(stream);
+	ft_scan(stream);
 	ft_termios_handle(config, 0);
-	if (stream.state < 0)
+	if (stream->state < 0)
 	{
 		if (config->history[config->hindex])
 			ft_freegiveone((void **)(&(config->history[config->hindex])));
 		ft_putstr_fd("minishell: error while scanning command\n", 2);
 		return (NULL);
 	}
-	if (stream.command)
+	if (stream->command)
 		ft_incr_history(&(config->hindex));
 	ft_putchar('\n');
-	return (stream.command);
+	return (stream->command);
 }

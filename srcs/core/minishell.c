@@ -37,11 +37,9 @@ void		ft_run_command(t_config *config, char *cmd)
 void		ft_minishell(t_config *config)
 {
 	char		*cmd;
+	t_stream	stream;
 
 	while (ft_prompt(config))
-	{
-		cmd = ft_streamscan(config, 0);
-		if (cmd)
+		if ((cmd = ft_streamscan(config, &stream, 0)))
 			ft_run_command(config, cmd);
-	}
 }

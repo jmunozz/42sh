@@ -19,7 +19,7 @@ typedef struct	s_stream
 /*
 **streamscan.c
 */
-char			*ft_streamscan(t_config *config, int fd);
+char			*ft_streamscan(t_config *config, t_stream *stream, int fd);
 int				ft_underline_mess(char *mess, t_stream *stream);
 int				ft_quotecheck(t_stream *stream);
 /*
