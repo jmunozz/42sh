@@ -1,0 +1,9 @@
+.PHONY: fclean re
+.SUFFIXES:
+NAME = 21sh
+FLAGS = -Wall -Wextra -Werror
+SRCS = $(foreach S, $(SRC), srcs/$(S))
+OBJ = $(SRCS:.c=.o)
+TERMCAPS = -lm -lncurses
+HEAD = -I libft/includes -I includes
+OS = $(shell uname -s)
