@@ -4,7 +4,7 @@
 # define HISTORY_SIZE 256
 # define FT_PUTSTRFD ft_putstr_str_str_fd
 # define QUOTE_ERR "please end your quote before running command"
-# define PAR_ERR "missing '(' ')' '[' ']' '{' '}' character"
+# define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
 # define BACK_ERR "missing character after backslash"
 
 typedef struct dirent	t_dirent;
