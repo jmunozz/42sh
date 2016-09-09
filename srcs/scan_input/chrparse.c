@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/09 08:30:54 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/09 09:50:13 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,26 @@ void			ft_flush(t_stream *stream)
 static void		ft_append(t_stream *stream)
 {
 	size_t				pos;
+	size_t				len;
 	char				*kill;
 
+	len = ft_strlen(stream->buf);
 	if ((kill = stream->command))
 	{
 		pos = stream->pos;
-		if (!(stream->command = ft_strnew(ft_strlen(stream->command) + 1))
+		if (!(stream->command = ft_strnew(ft_strlen(stream->command) + len))
 			&& (stream->state = -2))
 			return ;
 		ft_strncpy(stream->command, kill, pos);
-		stream->command[pos] = stream->buf[0];
-		ft_strcpy(stream->command + pos + 1, kill + pos);
+		ft_strcpy(stream->command + pos, stream->buf);
+		ft_strcpy(stream->command + pos + len, kill + pos);
 	}
 	else if (!(stream->command = ft_strdup(stream->buf)))
 		stream->state = -2;
 	ft_push_history(stream, stream->config);
 	ft_flush(stream);
-	ft_mvright(stream);
+	while (len--)
+		ft_mvright(stream);
 }
 
 static int		ft_chrmatch(t_stream *stream)
