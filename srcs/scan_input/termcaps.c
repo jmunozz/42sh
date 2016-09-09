@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/05/11 16:12:12 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/09 09:15:31 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void			ft_mvright(t_stream *stream)
 		{
 			i = 0;
 			stream->tput = tgetstr("le", NULL);
-			while (++i <= stream->col)
+			while (++i <= stream->col - 1)
 				ft_tputs(stream);
 			stream->tput = tgetstr("do", NULL);
 			ft_tputs(stream);
