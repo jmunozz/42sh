@@ -2,6 +2,7 @@
 .SUFFIXES:
 NAME = 21sh
 FLAGS = -Wall -Wextra -Werror
+FLAGSPOSIX = -ansi -pedantic -D_POSIX_SOURCE=1
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
 TERMCAPS = -lm -lncurses
@@ -38,10 +39,10 @@ endif
 all: lib $(NAME)
 
 $(NAME): $(OBJ)
-	gcc $(FLAGS) $(HEAD) $^ -L libft -l ft -o $@ $(TERMCAPS)
+	gcc $(FLAGS) $(FLAGSPOSIX) $(HEAD) $^ -L libft -l ft -o $@ $(TERMCAPS)
 
 %.o: %.c libft/libft.a
-	gcc $(FLAGS) $(HEAD) -c $< -o $@
+	gcc $(FLAGS) $(FLAGSPOSIX) $(HEAD) -c $< -o $@
 
 lib:
 	make -C libft

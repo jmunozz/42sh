@@ -2,6 +2,7 @@
 .SUFFIXES:
 NAME = 21sh
 FLAGS = -Wall -Wextra -Werror
+FLAGSPOSIX = -ansi -pedantic -D_POSIX_SOURCE=1
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
 TERMCAPS = -lm -lncurses
