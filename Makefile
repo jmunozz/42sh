@@ -39,10 +39,10 @@ endif
 all: lib $(NAME)
 
 $(NAME): $(OBJ)
-	gcc $(FLAGS) $(FLAGSPOSIX) $(HEAD) $^ -L libft -l ft -o $@ $(TERMCAPS)
+	gcc $(FLAGS) $(HEAD) $^ -L libft -l ft -o $@ $(TERMCAPS)
 
 %.o: %.c libft/libft.a
-	gcc $(FLAGS) $(FLAGSPOSIX) $(HEAD) -c $< -o $@
+	gcc $(FLAGS) $(HEAD) -c $< -o $@
 
 lib:
 	make -C libft

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/04/29 12:17:32 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/09 08:34:00 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static void	ft_scan(t_stream *stream)
 		ft_bzero(stream->buf, 9);
 		if (((stream->ret = read(stream->fd, stream->buf, 8)) < 0
 			&& (stream->state = -1))
-			|| (!ft_chrparse(stream) && ft_quotecheck(stream))
+			|| (!ft_chrparse(stream) && (!stream->command
+			|| ft_quotecheck(stream)))
 			|| stream->state < 0)
 			break ;
 	}

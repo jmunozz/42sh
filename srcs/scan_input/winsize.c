@@ -47,4 +47,3 @@ void		ft_winsize(void)
 	}
 	ft_sigwinch();
 }
-//dprintf(1,"yop");

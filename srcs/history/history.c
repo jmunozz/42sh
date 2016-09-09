@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:16 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/31 11:02:43 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/09 08:12:53 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@ void	ft_up(t_stream *stream)
 	if (stream->shindex != stream->config->hindex
 		&& stream->config->history[stream->shindex])
 	{
-		ft_clean_field(stream);
 		if (stream->command)
 			free(stream->command);
 		stream->command = ft_strdup(stream->config->history[stream->shindex]);
-		ft_flushend(stream);
+		ft_winsize();
 	}
 	else
 		ft_incr_history(&(stream->shindex));
@@ -33,11 +32,10 @@ void	ft_down(t_stream *stream)
 	if (stream->shindex != stream->config->hindex)
 	{
 		ft_incr_history(&(stream->shindex));
-		ft_clean_field(stream);
 		if (stream->command)
 			free(stream->command);
 		stream->command = ft_strdup(stream->config->history[stream->shindex]);
-		ft_flushend(stream);
+		ft_winsize();
 	}
 }
 
