@@ -43,22 +43,14 @@ static void	ft_scan(t_stream *stream)
 	stream->shindex = stream->config->hindex;
 	while (1)
 	{
+		ft_bzero(stream->buf, 9);
 		if (((stream->ret = read(stream->fd, stream->buf, 8)) < 0
 			&& (stream->state = -1))
 			|| (!ft_chrparse(stream) && ft_quotecheck(stream))
 			|| stream->state < 0)
 			break ;
-		ft_bzero(stream->buf, 9);
 	}
 	ft_underline_mess(" ", stream);
-}
-
-static void	ft_winrec(t_stream *stream)
-{
-	struct winsize	w;
-
-	ioctl(stream->fd, TIOCGWINSZ, &w);
-	stream->col = w.ws_col;
 }
 
 char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
@@ -70,7 +62,7 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 	if (!config->term_state && (!(stream->term = getenv("TERM"))
 		|| !tgetent(NULL, stream->term)))
 		ft_term_error(config);
-	ft_winrec(stream);
+	ft_winsize();
 	ft_scan(stream);
 	ft_termios_handle(config, 0);
 	if (stream->state < 0)

@@ -16,6 +16,7 @@ core/free.c \
 core/hash.c \
 core/main.c \
 core/minishell.c \
+core/signal.c \
 history/history.c \
 run_command/files.c \
 run_command/fork.c \
@@ -28,6 +29,7 @@ scan_input/prompt.c \
 scan_input/quotecheck.c \
 scan_input/streamscan.c \
 scan_input/termcaps.c \
+scan_input/winsize.c \
 
 ifeq ($(OS), Linux)
 	FLAGS += -D LINUX

@@ -60,7 +60,7 @@ void			ft_autocomp(t_stream *stream);
 /*
 **prompt.c
 */
-int				ft_prompt(t_config *config);
+void			ft_prompt(t_config *config);
 /*
 **history.c
 */
@@ -69,5 +69,11 @@ void			ft_down(t_stream *stream);
 void			ft_decr_history(int *hindex);
 void			ft_incr_history(int *hindex);
 void			ft_push_history(t_stream *stream, t_config *config);
+/*
+**winsize.c
+*/
+t_stream		*ft_save_stream(t_stream *stream);
+void			ft_sigwinch(void);
+void			ft_winsize(void);
 
 #endif

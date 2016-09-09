@@ -20,7 +20,7 @@ void	ft_goprompt(t_config *config, char *loc)
 	config->prompt_len = ft_strlen(loc) + 6;
 }
 
-int		ft_prompt(t_config *config)
+void	ft_prompt(t_config *config)
 {
 	char	*pwd;
 	char	*subrep;
@@ -32,7 +32,7 @@ int		ft_prompt(t_config *config)
 		{
 			ft_putstr_fd("minishell: prompt error: path to long\n", 2);
 			ft_goprompt(config, "prompting");
-			return (1);
+			return ;
 		}
 		ft_setenv("PWD", pwd + 4, config);
 	}
@@ -40,5 +40,4 @@ int		ft_prompt(t_config *config)
 		ft_goprompt(config, subrep + 1);
 	else
 		ft_goprompt(config, pwd + 4);
-	return (1);
 }

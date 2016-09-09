@@ -66,5 +66,10 @@ void			ft_free_config(t_config *config);
 */
 void			ft_run_command(t_config *config, char *cmd);
 void			ft_minishell(t_config *config);
+/*
+**signal.c
+*/
+void			ft_signal_handle(int i);
+void			ft_sigwinch(void);
 
 #endif

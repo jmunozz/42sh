@@ -14,7 +14,7 @@
 
 int				ft_putcharint(int i)
 {
-	char		c;
+	char			c;
 
 	c = i;
 	ft_putchar(c);
@@ -28,7 +28,7 @@ void			ft_tputs(t_stream *stream)
 
 void			ft_mvleft(t_stream *stream)
 {
-	int			i;
+	unsigned int	i;
 
 	if (stream->pos)
 	{
@@ -39,9 +39,9 @@ void			ft_mvleft(t_stream *stream)
 		}
 		else
 		{
-			i = -1;
+			i = 0;
 			stream->tput = tgetstr("nd", NULL);
-			while ((unsigned int)++i < stream->col)
+			while (++i <= stream->col)
 				ft_tputs(stream);
 			stream->tput = tgetstr("up", NULL);
 			ft_tputs(stream);
@@ -52,7 +52,7 @@ void			ft_mvleft(t_stream *stream)
 
 void			ft_mvright(t_stream *stream)
 {
-	int			i;
+	unsigned int	i;
 
 	if (stream->command)
 	{
@@ -64,9 +64,9 @@ void			ft_mvright(t_stream *stream)
 		}
 		else
 		{
-			i = -1;
+			i = 0;
 			stream->tput = tgetstr("le", NULL);
-			while ((unsigned int)++i < stream->col)
+			while (++i <= stream->col)
 				ft_tputs(stream);
 			stream->tput = tgetstr("do", NULL);
 			ft_tputs(stream);
