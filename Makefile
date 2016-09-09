@@ -9,8 +9,8 @@ TERMCAPS = -lm -lncurses
 HEAD = -I libft/includes -I includes
 OS = $(shell uname -s)
 SRC = \
-builtin/builtin.c \
-builtin/environ.c \
+builtins/builtin.c \
+builtins/environ.c \
 core/cmp.c \
 core/errors.c \
 core/free.c \
