@@ -75,5 +75,6 @@ void			ft_push_history(t_stream *stream, t_config *config);
 t_stream		*ft_save_stream(t_stream *stream);
 void			ft_sigwinch(void);
 void			ft_winsize(void);
+void			ft_prompt_reset(t_stream *stream);
 
 #endif

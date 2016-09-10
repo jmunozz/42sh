@@ -16,15 +16,18 @@ void			ft_flushend(t_stream *stream)
 {
 	size_t		size;
 
-	size = ft_strlen(stream->command + stream->pos);
-	ft_putstr(stream->command + stream->pos);
-	stream->pos += size;
-	if (!((stream->pos + stream->config->prompt_len) % stream->col))
+	if (stream->command && stream->command[0])
 	{
-		ft_putstr ("   ");
-		stream->pos += 3;
+		size = ft_strlen(stream->command + stream->pos);
+		ft_putstr(stream->command + stream->pos);
+		stream->pos += size;
+		if (!((stream->pos + stream->config->prompt_len) % stream->col))
+		{
+			ft_putstr ("   ");
+			stream->pos += 3;
+		}
+		ft_erase(stream);
 	}
-	ft_erase(stream);
 }
 
 void			ft_flush(t_stream *stream)

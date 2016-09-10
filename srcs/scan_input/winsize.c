@@ -9,7 +9,7 @@ t_stream	*ft_save_stream(t_stream *stream)
 	return (saved);
 }
 
-static void ft_prompt_reset(t_stream *stream)
+void ft_prompt_reset(t_stream *stream)
 {
 	size_t			col;
 	size_t			i;
@@ -31,6 +31,7 @@ static void ft_prompt_reset(t_stream *stream)
 		ft_tputs(stream);
 	}
 	stream->col = col;
+	ft_prompt(stream->config);
 }
 
 void		ft_winsize(void)
@@ -39,7 +40,6 @@ void		ft_winsize(void)
 
 	stream = ft_save_stream(NULL);
 	ft_prompt_reset(stream);
-	ft_prompt(stream->config);
 	if (stream->command)
 	{
 		stream->pos = 0;

@@ -18,10 +18,16 @@ void	ft_up(t_stream *stream)
 	if (stream->shindex != stream->config->hindex
 		&& stream->config->history[stream->shindex])
 	{
+		if (stream->config->history[stream->shindex] && !(stream->command
+			= ft_strdup(stream->config->history[stream->shindex])))
+		{
+			stream->state = -2;
+			return ;
+		}
 		if (stream->command)
-			free(stream->command);
-		stream->command = ft_strdup(stream->config->history[stream->shindex]);
-		ft_winsize();
+			ft_winsize();
+		else
+			ft_prompt_reset(stream);
 	}
 	else
 		ft_incr_history(&(stream->shindex));
@@ -32,10 +38,19 @@ void	ft_down(t_stream *stream)
 	if (stream->shindex != stream->config->hindex)
 	{
 		ft_incr_history(&(stream->shindex));
+		if (stream->config->history[stream->shindex] && !(stream->command
+			= ft_strdup(stream->config->history[stream->shindex])))
+		{
+			stream->state = -2;
+			return ;
+		}
 		if (stream->command)
-			free(stream->command);
-		stream->command = ft_strdup(stream->config->history[stream->shindex]);
-		ft_winsize();
+			ft_winsize();
+		else
+		{
+			stream->pos = 0;
+			ft_prompt_reset(stream);
+		}
 	}
 }
 
@@ -60,8 +75,7 @@ void	ft_push_history(t_stream *stream, t_config *config)
 	stream->shindex = config->hindex;
 	if (stream->command && stream->command[0])
 	{
-		if (config->history[config->hindex])
-			ft_freegiveone((void **)&(config->history[config->hindex]));
+		ft_freegiveone((void **)&(config->history[config->hindex]));
 		config->history[config->hindex] = stream->command;
 	}
 }

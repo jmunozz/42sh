@@ -14,7 +14,10 @@
 
 int		ft_freegiveone(void **kill)
 {
-	free(*kill);
-	*kill = NULL;
+	if (kill && *kill)
+	{
+		free(*kill);
+		*kill = NULL;
+	}
 	return (1);
 }
