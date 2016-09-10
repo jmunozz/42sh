@@ -44,12 +44,14 @@ void	ft_down(t_stream *stream)
 			stream->state = -2;
 			return ;
 		}
+		else
+			stream->command = NULL;
 		if (stream->command)
 			ft_winsize();
 		else
 		{
-			stream->pos = 0;
 			ft_prompt_reset(stream);
+			stream->pos = 0;
 		}
 	}
 }

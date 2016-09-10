@@ -26,8 +26,8 @@ void			ft_flushend(t_stream *stream)
 			ft_putstr ("   ");
 			stream->pos += 3;
 		}
-		ft_erase(stream);
 	}
+	ft_erase(stream);
 }
 
 void			ft_flush(t_stream *stream)

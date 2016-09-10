@@ -80,10 +80,10 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 		ft_putstr_fd("\nminishell: error while scanning command\n", 2);
 		return (NULL);
 	}
-	if (stream->command && config->history[config->hindex])
+	if (stream->command && stream->command[0])
 	{
+		config->history[config->hindex] = ft_strdup(stream->command);
 		ft_incr_history(&(config->hindex));
-		ft_freegiveone((void **)&(config->history[config->hindex]));
 	}
 	ft_putchar('\n');
 	return (stream->command);

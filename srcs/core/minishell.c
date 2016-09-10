@@ -16,7 +16,7 @@ void		ft_run_command(t_config *config, char *cmd)
 {
 	t_arguments	av;
 
-	if ((av.argv = ft_strsplit(ft_strdup(cmd), ' ')))
+	if ((av.argv = ft_strsplit(cmd, ' ')))
 		while (av.argv)
 		{
 			av.memo = ft_strtabdiv(av.argv, ";");
