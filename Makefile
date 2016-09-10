@@ -19,6 +19,7 @@ core/main.c \
 core/minishell.c \
 core/signal.c \
 history/history.c \
+history/history_backup.c \
 run_command/files.c \
 run_command/fork.c \
 scan_input/arrowlr.c \

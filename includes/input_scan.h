@@ -69,6 +69,8 @@ void			ft_down(t_stream *stream);
 void			ft_decr_history(int *hindex);
 void			ft_incr_history(int *hindex);
 void			ft_push_history(t_stream *stream, t_config *config);
+void			ft_load_history(t_config *config);
+void			ft_purge_history(t_config *config);
 /*
 **winsize.c
 */

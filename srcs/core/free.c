@@ -20,16 +20,6 @@ void	ft_shell_exit(t_config *config, char **argv)
 	exit(ft_status(0));
 }
 
-void	ft_free_history(char **history)
-{
-	int	i;
-
-	i = -1;
-	while (++i < HISTORY_SIZE)
-		if (history[i])
-			free(history[i]);
-}
-
 void	ft_freebin(void *data, size_t data_size)
 {
 	if (data_size)
@@ -47,6 +37,6 @@ void	ft_free_config(t_config *config)
 			ft_strtabfree(config->env);
 		if (config->bin)
 			ft_lstdel(&(config->bin), &ft_freebin);
-		ft_free_history(config->history);
+		ft_purge_history(config);
 	}
 }

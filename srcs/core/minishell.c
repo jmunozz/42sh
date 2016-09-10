@@ -39,6 +39,7 @@ void		ft_minishell(t_config *config)
 	char		*cmd;
 	t_stream	stream;
 
+	ft_load_history(config);
 	ft_save_stream(&stream);
 	while (1)
 		if ((cmd = ft_streamscan(config, &stream, 0)))

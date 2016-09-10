@@ -57,7 +57,6 @@ int				ft_ascii_cmp(t_bin *s1, t_bin *s2);
 /*
 **free.c
 */
-void			ft_free_history(char **history);
 void			ft_shell_exit(t_config *config, char **argv);
 void			ft_freebin(void *data, size_t data_size);
 void			ft_free_config(t_config *config);

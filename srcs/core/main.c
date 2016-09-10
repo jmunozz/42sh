@@ -14,10 +14,10 @@
 
 static int	ft_signal(void)
 {
-	if (SIG_ERR == signal(SIGINT, SIG_IGN))
-		return (ft_initerror());
-	if (SIG_ERR == signal(SIGTSTP, SIG_IGN))
-		return (ft_initerror());
+//	if (SIG_ERR == signal(SIGINT, SIG_IGN))
+//		return (ft_initerror());
+//	if (SIG_ERR == signal(SIGTSTP, SIG_IGN))
+//		return (ft_initerror());
 	return (0);
 }
 
