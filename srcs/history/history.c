@@ -44,7 +44,7 @@ void	ft_down(t_stream *stream)
 			stream->state = -2;
 			return ;
 		}
-		else
+		else if (stream->shindex == stream->config->hindex)
 			stream->command = NULL;
 		if (stream->command)
 			ft_winsize();
@@ -66,7 +66,7 @@ void	ft_decr_history(int *hindex)
 
 void	ft_incr_history(int *hindex)
 {
-	if (*hindex < HISTORY_SIZE - 1)
+	if (*hindex < HISTORY_SIZE)
 		(*hindex)++;
 	else
 		*hindex = 0;
