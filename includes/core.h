@@ -1,7 +1,7 @@
 #ifndef CORE_H
 # define CORE_H
 
-# define HISTORY_SIZE 2
+# define HISTORY_SIZE 10
 # define FT_PUTSTRFD ft_putstr_str_str_fd
 # define QUOTE_ERR "please end your quote before running command"
 # define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
