@@ -76,6 +76,22 @@ static int			ft_strcut(char *src, int c, int ret)
 	return (0);
 }
 
+int					ft_gnl_reset(t_line **begin)
+{
+	t_line			*kill;
+	t_line			*memo;
+
+	kill = (*begin)->next;
+	while (kill != *begin)
+	{
+		memo = kill->next;
+		ft_free_line(begin, kill);
+		kill = memo;
+	}
+	ft_free_line(begin, kill);
+	return (-1);
+}
+
 int					get_next_line(int const fd, char **line)
 {
 	static t_line	*begin = NULL;
@@ -85,7 +101,7 @@ int					get_next_line(int const fd, char **line)
 	test = -1;
 	if (fd < 0 || !line || read(fd, *line, 0) < 0
 		|| (test = ft_findread(&begin, begin, fd, FIND)) <= 0)
-		return ((fd < 0 ? -1 : test));
+		return ((fd < 0 ? ft_gnl_reset(&begin) : test));
 	*line = ft_memalloc(1);
 	while (*line && !(test = ft_strcut(DATA, '\n', RET))
 		&& (tmp = *line)

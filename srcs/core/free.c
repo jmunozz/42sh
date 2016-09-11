@@ -38,5 +38,7 @@ void	ft_free_config(t_config *config)
 		if (config->bin)
 			ft_lstdel(&(config->bin), &ft_freebin);
 		ft_purge_history(config);
+		if (config->hloc)
+			free(config->hloc);
 	}
 }
