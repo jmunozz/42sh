@@ -1,9 +1,15 @@
 #ifndef INPUT_SCAN_H
 # define INPUT_SCAN_H
 
+# define TUP "\x1b[A"
+# define TDO "\x1b[B"
+# define TLE "\x1b[D"
+# define TND "\x1b[C"
+# define TDL "\x1b[K"
+# define TCD "\x1b[J"
+
 typedef struct	s_stream
 {
-	char		*term;
 	char		*tput;
 	int			fd;
 	int			ret;
@@ -43,8 +49,8 @@ void			ft_ctrldown(t_stream *stream);
 /*
 **deletion.c
 */
-void			ft_clean_field(t_stream *stream);
 void			ft_erase(t_stream *stream);
+void			ft_clean_field(t_stream *stream);
 void			ft_sup(t_stream *stream);
 void			ft_del(t_stream *stream);
 /*

@@ -42,6 +42,7 @@ void	ft_fork_error(void)
 void	ft_term_error(t_config *config)
 {
 	ft_status(1);
-	ft_putstr_fd("minishell: unable to get working terminal\n", 2);
-	config->term_state = 1;
+	ft_putstr_fd("minishell: unable to get terminal, default ansi code will", 2);
+	ft_putstr_fd(" be use, be aware display problem may occur\n", 2);
+	config->term_state = 0;
 }

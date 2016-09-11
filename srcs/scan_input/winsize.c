@@ -20,14 +20,14 @@ void ft_prompt_reset(t_stream *stream)
 	if (stream->col)
 	{
 		i = (stream->config->prompt_len + stream->pos) / stream->col;
-		stream->tput = tgetstr("up", NULL);
+		stream->tput = "up";
 		while (i--)
 			ft_tputs(stream);
 		i = stream->col;
-		stream->tput = tgetstr("le", NULL);
+		stream->tput = "le";
 		while (i--)
 			ft_tputs(stream);
-		stream->tput = tgetstr("cd", NULL);
+		stream->tput = "cd";
 		ft_tputs(stream);
 	}
 	stream->col = col;

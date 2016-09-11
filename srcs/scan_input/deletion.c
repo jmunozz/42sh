@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+void	ft_erase(t_stream *stream)
+{
+	stream->tput = "dc";
+	ft_tputs(stream);
+}
+
 void	ft_clean_field(t_stream *stream)
 {
 	ft_goend(stream);
@@ -20,12 +26,6 @@ void	ft_clean_field(t_stream *stream)
 		ft_left(stream);
 		ft_erase(stream);
 	}
-}
-
-void	ft_erase(t_stream *stream)
-{
-	stream->tput = tgetstr("dc", NULL);
-	ft_tputs(stream);
 }
 
 void	ft_del(t_stream *stream)

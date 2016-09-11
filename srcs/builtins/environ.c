@@ -17,6 +17,7 @@ int		ft_default_env(t_config *config)
 	char	*d[3];
 	char	buf[256];
 
+	ft_free_config(config);
 	d[0] = "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
 	if (!(d[1] = getcwd(buf, 256)) || !(d[1] = ft_strjoin("PWD=", d[1])))
 		return false;

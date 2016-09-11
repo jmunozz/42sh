@@ -54,15 +54,27 @@ static void	ft_tricase(int ac, char **av, t_config *config)
 	ft_shell_exit(config, NULL);
 }
 
+static void	ft_termcaps_init(t_config *config)
+{
+	char		*i;
+
+	i = ft_strtabfindstart(config->env, "TERM=");
+	if (i && tgetent(NULL, i + 5))
+		config->term_state = 1;
+	else
+		ft_term_error(config);
+}
+
 int			main(int ac, char **av, char **env)
 {
 	t_config	config;
 
 	ft_bzero(&config, sizeof(t_config));
-	if ((env && env[0] && (!(config.env = ft_strtabdup(env))
-			|| !ft_pathtohash(&config)))
-			|| (!ft_default_env(&config) || !ft_pathtohash(&config)))
-		return (ft_initerror(&config));
+	if (!env || !env[0] || !(config.env = ft_strtabdup(env))
+		|| !ft_pathtohash(&config))
+		if (!ft_default_env(&config) || !ft_pathtohash(&config))
+			return (ft_initerror(&config));
+	ft_termcaps_init(&config);
 	ft_tricase(ac, av, &config);
 	return (0);
 }

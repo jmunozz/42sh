@@ -18,20 +18,20 @@ int			ft_underline_mess(char *mess, t_stream *stream)
 	size_t	j;
 
 	ft_goend(stream);
-	stream->tput = tgetstr("do", NULL);
+	stream->tput = "do";
 	ft_tputs(stream);
-	stream->tput = tgetstr("le", NULL);
+	stream->tput = "le";
 	i = (stream->pos + stream->config->prompt_len) % stream->col;
 	j = 0;
 	while (j++ < i)
 		ft_tputs(stream);
-	stream->tput = tgetstr("dl", NULL);
+	stream->tput = "dl";
 	ft_tputs(stream);
 	ft_putstr(mess);
 	j = ft_strlen(mess);
-	stream->tput = tgetstr("up", NULL);
+	stream->tput = "up";
 	ft_tputs(stream);
-	stream->tput = tgetstr((j > i ? "le" : "nd"), NULL);
+	stream->tput = (j > i ? "le" : "nd");
 	while (j != i)
 	{
 		ft_tputs(stream);

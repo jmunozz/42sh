@@ -23,7 +23,20 @@ int				ft_putcharint(int i)
 
 void			ft_tputs(t_stream *stream)
 {
-	tputs(stream->tput, stream->fd, &ft_putcharint);
+	if (stream->config->term_state)
+		tputs(tgetstr(stream->tput, NULL), stream->fd, &ft_putcharint);
+	else if (stream->tput[0] == 'u')
+		ft_putstr_fd(TUP, stream->fd);
+	else if (stream->tput[0] == 'l')
+		ft_putstr_fd(TLE, stream->fd);
+	else if (stream->tput[0] == 'n')
+		ft_putstr_fd(TND, stream->fd);
+	else if (stream->tput[0] == 'c')
+		ft_putstr_fd(TCD, stream->fd);
+	else if (stream->tput[0] == 'd' && stream->tput[1] == 'o')
+		ft_putstr_fd(TDO, stream->fd);
+	else
+		ft_putstr_fd(TDL, stream->fd);
 }
 
 void			ft_mvleft(t_stream *stream)
@@ -34,16 +47,16 @@ void			ft_mvleft(t_stream *stream)
 	{
 		if ((stream->config->prompt_len + stream->pos) % stream->col)
 		{
-			stream->tput = tgetstr("le", NULL);
+			stream->tput = "le";
 			ft_tputs(stream);
 		}
 		else
 		{
 			i = 0;
-			stream->tput = tgetstr("nd", NULL);
+			stream->tput = "nd";
 			while (++i <= stream->col)
 				ft_tputs(stream);
-			stream->tput = tgetstr("up", NULL);
+			stream->tput = "up";
 			ft_tputs(stream);
 		}
 		stream->pos--;
@@ -59,16 +72,16 @@ void			ft_mvright(t_stream *stream)
 		if (((stream->config->prompt_len + stream->pos) % stream->col)
 			!= stream->col - 1)
 		{
-			stream->tput = tgetstr("nd", NULL);
+			stream->tput = "nd";
 			ft_tputs(stream);
 		}
 		else
 		{
 			i = 0;
-			stream->tput = tgetstr("le", NULL);
+			stream->tput = "le";
 			while (++i <= stream->col - 1)
 				ft_tputs(stream);
-			stream->tput = tgetstr("do", NULL);
+			stream->tput = "do";
 			ft_tputs(stream);
 		}
 		stream->pos++;

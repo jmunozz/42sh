@@ -77,9 +77,6 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 	stream->fd = fd;
 	stream->config = config;
 	ft_termios_handle(config, 1);
-	if (!config->term_state && (!(stream->term = getenv("TERM"))
-		|| !tgetent(NULL, stream->term)))
-		ft_term_error(config);
 	ft_winsize();
 	ft_scan(stream);
 	ft_termios_handle(config, 0);
