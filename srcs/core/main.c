@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:44:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/31 14:43:21 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/11 21:37:45 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,15 @@ static int	ft_history_loc_init(t_config *config, char *av)
 int			main(int ac, char **av, char **env)
 {
 	t_config	config;
+	int			i;
 
 	ft_bzero(&config, sizeof(t_config));
 	if (!env || !env[0] || !(config.env = ft_strtabdup(env))
 		|| !ft_pathtohash(&config))
 		if (!ft_default_env(&config) || !ft_pathtohash(&config))
 			return (ft_initerror(&config));
+	if ((i = ft_strtabifindstart(env, "SHLVL")) != -1)
+		ft_setenv("SHLVL", ft_itoa(ft_atoi(env[i] + 6) + 1), &config);
 	if (ft_history_loc_init(&config, av[0]))
 		return (1);
 	ft_termcaps_init(&config);

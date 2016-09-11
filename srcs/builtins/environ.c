@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:35 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/11 14:43:52 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/11 21:35:14 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		ft_default_env(t_config *config)
 		ft_setenv("USER", passwd->pw_name, config);
 		ft_setenv("HOME", passwd->pw_dir, config);
 	}
+	ft_setenv("SHLVL", "1", config);
 	return true;
 }
 
