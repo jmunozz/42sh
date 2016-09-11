@@ -68,7 +68,8 @@ static void	ft_scan(t_stream *stream)
 			|| stream->state < 0)
 			break ;
 	}
-	ft_underline_mess(" ", stream);
+	if (stream->config->term_state)
+		ft_underline_mess(" ", stream);
 }
 
 char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
