@@ -30,6 +30,7 @@ typedef struct	s_config
 	t_termios	termios_backup;
 	int			term_state;
 	char		*history[HISTORY_SIZE + 1];
+	char		*hloc;
 	int			hindex;
 }				t_config;
 /*
@@ -70,6 +71,7 @@ void			ft_minishell(t_config *config);
 /*
 **signal.c
 */
+int				ft_signal(void);
 void			ft_signal_handle(int i);
 void			ft_sigwinch(void);
 

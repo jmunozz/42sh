@@ -1,2 +1,7 @@
 ls
 exit
+exit
+ls
+rm history.bck
+exit
+exit

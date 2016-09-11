@@ -12,15 +12,6 @@
 
 #include "minishell.h"
 
-static int	ft_signal(void)
-{
-//	if (SIG_ERR == signal(SIGINT, SIG_IGN))
-//		return (ft_initerror());
-//	if (SIG_ERR == signal(SIGTSTP, SIG_IGN))
-//		return (ft_initerror());
-	return (0);
-}
-
 static void	ft_manage_files(int ac, char **av, t_config *config)
 {
 	char		*cmd;
@@ -47,10 +38,9 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 
 static void	ft_tricase(int ac, char **av, t_config *config)
 {
-	if (ac > 1)
-		ft_manage_files(ac, av, config);
-	else if (!ft_signal())
+	if (ac == 1)
 		ft_minishell(config);
+	ft_manage_files(ac, av, config);
 	ft_shell_exit(config, NULL);
 }
 
@@ -65,6 +55,23 @@ static void	ft_termcaps_init(t_config *config)
 		ft_term_error(config);
 }
 
+static int	ft_history_loc_init(t_config *config, char *av)
+{
+	char		*c;
+
+	if (!(c = ft_strtabfindstart(config->env, "PWD"))
+		|| !(c = ft_strslashjoin(c + 4, av)))
+		return (ft_initerror(config));
+	if (!(config->hloc = ft_strrchr(c, '/')))
+		return (ft_initerror(config));
+	config->hloc[0] = '\0';
+	if (!(config->hloc = ft_strslashjoin(c, "history.bck"))
+		&& ft_freegiveone((void**)&c))
+		return (ft_initerror(config));
+	ft_freegiveone((void**)&c);
+	return (0);
+}
+
 int			main(int ac, char **av, char **env)
 {
 	t_config	config;
@@ -74,6 +81,8 @@ int			main(int ac, char **av, char **env)
 		|| !ft_pathtohash(&config))
 		if (!ft_default_env(&config) || !ft_pathtohash(&config))
 			return (ft_initerror(&config));
+	if (ft_history_loc_init(&config, av[0]))
+		return (1);
 	ft_termcaps_init(&config);
 	ft_tricase(ac, av, &config);
 	return (0);

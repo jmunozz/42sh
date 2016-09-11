@@ -17,7 +17,7 @@ void		ft_purge_history(t_config *config)
 	int		i;
 	int		fd;
 
-	if ((fd = open("history.bck", O_CREAT | O_WRONLY
+	if ((fd = open(config->hloc, O_CREAT | O_WRONLY
 		| O_TRUNC, S_IRUSR | S_IWUSR)) < 0)
 		FT_PUTSTRFD("minishell: wasn't abble to save history", " ", "\n", 2);
 	else
@@ -40,7 +40,7 @@ void		ft_load_history(t_config *config)
 {
 	int		fd;
 
-	if ((fd = open("history.bck", O_RDONLY)) < 0)
+	if ((fd = open(config->hloc, O_RDONLY)) < 0)
 		FT_PUTSTRFD("minishell: wasn't abble to load history", " ", "\n", 2);
 	else
 	{
