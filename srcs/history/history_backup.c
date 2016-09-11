@@ -32,6 +32,7 @@ void		ft_purge_history(t_config *config)
 			if (config->history[i])
 				write(fd, "\n", 1);
 		}
+		write(fd, "\0", 1);
 		close(fd);
 	}
 }
