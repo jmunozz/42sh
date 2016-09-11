@@ -6,55 +6,11 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:16 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/09 08:12:53 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/11 21:04:14 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_up(t_stream *stream)
-{
-	ft_decr_history(&(stream->shindex));
-	if (stream->shindex != stream->config->hindex
-		&& stream->config->history[stream->shindex])
-	{
-		if (stream->config->history[stream->shindex] && !(stream->command
-			= ft_strdup(stream->config->history[stream->shindex])))
-		{
-			stream->state = -2;
-			return ;
-		}
-		if (stream->command)
-			ft_winsize();
-		else
-			ft_prompt_reset(stream);
-	}
-	else
-		ft_incr_history(&(stream->shindex));
-}
-
-void	ft_down(t_stream *stream)
-{
-	if (stream->shindex != stream->config->hindex)
-	{
-		ft_incr_history(&(stream->shindex));
-		if (stream->config->history[stream->shindex] && !(stream->command
-			= ft_strdup(stream->config->history[stream->shindex])))
-		{
-			stream->state = -2;
-			return ;
-		}
-		else if (stream->shindex == stream->config->hindex)
-			stream->command = NULL;
-		if (stream->command)
-			ft_winsize();
-		else
-		{
-			ft_prompt_reset(stream);
-			stream->pos = 0;
-		}
-	}
-}
 
 void	ft_decr_history(int *hindex)
 {

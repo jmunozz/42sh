@@ -19,6 +19,8 @@ core/main.c \
 core/minishell.c \
 core/signal.c \
 history/history.c \
+history/history_search_up.c \
+history/history_search_down.c \
 history/history_backup.c \
 run_command/files.c \
 run_command/fork.c \
