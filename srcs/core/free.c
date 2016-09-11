@@ -37,7 +37,8 @@ void	ft_free_config(t_config *config)
 			ft_strtabfree(config->env);
 		if (config->bin)
 			ft_lstdel(&(config->bin), &ft_freebin);
-		ft_purge_history(config);
+		if (config->hloc)
+			ft_purge_history(config);
 		if (config->hloc)
 			free(config->hloc);
 		get_next_line(-1, NULL);
