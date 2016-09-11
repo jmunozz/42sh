@@ -10,6 +10,7 @@
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
+typedef struct passwd	t_passwd;
 typedef struct	s_bin
 {
 	char		*name;

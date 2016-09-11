@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:23:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/05/11 14:58:14 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/11 14:42:35 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <termios.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <pwd.h>
 # include "libft.h"
 # include "core.h"
 # include "input_scan.h"

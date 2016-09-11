@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:35 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 18:29:40 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/11 14:43:52 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int		ft_default_env(t_config *config)
 {
-	char	*d[3];
-	char	buf[256];
+	char		*d[3];
+	char		buf[256];
+	t_passwd	*passwd;
 
 	ft_free_config(config);
 	d[0] = "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
@@ -25,6 +26,11 @@ int		ft_default_env(t_config *config)
 	if (!(config->env = ft_strtabdup(d)) && ft_freegiveone((void **)&(d[1])))
 		return false;
 	ft_freegiveone((void **)&(d[1]));
+	if ((passwd = getpwuid(getuid())))
+	{
+		ft_setenv("USER", passwd->pw_name, config);
+		ft_setenv("HOME", passwd->pw_dir, config);
+	}
 	return true;
 }
 
