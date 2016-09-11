@@ -12,30 +12,40 @@
 
 #include "minishell.h"
 
-static int	ft_termios_handle(t_config *config, int mode)
+static int	ft_init_term(t_config *config)
 {
-	t_termios		minishell;
-	static char		state = 'n';
+	if (tcgetattr(STDIN_FILENO, &(config->termios_backup)) == -1
+		|| !ft_memcpy(&(config->termios), &(config->termios_backup),
+		sizeof(t_termios)))
+	{
+		ft_putstr_fd(SHELL_NAME, 2);
+		ft_putstr_fd("fail to set terminal, problems may occur\n", 2);
+		return false;
+	}
+	config->termios.c_lflag &= ~(ICANON | ECHO);
+	config->termios.c_cc[VMIN] = 1;
+	config->termios.c_cc[VTIME] = 0;
+	return true;
+}
 
-	if (mode && state == 'n')
+static void		ft_termios_handle(t_config *config, int mode)
+{
+	static char		state = 0;
+
+	if (!state && ft_init_term(config))
+		state = 1;
+	if (mode && state)
 	{
-		if (tcgetattr(STDIN_FILENO, &(config->termios_backup)) == -1
-			|| !ft_memcpy(&minishell, &(config->termios_backup),
-			sizeof(t_termios)))
-			return (1);
-		minishell.c_lflag &= ~(ICANON | ECHO);
-		minishell.c_cc[VMIN] = 1;
-		minishell.c_cc[VTIME] = 0;
-		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &minishell) == -1)
-			return (1);
-		state = 'y';
+		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &(config->termios)) == -1)
+		{
+			ft_putstr_fd(SHELL_NAME, 2);
+			ft_putstr_fd("fail to set terminal, problems may occur\n", 2);
+			return ;
+		}
 	}
-	else if (state == 'y')
-	{
+	else if (!mode && state)
 		tcsetattr(STDIN_FILENO, TCSANOW, &(config->termios_backup));
-		state = 'n';
-	}
-	return (1);
+	return ;
 }
 
 static int	ft_try_again(t_stream *stream)

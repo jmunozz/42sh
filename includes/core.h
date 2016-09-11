@@ -1,6 +1,7 @@
 #ifndef CORE_H
 # define CORE_H
 
+# define SHELL_NAME "21sh"
 # define HISTORY_SIZE 10
 # define FT_PUTSTRFD ft_putstr_str_str_fd
 # define QUOTE_ERR "please end your quote before running command"
@@ -34,6 +35,7 @@ typedef struct	s_config
 /*
 **builtin.c && environ.c
 */
+int				ft_default_env(t_config *config);
 int				ft_builtin(char **argv, t_config *config);
 void			ft_cd(char **argv, t_config *config);
 void			ft_env(char **argv, t_config *config);
@@ -43,7 +45,7 @@ void			ft_unsetenv(char **argv, t_config *config);
 /*
 **error.c
 */
-int				ft_initerror(void);
+int				ft_initerror(t_config *config);
 int				ft_malloc_error(char const *path);
 void			ft_lexer_error(char *command);
 void			ft_fork_error(void);

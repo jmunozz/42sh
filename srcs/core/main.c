@@ -59,12 +59,10 @@ int			main(int ac, char **av, char **env)
 	t_config	config;
 
 	ft_bzero(&config, sizeof(t_config));
-	if (!(config.env = ft_strtabdup(env))
-			|| !ft_pathtohash(&config))
-	{
-		ft_free_config(&config);
-		return (ft_initerror());
-	}
+	if ((env && env[0] && (!(config.env = ft_strtabdup(env))
+			|| !ft_pathtohash(&config)))
+			|| (!ft_default_env(&config) || !ft_pathtohash(&config)))
+		return (ft_initerror(&config));
 	ft_tricase(ac, av, &config);
 	return (0);
 }

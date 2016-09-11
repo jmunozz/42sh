@@ -12,8 +12,9 @@
 
 #include "minishell.h"
 
-int		ft_initerror(void)
+int		ft_initerror(t_config *config)
 {
+	ft_free_config(config);
 	ft_putstr_fd("minishell: init error\n", 2);
 	return (1);
 }
