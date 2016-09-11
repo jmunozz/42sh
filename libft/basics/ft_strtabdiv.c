@@ -22,7 +22,7 @@ char	**ft_strtabdiv(char **tab, char *needle)
 	i = -1;
 	div = tab;
 	while (div[++i])
-		if (!strcmp(div[i], needle))
+		if (!ft_strcmp(div[i], needle))
 			break ;
 	if (!div[i])
 		return (NULL);
