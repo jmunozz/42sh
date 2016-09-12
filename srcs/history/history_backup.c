@@ -48,7 +48,6 @@ void		ft_load_history(t_config *config)
 		while (get_next_line(fd, &(config->history[config->hindex])) > 0)
 			if (config->history[config->hindex][0])
 				ft_incr_history(&(config->hindex));
-		//ft_incr_history(&(config->hindex));
 		close(fd);
 	}
 }

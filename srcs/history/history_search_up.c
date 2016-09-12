@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/11 20:15:54 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/12 10:12:54 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/12 18:05:35 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ void	ft_up(t_stream *stream)
 			stream->state = -2;
 			return ;
 		}
-		if (stream->command)
-			ft_winsize();
-		else
-			ft_prompt_reset(stream);
+		ft_winsize();
 	}
 	else
 		ft_down(stream);
