@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/11 20:12:13 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/12 09:24:50 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,6 @@ static void		ft_append(t_stream *stream)
 		ft_strncpy(stream->command, kill, pos);
 		ft_strcpy(stream->command + pos, stream->buf);
 		ft_strcpy(stream->command + pos + len, kill + pos);
-		if (!(stream->command_buf = ft_strnew(ft_strlen(stream->command_buf) + len))
-			&& (stream->state = -2))
-			return ;
-		ft_strncpy(stream->command_buf, kill, pos);
-		ft_strcpy(stream->command_buf + pos, stream->buf);
-		ft_strcpy(stream->command_buf + pos + len, kill + pos);
 	}
 	else if (!(stream->command = ft_strdup(stream->buf)))
 		stream->state = -2;

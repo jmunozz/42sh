@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:16 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/11 21:04:14 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/12 09:52:22 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_push_history(t_stream *stream, t_config *config)
 	if (stream->command && stream->command[0])
 	{
 		ft_freegiveone((void **)&(config->history[config->hindex]));
-		config->history[config->hindex] = stream->command;
+		if (!(config->history[config->hindex] = ft_strdup(stream->command)))
+			stream->state = -2;
 	}
 }

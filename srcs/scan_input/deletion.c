@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/05/11 14:27:18 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/12 10:18:58 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	ft_del(t_stream *stream)
 		while (stream->command[++pos])
 			stream->command[pos] = stream->command[pos + 1];
 		ft_flush(stream);
+		ft_push_history(stream, stream->config);
 	}
 }
 
@@ -54,5 +55,6 @@ void	ft_sup(t_stream *stream)
 		while (stream->command[pos + ++i])
 			stream->command[pos + i] = stream->command[pos + i + 1];
 		ft_flush(stream);
+		ft_push_history(stream, stream->config);
 	}
 }

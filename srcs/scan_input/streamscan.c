@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/09 08:34:00 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/12 09:57:57 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,10 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 		ft_putstr_fd("\nminishell: error while scanning command\n", 2);
 		return (NULL);
 	}
-	if (stream->command && stream->command[0])
+	if (stream->command && stream->command[0]
+		&& stream->shindex == config->hindex)
 	{
-		config->history[config->hindex] = ft_strdup(stream->command);
+		ft_push_history(stream, config);
 		ft_incr_history(&(config->hindex));
 	}
 	ft_putchar('\n');

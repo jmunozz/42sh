@@ -18,7 +18,6 @@ typedef struct	s_stream
 	char		buf[9];
 	char		*command;
 	char		*kill;
-	char		*command_buf;
 	size_t		pos;
 	size_t		col;
 	t_config	*config;
