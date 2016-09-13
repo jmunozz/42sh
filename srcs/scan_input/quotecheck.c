@@ -6,104 +6,85 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:28:55 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/13 12:34:25 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/13 17:02:43 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			ft_underline_mess(char *mess, t_stream *stream)
+static char	*ft_backslash(char **str)
 {
-	size_t	i;
-	size_t	j;
-
-	ft_goend(stream);
-	stream->tput = "do";
-	ft_tputs(stream);
-	stream->tput = "le";
-	i = (stream->pos + stream->config->prompt_len) % stream->col;
-	j = 0;
-	while (j++ < i)
-		ft_tputs(stream);
-	stream->tput = "dl";
-	ft_tputs(stream);
-	ft_putstr(mess);
-	j = ft_strlen(mess);
-	stream->tput = "up";
-	ft_tputs(stream);
-	stream->tput = (j > i ? "le" : "nd");
-	while (j != i)
-	{
-		ft_tputs(stream);
-		(j > i ? --j : ++j);
-	}
-	return (0);
-}
-
-static char	*ft_gonext(char *str, char c)
-{
-	while (*str)
-	{
-		if (*str == c)
-			return (str);
-		if (*str == '\\')
-			++str;
-		++str;
-	}
+	if (**str == '\\')
+		++(*str);
+	if (**str)
+		++(*str);
+	else
+		return (BACK_ERR);
 	return (NULL);
 }
 
-static int	ft_par(char c)
+static char	*ft_gonext(char **str, char c)
 {
-	static int	cro = 0;
-	static int	par = 0;
-	static int	acc = 0;
-	static int	bqu = 0;
-	int			ret;
+	char		*test;
 
-	ret = 0;
-	if (!c)
+	++(*str);
+	if ((test = ft_matchchr(str)))
 	{
-		if (cro | par | acc | bqu)
-			++ret;
-		cro = 0;
-		acc = 0;
-		par = 0;
-		bqu = 0;
+		if (**str == c)
+			return (NULL);
+		else
+			return (test);
 	}
-	else if (c == '[' || c == ']')
-		cro += (c == '[' ? 1 : -1);
-	else if (c == '(' || c == ')')
-		par += (c == '(' ? 1 : -1);
-	else if (c == '{' || c == '}')
-		acc += (c == '{' ? 1 : -1);
-	else if (c == '`')
-		bqu ^= 1;
-	return (ret);
+	else
+		return (PAR_ERR);
+}
+
+static char	*ft_gonextquote(char **str, char c)
+{
+	while (**str && **str != c)
+		if (ft_backslash(&str))
+			return (BACK_ERR);
+	if (**str != c)
+		return (QUOTE_ERR);
+	++str;
+	return (NULL);
+}
+
+static char	*ft_matchchr(char **str)
+{
+	static char	needle[] = "]})";
+
+	while (**str)
+	{
+		if (ft_strchr(needle, **str))
+			return (PAR_ERR);
+		if (**str == '(')
+			return (gonext(str, ')'));
+		if (**str == '[')
+			return (gonext(str, ']'));
+		if (**str == '{')
+			return (gonext(str, '}'));
+		if (**str == '`')
+			return (gonext(str, '`'));
+		if (**str == '#')
+			break ;
+		if (**str == '\'' && ft_gonextquote(&(++(*str)), *((*str) - 1)))
+			return (QUOTE_ERR) ;
+		if (**str == '\"' && ft_gonextquote(&(++(*str)), *((*str) - 1)))
+			return (QUOTE_ERR) ;
+		if (ft_backslash(str))
+			return (BACK_ERR)
+	}
+	**str = 0;
+	return (NULL);
 }
 
 int			ft_quotecheck(t_stream *stream)
 {
-	char	*c;
+	char		*test;
 
-	ft_par(0);
-	c = stream->command;
-	while (*c)
-	{
-		ft_par(*c);
-		if ((*c == '\"' || *c == '\'') && !(c = ft_gonext(c + 1, *c)))
-			return (ft_underline_mess(QUOTE_ERR, stream));
-		if (*c == '\\' && !*(c + 1))
-			return (ft_underline_mess(BACK_ERR, stream));
-		if (*c == '#' && !ft_par(0))
-			return (1);
-		if (*c == '#')
-			return (ft_underline_mess(PAR_ERR, stream));
-		if (*c == '\\')
-			++c;
-		++c;
-	}
-	if (ft_par(0))
-		return (ft_underline_mess(PAR_ERR, stream));
+	test = stream->command;
+	if ((test = ft_matchchr(&test)))
+		return (ft_underline_mess(test, stream))
 	return (1);
 }
