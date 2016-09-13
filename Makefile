@@ -6,7 +6,7 @@
 #    By: tboos <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/09/12 17:44:49 by tboos             #+#    #+#              #
-#    Updated: 2016/09/12 17:45:04 by tboos            ###   ########.fr        #
+#    Updated: 2016/09/13 12:33:43 by rbaran           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,8 @@ history/history.c \
 history/history_search_up.c \
 history/history_search_down.c \
 history/history_backup.c \
+history/scanchr.c \
+history/searchengine.c \
 run_command/files.c \
 run_command/fork.c \
 scan_input/arrowlr.c \
