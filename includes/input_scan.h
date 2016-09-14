@@ -28,7 +28,14 @@ typedef struct	s_stream
 **streamscan.c
 */
 char			*ft_streamscan(t_config *config, t_stream *stream, int fd);
+/*
+**underlinemess.c
+*/
 int				ft_underline_mess(char *mess, t_stream *stream);
+/*
+**quotecheck.c
+*/
+char			*ft_matchchr(char **str);
 int				ft_quotecheck(t_stream *stream);
 /*
 **termcaps.c

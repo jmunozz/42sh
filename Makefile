@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: tboos <marvin@42.fr>                       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2016/09/12 17:44:49 by tboos             #+#    #+#              #
-#    Updated: 2016/09/13 16:25:25 by rbaran           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 .PHONY: fclean re
 .SUFFIXES:
 NAME = 21sh
@@ -31,12 +19,11 @@ core/main.c \
 core/minishell.c \
 core/signal.c \
 history/history.c \
-history/history_search_up.c \
-history/history_search_down.c \
 history/history_backup.c \
+history/history_search_down.c \
+history/history_search_up.c \
 history/scanchr.c \
 history/searchengine.c \
-history/scanchr.c \
 history/sprompt.c \
 run_command/files.c \
 run_command/fork.c \
@@ -49,6 +36,7 @@ scan_input/prompt.c \
 scan_input/quotecheck.c \
 scan_input/streamscan.c \
 scan_input/termcaps.c \
+scan_input/underline_mess.c \
 scan_input/winsize.c \
 
 ifeq ($(OS), Linux)

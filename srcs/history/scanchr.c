@@ -14,10 +14,8 @@
 
 void		ft_sappend(t_stream *stream)
 {
-	size_t				len;
 	char				*kill;
 
-	len = ft_strlen(stream->buf);
 	if ((kill = stream->search))
 	{
 		stream->search = ft_strjoin(stream->search, stream->buf);

@@ -25,6 +25,7 @@
 # define CRIG 0x43353B315B1B //CTRL up
 # define CUPP 0x41353B315B1B //CTRL right
 # define CDOW 0x42353B315B1B //CTRL down
+# define CRS 0xAEC2 //ALT r
 # define END 0x464F1B //end
 # define HOM 0x484F1B //home
 # define NUL 0x00 //\0

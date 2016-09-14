@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char		*ft_searchinhistory(t_stream *stream)
+void		ft_searchinhistory(t_stream *stream)
 {
 	char	*com;
 	size_t	len;
