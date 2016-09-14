@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:28:14 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/28 16:28:23 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/14 12:30:25 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	*ft_memchr(const void *s, int c, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strstr(const char *haystack, const char *needle);
+int		ft_strstri(const char *haystack, const char *needle);
 char	*ft_strnstr(const char *s1, const char *s2, size_t n);
 char	*ft_strtabfind(char **mtab, char *needle);
 int		ft_strtabifind(char **mtab, char *needle);

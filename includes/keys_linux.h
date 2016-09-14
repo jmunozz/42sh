@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:51:46 by tboos             #+#    #+#             */
-/*   Updated: 2016/05/11 14:52:52 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/14 10:26:53 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define CRIG 0x43353B315B1B //CTRL up
 # define CUPP 0x41353B315B1B //CTRL right
 # define CDOW 0x42353B315B1B //CTRL down
-# define CRS 0xAEC2 //ALT r
+# define CRS 0x12 //CTRL R
 # define END 0x464F1B //end
 # define HOM 0x484F1B //home
 # define NUL 0x00 //\0

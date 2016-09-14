@@ -90,6 +90,8 @@ void			ft_searchengine(t_stream *stream);
 void			ft_sappend(t_stream *stream);
 void			ft_sdel(t_stream *stream);
 void			ft_sprompt(t_stream *stream);
+void			ft_searchinhistory(t_stream *stream);
+void			ft_flushsearch(t_stream *stream);
 /*
 **winsize.c
 */

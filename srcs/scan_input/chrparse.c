@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/13 15:39:27 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/14 12:32:30 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void			ft_flushend(t_stream *stream)
 {
 	size_t		size;
 
-	if (stream->command && stream->command[0])
+	if (stream->search && stream->search[0])
+		ft_flushsearch(stream);
+	else if (stream->command && stream->command[0])
 	{
 		size = ft_strlen(stream->command + stream->pos);
 		ft_putstr(stream->command + stream->pos);
