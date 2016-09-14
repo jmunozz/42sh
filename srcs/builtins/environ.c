@@ -14,18 +14,12 @@
 
 int		ft_default_env(t_config *config)
 {
-	char		*d[3];
-	char		buf[256];
 	t_passwd	*passwd;
 
 	ft_free_config(config);
-	d[0] = "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
-	if (!(d[1] = getcwd(buf, 256)) || !(d[1] = ft_strjoin("PWD=", d[1])))
+	if (!(config->env = (char **)ft_memalloc(sizeof(char*))))
 		return false;
-	d[2] = NULL;
-	if (!(config->env = ft_strtabdup(d)) && ft_freegiveone((void **)&(d[1])))
-		return false;
-	ft_freegiveone((void **)&(d[1]));
+	ft_setenv("PATH", DPATH, config);
 	if ((passwd = getpwuid(getuid())))
 	{
 		ft_setenv("USER", passwd->pw_name, config);
@@ -82,20 +76,12 @@ void	ft_readysetenv(char **argv, t_config *config)
 {
 	int		i;
 	char	*t;
-	char	*p;
 
 	i = 0;
 	while (argv[++i])
 	{
 		if ((t = ft_strchr(argv[i], '=')))
-		{
 			*t = '\0';
-			p = argv[i] - 1;
-			while (*(++p))
-				*p = ft_toupper(*p);
-			while (*(++p))
-				*p = ft_tolower(*p);
-		}
 		ft_setenv(argv[i], t + 1, config);
 	}
 }

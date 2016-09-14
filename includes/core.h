@@ -7,6 +7,7 @@
 # define QUOTE_ERR "please end your quote before running command"
 # define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
 # define BACK_ERR "missing character after backslash"
+# define DPATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
@@ -24,6 +25,8 @@ typedef struct	s_arguments
 typedef struct	s_config
 {
 	char		**env;
+	char		*pwd;
+	char		*pwd_subrep;
 	size_t		prompt_len;
 	t_list		*bin;
 	t_list		*h_bin[34];
@@ -33,12 +36,14 @@ typedef struct	s_config
 	char		*history[HISTORY_SIZE + 1];
 	char		*hloc;
 	int			hindex;
+	int			last_state;
 }				t_config;
 /*
 **builtin.c && environ.c
 */
 int				ft_default_env(t_config *config);
 int				ft_builtin(char **argv, t_config *config);
+void			ft_update_pwd(t_config *config);
 void			ft_cd(char **argv, t_config *config);
 void			ft_env(char **argv, t_config *config);
 void			ft_setenv(char *name, char *value, t_config *config);
