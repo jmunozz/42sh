@@ -55,6 +55,8 @@ void	ft_setenv(char *name, char *value, t_config *config)
 				name, "\n", 2);
 	else if (f && config->env && f != config->env)
 		free(f);
+	if (!ft_strcmp("PATH", name))
+		ft_pathtohash(config);
 }
 
 void	ft_env(char **argv, t_config *config)
@@ -92,5 +94,9 @@ void	ft_unsetenv(char **argv, t_config *config)
 
 	i = 0;
 	while (argv[++i])
+	{
 		ft_strncmptabdel(config->env, argv[i]);
+		if (!ft_strncmp("PATH", argv[i], 4) && strlen(argv[i]) == 4)
+			ft_pathtohash(config);
+	}
 }
