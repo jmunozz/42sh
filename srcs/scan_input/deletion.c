@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/12 10:18:58 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/13 16:08:46 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ void	ft_del(t_stream *stream)
 {
 	size_t	pos;
 
-	if (stream->command && stream->pos)
+	if (stream->search)
+		ft_sdel(stream);
+	else if (stream->command && stream->pos)
 	{
 		ft_mvleft(stream);
 		pos = stream->pos - 1;

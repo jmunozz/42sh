@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/13 12:07:06 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/13 15:39:27 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int				ft_chrparse(t_stream *stream)
 	if (!(match = ft_chrmatch(stream)))
 		return (0);
 	if (match == -1)
-		ft_append(stream);
+		stream->search ? ft_sappend(stream) : ft_append(stream);
 	else if (match > 0)
 		(*ftab[match - 1])(stream);
 	return (1);
