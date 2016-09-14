@@ -81,6 +81,7 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 	ft_termios_handle(config, 1);
 	ft_winsize();
 	ft_scan(stream);
+	ft_sigwinch(0);
 	ft_termios_handle(config, 0);
 	if (stream->state < 0)
 	{

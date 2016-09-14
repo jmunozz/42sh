@@ -79,6 +79,7 @@ void			ft_minishell(t_config *config);
 */
 int				ft_signal(void);
 void			ft_signal_handle(int i);
-void			ft_sigwinch(void);
+void			ft_signal_reset(void);
+void			ft_sigwinch(int mode);
 
 #endif
