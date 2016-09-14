@@ -59,10 +59,9 @@ static int	ft_history_loc_init(t_config *config, char *av)
 {
 	char		*c;
 
-	if (!(c = ft_strtabfindstart(config->env, "PWD"))
-		|| !(c = ft_strslashjoin(c + 4, av)))
+	if (!config->pwd || !(c = ft_strslashjoin(config->pwd, av)))
 		return (ft_initerror(config));
-	if (!(config->hloc = ft_strrchr(c, '/')))
+	if (!(config->hloc = ft_strrchr(c, '/')) && ft_freegiveone((void**)&c))
 		return (ft_initerror(config));
 	config->hloc[0] = '\0';
 	if (!(config->hloc = ft_strslashjoin(c, "history.bck"))
@@ -82,6 +81,7 @@ int			main(int ac, char **av, char **env)
 		|| !ft_pathtohash(&config))
 		if (!ft_default_env(&config) || !ft_pathtohash(&config))
 			return (ft_initerror(&config));
+	ft_update_pwd(&config);
 	if ((i = ft_strtabifindstart(env, "SHLVL")) != -1)
 		ft_setenv("SHLVL", ft_itoa(ft_atoi(env[i] + 6) + 1), &config);
 	if (ft_history_loc_init(&config, av[0]))

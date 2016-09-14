@@ -10,6 +10,7 @@ HEAD = -I libft/includes -I includes
 OS = $(shell uname -s)
 SRC = \
 builtins/builtin.c \
+builtins/cd.c \
 builtins/environ.c \
 core/cmp.c \
 core/errors.c \

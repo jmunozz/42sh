@@ -23,9 +23,7 @@ void		ft_fewef(char *command, char **argv, char **env)
 		ft_fork_error();
 	else if (father == 0)
 	{
-		if (SIG_ERR == signal(SIGINT, SIG_IGN)
-			|| SIG_ERR == signal(SIGTSTP, SIG_IGN))
-			ft_putstr_fd("WARNING : won't be able to send signal\n", 2);
+		ft_signal_reset();
 		execve(command, argv, env);
 	}
 	while (father != 0)

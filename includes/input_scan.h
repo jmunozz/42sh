@@ -96,7 +96,6 @@ void			ft_flushsearch(t_stream *stream);
 **winsize.c
 */
 t_stream		*ft_save_stream(t_stream *stream);
-void			ft_sigwinch(void);
 void			ft_winsize(void);
 void			ft_prompt_reset(t_stream *stream);
 

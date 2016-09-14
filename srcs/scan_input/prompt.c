@@ -12,32 +12,12 @@
 
 #include "minishell.h"
 
-void	ft_goprompt(t_config *config, char *loc)
+void		ft_prompt(t_config *config)
 {
-	ft_putstr("\x1b[34m-> \x1b[1;32m");
-	ft_putstr(loc);
-	ft_putstr(" : \x1b[0m");
-	config->prompt_len = ft_strlen(loc) + 6;
-}
-
-void	ft_prompt(t_config *config)
-{
-	char	*pwd;
-	char	*subrep;
-	char	buf[256];
-
-	if (!(pwd = ft_strtabfindstart(config->env, "PWD")))
-	{
-		if (!getcwd(buf, 256) || !(pwd = ft_strjoin("PWD=", buf)))
-		{
-			ft_putstr_fd("minishell: prompt error: path to long\n", 2);
-			ft_goprompt(config, "prompting");
-			return ;
-		}
-		ft_setenv("PWD", pwd + 4, config);
-	}
-	if ((subrep = ft_strrchr(pwd, '/')) && *(subrep + 1))
-		ft_goprompt(config, subrep + 1);
+	if (!config->last_state)
+		ft_putstr("\x1b[34m-> \x1b[1;32m");
 	else
-		ft_goprompt(config, pwd + 4);
+		ft_putstr("\x1b[31m-> \x1b[1;32m");
+	ft_putstr(config->pwd_subrep);
+	ft_putstr(" : \x1b[0m");
 }

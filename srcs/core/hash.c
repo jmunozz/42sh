@@ -17,14 +17,17 @@ char		*ft_return_binpath(t_config *config, char *name)
 	t_list	*archer;
 	int		i;
 
-	i = (name[0] < 'a' ? 0 : name[0] - 'a' + 1);
-	i = (i > 33 ? 33 : i);
-	archer = config->h_bin[i];
-	while (archer && (((t_bin *)archer->data)->name[0] - 'a') < i
-			&& ft_strcmp(name, ((t_bin *)archer->data)->name))
-		archer = archer->next;
-	if (archer && !(ft_strcmp(name, ((t_bin *)archer->data)->name)))
-		return (((t_bin *)archer->data)->path_name);
+	if (config->bin)
+	{
+		i = (name[0] < 'a' ? 0 : name[0] - 'a' + 1);
+		i = (i > 33 ? 33 : i);
+		archer = config->h_bin[i];
+		while (archer && (((t_bin *)archer->data)->name[0] - 'a') < i
+				&& ft_strcmp(name, ((t_bin *)archer->data)->name))
+			archer = archer->next;
+		if (archer && !(ft_strcmp(name, ((t_bin *)archer->data)->name)))
+			return (((t_bin *)archer->data)->path_name);
+	}
 	return (NULL);
 }
 
@@ -77,8 +80,8 @@ static int	ft_create_list_bin(char *path, t_config *config)
 	char	*kill;
 	DIR		*dir;
 
-	if (!path || !(path = ft_strchr(path, '=')) || !*(++path)
-			|| !(path = ft_strdup(path)))
+	if (!(path = ft_strchr(path, '=')) || !*(++path)
+		|| !(path = ft_strdup(path)))
 		return (0);
 	kill = path;
 	while ((dirpath = path))
@@ -100,9 +103,13 @@ int			ft_pathtohash(t_config *config)
 {
 	char	*path;
 
-	if (!(path = ft_strtabfindstart(config->env, "PATH="))
-			|| !(ft_create_list_bin(path, config)))
-		return (0);
-	ft_hash_bin(config);
+	if (config->bin)
+		ft_lstdel(&(config->bin), &ft_freebin);
+	if ((path = ft_strtabfindstart(config->env, "PATH=")))
+	{
+		if (!(ft_create_list_bin(path, config)))
+			return (0);
+		ft_hash_bin(config);
+	}
 	return (1);
 }

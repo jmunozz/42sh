@@ -45,5 +45,5 @@ void		ft_winsize(void)
 		stream->pos = 0;
 		ft_flushend(stream);
 	}
-	ft_sigwinch();
+	ft_sigwinch(1);
 }
