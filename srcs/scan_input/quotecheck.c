@@ -47,7 +47,6 @@ static char	*ft_gonextquote(char **str, char c)
 			return (BACK_ERR);
 	if (**str != c)
 		return (QUOTE_ERR);
-	++(*str);
 	return (NULL);
 }
 
@@ -59,14 +58,14 @@ char		*ft_matchchr(char **str)
 	{
 		if (ft_strchr(needle, **str))
 			return (PAR_ERR);
-		if (**str == '(')
-			return (ft_gonext(str, ')'));
-		if (**str == '[')
-			return (ft_gonext(str, ']'));
-		if (**str == '{')
-			return (ft_gonext(str, '}'));
-		if (**str == '`')
-			return (ft_gonext(str, '`'));
+		if (**str == '(' && ft_gonext(str, ')'))
+			return (QUOTE_ERR);
+		if (**str == '[' && ft_gonext(str, ']'))
+			return (QUOTE_ERR);
+		if (**str == '{' && ft_gonext(str, '}'))
+			return (QUOTE_ERR);
+		if (**str == '`' && ft_gonext(str, '`'))
+			return (QUOTE_ERR);
 		if (**str == '#')
 			break ;
 		if (**str == '\'' && ft_gonextquote(str, **str))
