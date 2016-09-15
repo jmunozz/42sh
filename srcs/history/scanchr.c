@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/13 12:20:30 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/14 12:18:44 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/15 10:50:53 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ void		ft_sappend(t_stream *stream)
 	{
 		ft_gohome(stream);
 		stream->search = ft_strjoin(stream->search, stream->buf);
+		free(kill);
 		stream->shindex = stream->config->hindex;
 		ft_searchinhistory(stream);
 		ft_modifycommand(stream);
 		ft_winsize();
 		ft_sprompt(stream);
-		free(kill);
 	}
 }
 

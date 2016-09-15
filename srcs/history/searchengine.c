@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/13 12:07:27 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/14 12:07:55 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/15 10:47:26 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void		ft_searchengine(t_stream *stream)
 	if (!(stream->search))
 	{
 		stream->search = ft_strnew(1);
-		if (stream->command && stream->command[0])
-			stream->searchbuf = ft_strdup(stream->command);
 		ft_sprompt(stream);
 	}
 	else
