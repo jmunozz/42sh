@@ -53,11 +53,12 @@ static void		ft_append(t_stream *stream)
 	{
 		pos = stream->pos;
 		if (!(stream->command = ft_strnew(ft_strlen(stream->command) + len))
-			&& (stream->state = -2))
+			&& (stream->state = -2) && ft_freegiveone((void **)&kill))
 			return ;
 		ft_strncpy(stream->command, kill, pos);
 		ft_strcpy(stream->command + pos, stream->buf);
 		ft_strcpy(stream->command + pos + len, kill + pos);
+		ft_freegiveone((void **)&kill);
 	}
 	else if (!(stream->command = ft_strdup(stream->buf)))
 		stream->state = -2;

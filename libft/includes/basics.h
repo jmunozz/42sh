@@ -50,6 +50,7 @@ char	*ft_strmapi(char const *s, char(*f)(unsigned int, char));
 char	*ft_strslashjoin(char *s1, char *s2);
 char	*ft_strchrjoin(char *s1, char c, char *s2);
 char	*ft_strtrim(char const *s);
+char	**ft_strtabnew(char *s);
 char	**ft_strsplit(char *s, char c);
 char	**ft_strncmptabdel(char **dest, char *needle);
 char	**ft_strstrtabdel(char **dest, char *needle);

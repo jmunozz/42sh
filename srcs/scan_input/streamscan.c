@@ -78,10 +78,11 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 	ft_scan(stream);
 	ft_sigwinch(0);
 	ft_termios_handle(config, 0);
+	ft_freegiveone((void **)(&(stream->search)));
 	if (stream->state < 0)
 	{
-		ft_error(SHNAME, NULL, SCAN_ERR, CR_ERROR | FCR_ERROR);
-		return (NULL);
+		ft_error(SHNAME, NULL, SCAN_ERR, FCR_ERROR);
+		ft_freegiveone((void **)(&(stream->command)));
 	}
 	if (stream->command && stream->command[0]
 		&& stream->shindex == config->hindex)
@@ -89,7 +90,6 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 		ft_push_history(stream, config);
 		ft_incr_history(&(config->hindex));
 	}
-	ft_freegiveone((void **)(&(stream->search)));
 	ft_putchar('\n');
 	return (stream->command);
 }

@@ -16,7 +16,7 @@ void		ft_run_command(t_config *config, char *cmd)
 {
 	t_arguments	av;
 
-	if ((av.argv = ft_strsplit(cmd, ' ')) && ft_freegiveone((void**)&cmd))
+	if ((av.argv = ft_strsplit(cmd, ' ')) && ft_freegiveone((void **)&cmd))
 		while (av.argv)
 		{
 			av.memo = ft_strtabdiv(av.argv, ";");
@@ -40,7 +40,6 @@ void		ft_minishell(t_config *config)
 
 	if (ft_signal())
 		ft_shell_exit(config, NULL);
-	cmd = NULL;
 	ft_load_history(config);
 	ft_save_stream(&stream);
 	while (1)

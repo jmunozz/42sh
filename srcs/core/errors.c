@@ -23,11 +23,11 @@ int		ft_error(char *name, char *other, char *mess, int mode)
 	}
 	if (other)
 	{
-		ft_putstr_fd(name, 2);
+		ft_putstr_fd(other, 2);
 		ft_putstr_fd(": ", 2);
 	}
 	if (mess)
-		ft_putstr_fd(name, 2);
+		ft_putstr_fd(mess, 2);
 	if (mode & CR_ERROR)
 		ft_putchar_fd('\n', 2);
 	if (mode & SERROR)
