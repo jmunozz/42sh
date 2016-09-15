@@ -18,13 +18,11 @@ static int			ft_free_line(t_line **begin, t_line *next)
 		*begin = (*begin)->next;
 	if ((*begin)->next == *begin)
 	{
-ft_putstr("free");
 		free(*begin);
 		*begin = NULL;
 	}
 	else
 	{
-ft_putstr("free");
 		(*begin)->next = next->next;
 		free(next);
 	}
@@ -45,11 +43,10 @@ static int			ft_findread(t_line **begin, t_line *next, int fd, int mode)
 	tmp[ret] = '\0';
 	if (mode == READ && ft_strcpy((*begin)->data, tmp))
 		return (ret);
-	if (!(*begin) && !(*begin = MALLOC))
+	if (*begin && (*begin)->fd != fd && !((*begin)->next = MALLOC))
 		return (-1);
-	else if ((*begin)->fd != fd && !((*begin)->next = MALLOC))
+	else if (!(*begin) && !(*begin = MALLOC))
 		return (-1);
-ft_putstr("MALLOC");
 	if (next)
 		*begin = (*begin)->next;
 	ft_memcpy((*begin)->data, tmp, BUFF_SIZE);
