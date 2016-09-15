@@ -17,11 +17,7 @@ static int	ft_init_term(t_config *config)
 	if (tcgetattr(STDIN_FILENO, &(config->termios_backup)) == -1
 		|| !ft_memcpy(&(config->termios), &(config->termios_backup),
 		sizeof(t_termios)))
-	{
-		ft_putstr_fd(SHELL_NAME, 2);
-		ft_putstr_fd("fail to set terminal, problems may occur\n", 2);
-		return false;
-	}
+		return (1 ^ ft_error(SHNAME, NULL, TERM_ERR, CR_ERROR));
 	config->termios.c_lflag &= ~(ICANON | ECHO);
 	config->termios.c_cc[VMIN] = 1;
 	config->termios.c_cc[VTIME] = 0;
@@ -38,8 +34,7 @@ static void		ft_termios_handle(t_config *config, int mode)
 	{
 		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &(config->termios)) == -1)
 		{
-			ft_putstr_fd(SHELL_NAME, 2);
-			ft_putstr_fd("fail to set terminal, problems may occur\n", 2);
+			ft_error(SHNAME, NULL, TERM_ERR, CR_ERROR);
 			return ;
 		}
 	}
@@ -85,7 +80,7 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 	ft_termios_handle(config, 0);
 	if (stream->state < 0)
 	{
-		ft_putstr_fd("\nminishell: error while scanning command\n", 2);
+		ft_error(SHNAME, NULL, SCAN_ERR, CR_ERROR | FCR_ERROR);
 		return (NULL);
 	}
 	if (stream->command && stream->command[0]

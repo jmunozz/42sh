@@ -1,7 +1,7 @@
 #ifndef CORE_H
 # define CORE_H
 
-# define SHELL_NAME "21sh"
+# define SHNAME "21sh"
 # define HISTORY_SIZE 100
 # define FT_PUTSTRFD ft_putstr_str_str_fd
 # define QUOTE_ERR "please end your quote before running command"
@@ -52,10 +52,9 @@ void			ft_unsetenv(char **argv, t_config *config);
 /*
 **error.c
 */
+int				ft_error(char *name, char *other, char *mess, int mode);
 int				ft_initerror(t_config *config);
-int				ft_malloc_error(char const *path);
 void			ft_lexer_error(char *command);
-void			ft_fork_error(void);
 void			ft_term_error(t_config *config);
 /*
 **hash.c && cmp.c

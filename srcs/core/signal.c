@@ -14,9 +14,9 @@ void		ft_signal_handle(int i)
 void		ft_sigwinch(int mode)
 {
 	if (mode && SIG_ERR == signal(SIGWINCH, &ft_signal_handle))
-		ft_putstr_fd("minishell: sigwinch fail\n", 2);
+		ft_error(SHNAME, NULL, "sigwinch fail", CR_ERROR);
 	else if (!mode && SIG_ERR == signal(SIGWINCH, SIG_DFL))
-		ft_putstr_fd("minishell: sigwinch fail\n", 2);
+		ft_error(SHNAME, NULL, "sigwinch fail", CR_ERROR);
 }
 
 void		ft_signal_reset(void)

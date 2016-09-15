@@ -20,24 +20,25 @@ void		ft_fewef(char *command, char **argv, char **env)
 
 	stat_loc = 0;
 	if (-1 > (father = fork()))
-		ft_fork_error();
+		ft_error(SHNAME, "fork fail for", command, CR_ERROR | SERROR);
 	else if (father == 0)
 	{
 		ft_signal_reset();
 		execve(command, argv, env);
 	}
-	while (father != 0)
-	{
-		ft_bzero(buf, 3);
-		if (waitpid(father, &stat_loc, WNOHANG) > 0)
-			break ;
-	}
+	else
+		while (father != 0)
+		{
+			ft_bzero(buf, 3);
+			if (waitpid(father, &stat_loc, WNOHANG) > 0)
+				break ;
+		}
 }
 
 void		ft_kill_father(t_config *config)
 {
 	ft_free_config(config);
 	if (-1 == kill(getppid(), SIGKILL))
-		ft_putstr_fd("SORRY, I couldn't kill my father, he's a jedi\n", 2);
+		ft_error(SHNAME, "SORRY", JEDI_ERR, CR_ERROR);
 	exit(0);
 }

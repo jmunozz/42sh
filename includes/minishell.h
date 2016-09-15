@@ -32,6 +32,7 @@
 # include "core.h"
 # include "input_scan.h"
 # include "run_command.h"
+# include "ft_error.h"
 # ifdef LINUX
 #  include "keys_linux.h"
 # else

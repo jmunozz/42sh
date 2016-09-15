@@ -14,29 +14,30 @@
 
 int		ft_access_dir(char const *path)
 {
-	char		*cpy;
+	char		cpy[_POSIX_PATH_MAX + 1];
 	char		*endl;
 	struct stat	buf;
 
-	if (!(cpy = ft_strdup(path)))
-		return (ft_malloc_error(path));
-	endl = cpy;
+	if (_POSIX_PATH_MAX < ft_strlen(path))
+		return (1 ^ ft_error(SHNAME, PATH_MAX_EXEED, (char *)path,
+			CR_ERROR | SERROR));
+	endl = ft_strcpy(cpy, path);
 	while ((endl = ft_strchr(endl + 1, '/')))
 	{
 		*endl = '\0';
 		if (-1 == access(cpy, F_OK) && !(endl = NULL))
-			FT_PUTSTRFD("minishell: directory doesn't exist: ", cpy, "\n", 2);
+			ft_error(SHNAME, "directory doesn't exist", cpy, CR_ERROR);
 		else if (-1 == stat(cpy, &buf) && !(endl = NULL))
-			FT_PUTSTRFD("minishell: stat failed on: ", cpy, "\n", 2);
+			ft_error(SHNAME, "stat failed on", cpy, CR_ERROR);
 		else if (!S_ISDIR(buf.st_mode) && !(endl = NULL))
-			FT_PUTSTRFD("minishell: ", cpy, ": not a directory\n", 2);
+			ft_error(SHNAME, cpy, "not a directory", CR_ERROR);
 		else if (-1 == access(cpy, X_OK) && !(endl = NULL))
-			FT_PUTSTRFD("minishell: permission denied: ", cpy, "\n", 2);
-		if (!endl && ft_freegiveone((void **)&cpy))
+			ft_error(SHNAME, "permission denied", cpy, CR_ERROR);
+		if (!endl)
 			return (0);
 		*endl = '/';
 	}
-	return (ft_freegiveone((void **)&cpy));
+	return (1);
 }
 
 void	ft_access_exec(char *path, char **argv, t_config *config)
@@ -46,15 +47,15 @@ void	ft_access_exec(char *path, char **argv, t_config *config)
 	if (!ft_access_dir(path))
 		return ;
 	if (-1 == access(path, F_OK))
-		FT_PUTSTRFD("minishell: command not found: ", path, "\n", 2);
+		ft_error(SHNAME, "command not found", path, CR_ERROR);
 	else if (-1 == stat(path, &buf))
-		FT_PUTSTRFD("minishell: access denied: ", path, "\n", 2);
+		ft_error(SHNAME, "access denied", path, CR_ERROR);
 	else if (S_ISDIR(buf.st_mode))
 		ft_cd(argv, config);
 	else if (!S_ISREG(buf.st_mode))
-		FT_PUTSTRFD("minishell: ", path, ": not a regular file\n", 2);
+		ft_error(SHNAME, path, "not a regular file", CR_ERROR);
 	else if (-1 == access(path, X_OK))
-		FT_PUTSTRFD("minishell: ", path, ": permission denied\n", 2);
+		ft_error(SHNAME, path, "permission denied", CR_ERROR);
 	else
 		ft_fewef(path, argv, config->env);
 }

@@ -63,7 +63,7 @@ static void	ft_bin_insert(DIR *dir, char *path, t_config *config)
 				|| !(++(bin.name))
 				|| !(new = ft_lstnew(ft_memmove(ft_memalloc(sizeof(t_bin)),
 				&bin, sizeof(t_bin)), sizeof(t_bin))))
-			ft_putstr_fd("minishell : error creating path to bin", 2);
+			ft_error(SHNAME, NULL, "error creating path to bin", CR_ERROR);
 		else if (!ft_strcmp(dirent->d_name, ".")
 				|| !ft_strcmp(dirent->d_name, ".."))
 			ft_lstdel(&new, &ft_freebin);

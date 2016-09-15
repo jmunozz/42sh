@@ -35,7 +35,8 @@ void	ft_down(t_stream *stream)
 			ft_down_search(stream);
 		ft_freegiveone((void **)&(stream->command));
 		if (stream->config->history[stream->shindex]
-			&& !(stream->command = ft_strdup(stream->config->history[stream->shindex])))
+			&& (stream->command = stream->config->history[stream->shindex])
+			&& !(stream->command = ft_strdup(stream->command)))
 			stream->state = -2;
 		else
 			stream->pos = 0;

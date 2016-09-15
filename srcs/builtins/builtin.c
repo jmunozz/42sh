@@ -15,7 +15,7 @@
 static void	ft_pwd(char **argv, t_config *config)
 {
 	if (argv[1])
-		ft_putstr_fd("pwd: too many arguments\n", 2);
+		ft_error("pwd", NULL, "too many arguments", CR_ERROR);
 	else
 		ft_putendl(config->pwd);
 }

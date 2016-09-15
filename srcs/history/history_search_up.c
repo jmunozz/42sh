@@ -36,7 +36,8 @@ void	ft_up(t_stream *stream)
 	{
 		if (stream->config->history[stream->shindex]
 			&& ft_freegiveone((void **)&(stream->command))
-			&& !(stream->command = ft_strdup(stream->config->history[stream->shindex])))
+			&& (stream->command = stream->config->history[stream->shindex])
+			&& !(stream->command = ft_strdup(stream->command)))
 		{
 			stream->state = -2;
 			return ;

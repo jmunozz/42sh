@@ -4,7 +4,7 @@ static int	ft_safeputstr(int fd, char *str)
 {
 	if (str && 0 > write(fd, str, ft_strlen(str)))
 	{
-		FT_PUTSTRFD("minishell: wasn't abble to save history", " ", "\n", 2);
+		ft_error(SHNAME, NULL, SAVE_H_ERR, CR_ERROR | SERROR);
 		ft_freegiveone((void **)&str);
 		return (0);
 	}
@@ -19,7 +19,7 @@ void		ft_purge_history(t_config *config)
 
 	if ((fd = open(config->hloc, O_CREAT | O_WRONLY
 		| O_TRUNC, S_IRUSR | S_IWUSR)) < 0)
-		FT_PUTSTRFD("minishell: wasn't abble to save history", " ", "\n", 2);
+		ft_error(SHNAME, NULL, SAVE_H_ERR, CR_ERROR | SERROR);
 	else
 	{
 		i = config->hindex;
@@ -42,7 +42,7 @@ void		ft_load_history(t_config *config)
 	int		fd;
 
 	if ((fd = open(config->hloc, O_RDONLY)) < 0)
-		FT_PUTSTRFD("minishell: wasn't abble to load history", " ", "\n", 2);
+		ft_error(SHNAME, NULL, LOAD_H_ERR, CR_ERROR | SERROR);
 	else
 	{
 		while (get_next_line(fd, &(config->history[config->hindex])) > 0)

@@ -27,8 +27,7 @@ void		ft_run_command(t_config *config, char *cmd)
 			else if (av.argv[0][0] == '.' || av.argv[0][0] == '/')
 				ft_access_exec(av.argv[0], av.argv, config);
 			else
-				FT_PUTSTRFD("minishell: command not found: ",
-						av.argv[0], "\n", 2);
+				ft_error(SHNAME, "command not found", av.argv[0], CR_ERROR);
 			ft_strtabfree(av.argv);
 			av.argv = av.memo;
 		}

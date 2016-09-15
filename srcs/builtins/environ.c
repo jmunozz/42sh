@@ -40,19 +40,17 @@ void	ft_setenv(char *name, char *value, t_config *config)
 		&& (memo = f[i])
 		&& !(f[i] = ft_strchrjoin(name, '=', value))
 		&& (f[i] = memo))
-		FT_PUTSTRFD("minishell: error while setenv for: ", name, "\n", 2);
+		ft_error(SHNAME, "error while setenv for", name, CR_ERROR);
 	else if (i >= 0 && !ft_strcmp(name, "PWD"))
 	{
 		ft_setenv("OLDPWD", memo + 4, config);
 		free(memo);
 	}
 	else if (i < 0 && !(memo = ft_strchrjoin(name, '=', value)))
-		FT_PUTSTRFD("minishell: malloc error during setenv for: ",
-				name, "\n", 2);
+		ft_error(SHNAME, "malloc error during setenv for", name, CR_ERROR);
 	else if (i < 0 && !(config->env = ft_strtabadd(config->env, memo))
 		&& ft_freegiveone((void **)&memo) && (config->env = f))
-		FT_PUTSTRFD("minishell: malloc error during setenv for: ",
-				name, "\n", 2);
+		ft_error(SHNAME, "malloc error during setenv for", name, CR_ERROR);
 	else if (f && config->env && f != config->env)
 		free(f);
 	if (!ft_strcmp("PATH", name))
@@ -69,7 +67,7 @@ void	ft_env(char **argv, t_config *config)
 		ft_putchar('\n');
 	}
 	else if (!(envbin = ft_return_binpath(config, "env")))
-		ft_putendl_fd("minishell: unnable to find advanced env", 2);
+		ft_error(SHNAME, NULL, "unnable to find advanced env", CR_ERROR);
 	else
 		ft_access_exec(envbin, argv, config);
 }

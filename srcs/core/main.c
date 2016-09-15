@@ -22,8 +22,7 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 	while (++i < ac)
 	{
 		if ((fd = open(av[1], O_RDONLY)) < 0 || -1 == read(fd, cmd, 0))
-			FT_PUTSTRFD("minishell: can't open input file: ",
-					av[i], "\n", 2);
+			ft_error(SHNAME, "can't open input file", av[i], CR_ERROR | SERROR);
 		else
 		{
 			while ((get_next_line(fd, &cmd)))
