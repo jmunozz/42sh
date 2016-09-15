@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/09 08:18:38 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/15 11:06:29 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void		ft_run_command(t_config *config, char *cmd)
 {
 	t_arguments	av;
 
-	if ((av.argv = ft_strsplit(cmd, ' ')))
+	if ((av.argv = ft_strsplit(cmd, ' ')) && ft_freegiveone((void**)&cmd))
 		while (av.argv)
 		{
 			av.memo = ft_strtabdiv(av.argv, ";");
@@ -41,6 +41,7 @@ void		ft_minishell(t_config *config)
 
 	if (ft_signal())
 		ft_shell_exit(config, NULL);
+	cmd = NULL;
 	ft_load_history(config);
 	ft_save_stream(&stream);
 	while (1)
