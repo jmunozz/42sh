@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "posix.h"
+# include <limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>

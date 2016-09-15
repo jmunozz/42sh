@@ -9,11 +9,11 @@ static void	ft_pwd_error(t_config *config, char *mess)
 
 void		ft_update_pwd(t_config *config)
 {
-	char	buf[PATH_MAX];
+	char	buf[_POSIX_PATH_MAX];
 	char	*pwd;
 
 	ft_freegiveone((void**)&(config->pwd));
-	if (!getcwd(buf, PATH_MAX))
+	if (!getcwd(buf, _POSIX_PATH_MAX))
 		ft_pwd_error(config, "minishell: path too long to get pwd\n");
 	else
 	{
