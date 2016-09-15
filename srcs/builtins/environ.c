@@ -42,10 +42,7 @@ void	ft_setenv(char *name, char *value, t_config *config)
 		&& (f[i] = memo))
 		ft_error(SHNAME, "error while setenv for", name, CR_ERROR);
 	else if (i >= 0 && !ft_strcmp(name, "PWD"))
-	{
 		ft_setenv("OLDPWD", memo + 4, config);
-		free(memo);
-	}
 	else if (i < 0 && !(memo = ft_strchrjoin(name, '=', value)))
 		ft_error(SHNAME, "malloc error during setenv for", name, CR_ERROR);
 	else if (i < 0 && !(config->env = ft_strtabadd(config->env, memo))
@@ -55,6 +52,7 @@ void	ft_setenv(char *name, char *value, t_config *config)
 		free(f);
 	if (!ft_strcmp("PATH", name))
 		ft_pathtohash(config);
+	ft_freegiveone((void**)&(memo));
 }
 
 void	ft_env(char **argv, t_config *config)
