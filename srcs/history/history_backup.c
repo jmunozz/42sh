@@ -45,9 +45,11 @@ void		ft_load_history(t_config *config)
 		ft_error(SHNAME, NULL, LOAD_H_ERR, CR_ERROR | SERROR);
 	else
 	{
-		while (get_next_line(fd, &(config->history[config->hindex])) > 0)
+		while (ft_freegiveone((void **)&(config->history[config->hindex]))
+			&& get_next_line(fd, &(config->history[config->hindex])) > 0)
 			if (config->history[config->hindex][0])
 				ft_incr_history(&(config->hindex));
+		get_next_line(-1, NULL);
 		close(fd);
 	}
 }

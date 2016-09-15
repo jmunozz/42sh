@@ -21,15 +21,13 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 	i = 0;
 	while (++i < ac)
 	{
-		if ((fd = open(av[1], O_RDONLY)) < 0 || -1 == read(fd, cmd, 0))
+		if ((fd = open(av[1], O_RDONLY)) < 0)
 			ft_error(SHNAME, "can't open input file", av[i], CR_ERROR | SERROR);
 		else
 		{
-			while ((get_next_line(fd, &cmd)))
-			{
+			while ((get_next_line(fd, &cmd)) > 0)
 				ft_run_command(config, cmd);
-				free(cmd);
-			}
+			get_next_line(-1, NULL);
 			close(fd);
 		}
 	}
@@ -82,7 +80,7 @@ int			main(int ac, char **av, char **env)
 			return (ft_initerror(&config));
 	ft_update_pwd(&config);
 	if ((i = ft_strtabifindstart(env, "SHLVL")) != -1)
-		ft_setenv("SHLVL", ft_itoa(ft_atoi(env[i] + 6) + 1), &config);
+		ft_setenv("SHLVL", ft_st_itoa(ft_atoi(env[i] + 6) + 1), &config);
 	if (ft_history_loc_init(&config, av[0]))
 		return (1);
 	ft_termcaps_init(&config);

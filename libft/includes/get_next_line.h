@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # include "libft.h"
-# define BUFF_SIZE 1
+# define BUFF_SIZE 511
 # define MALLOC (t_line *)ft_memalloc(sizeof(t_line))
 # define RET begin->ret
 # define DATA begin->data
@@ -23,7 +23,7 @@
 
 typedef struct		s_line
 {
-	char			*data;
+	char			data[BUFF_SIZE + 1];
 	int				ret;
 	int				fd;
 	struct s_line	*next;
