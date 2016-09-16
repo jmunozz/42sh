@@ -38,12 +38,15 @@ void	ft_setenv(char *name, char *value, t_config *config)
 	f = config->env;
 	if ((i = ft_strtabifindstart(f, name)) >= 0
 		&& (memo = f[i])
-		&& !(f[i] = ft_strchrjoin(name, '=', value))
+		&& ((value && value [0] && !(f[i] = ft_strchrjoin(name, '=', value)))
+		|| (!value && !(f[i] = ft_strjoin(name, "="))))
 		&& (f[i] = memo))
 		ft_error(SHNAME, "error while setenv for", name, CR_ERROR);
 	else if (i >= 0 && !ft_strcmp(name, "PWD"))
 		ft_setenv("OLDPWD", memo + 4, config);
-	else if (i < 0 && !(memo = ft_strchrjoin(name, '=', value)))
+	else if (i < 0 && ((value && value[0]
+		&& !(memo = ft_strchrjoin(name, '=', value)))
+		|| (!value && !(memo = ft_strjoin(name , "=")))))
 		ft_error(SHNAME, "malloc error during setenv for", name, CR_ERROR);
 	else if (i < 0 && !(config->env = ft_strtabadd(config->env, memo))
 		&& ft_freegiveone((void **)&memo) && (config->env = f))
@@ -79,8 +82,12 @@ void	ft_readysetenv(char **argv, t_config *config)
 	while (argv[++i])
 	{
 		if ((t = ft_strchr(argv[i], '=')))
+		{
 			*t = '\0';
-		ft_setenv(argv[i], t + 1, config);
+			ft_setenv(argv[i], t + 1, config);
+		}
+		else
+			ft_setenv(argv[i], NULL, config);
 	}
 }
 

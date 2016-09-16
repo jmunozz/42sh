@@ -23,11 +23,12 @@ void		ft_run_command(t_config *config, char *cmd)
 			if (ft_builtin(av.argv, config))
 				;
 			else if ((cmd = ft_return_binpath(config, av.argv[0])))
-				ft_access_exec(cmd, av.argv, config);
-			else if (av.argv[0][0] == '.' || av.argv[0][0] == '/')
-				ft_access_exec(av.argv[0], av.argv, config);
-			else
-				ft_error(SHNAME, "command not found", av.argv[0], CR_ERROR);
+			{
+				if (ft_access_exec(cmd, av.argv, config))
+					ft_fewef(cmd, av.argv, config->env);
+			}
+			else if (ft_access_exec(av.argv[0], av.argv, config))
+				ft_fewef(av.argv[0], av.argv, config->env);
 			ft_strtabfree(av.argv);
 			av.argv = av.memo;
 		}

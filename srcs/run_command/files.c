@@ -40,22 +40,26 @@ int		ft_access_dir(char const *path)
 	return (1);
 }
 
-void	ft_access_exec(char *path, char **argv, t_config *config)
+int		ft_access_exec(char *path, char **argv, t_config *config)
 {
 	struct stat	buf;
 
 	if (!ft_access_dir(path))
-		return ;
+		return false;
 	if (-1 == access(path, F_OK))
-		ft_error(SHNAME, "command not found", path, CR_ERROR);
+		return (1 ^ ft_error(SHNAME, "command not found", path, CR_ERROR));
 	else if (-1 == stat(path, &buf))
-		ft_error(SHNAME, "access denied", path, CR_ERROR);
+		return (1 ^ ft_error(SHNAME, "access denied", path, CR_ERROR));
 	else if (S_ISDIR(buf.st_mode))
+	{
 		ft_cd(argv, config);
+		return false;
+	}
+	else if (path[0] != '.' && path[0] != '/')
+		return (1 ^ ft_error(SHNAME, "command not found", path, CR_ERROR));
 	else if (!S_ISREG(buf.st_mode))
-		ft_error(SHNAME, path, "not a regular file", CR_ERROR);
+		return (1 ^ ft_error(SHNAME, path, "not a regular file", CR_ERROR));
 	else if (-1 == access(path, X_OK))
-		ft_error(SHNAME, path, "permission denied", CR_ERROR);
-	else
-		ft_fewef(path, argv, config->env);
+		return (1 ^ ft_error(SHNAME, path, "permission denied", CR_ERROR));
+	return true;
 }
