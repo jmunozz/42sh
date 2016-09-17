@@ -64,7 +64,7 @@ void	ft_env(char **argv, t_config *config)
 
 	if (!argv[1])
 	{
-		ft_putstrtab((char const **)(config->env), '\n');
+		ft_putstrtab((config->env), '\n');
 		ft_putchar('\n');
 	}
 	else if (!(envbin = ft_return_binpath(config, "env")))

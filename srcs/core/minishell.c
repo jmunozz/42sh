@@ -12,26 +12,39 @@
 
 #include "minishell.h"
 
+void		ft_print_list(t_list *elem)
+{
+	ft_putstr("\nargv :\n");
+	if (elem->data_size)
+		ft_putstrtab((char **)(elem->data), '\n');
+}
+
 void		ft_run_command(t_config *config, char *cmd)
 {
-	t_arguments	av;
+	t_list		*begin;
 
-	if ((av.argv = ft_strsplit(cmd, ' ')) && ft_freegiveone((void **)&cmd))
-		while (av.argv)
-		{
-			av.memo = ft_strtabdiv(av.argv, ";");
-			if (ft_builtin(av.argv, config))
-				;
-			else if ((cmd = ft_return_binpath(config, av.argv[0])))
-			{
-				if (ft_access_exec(cmd, av.argv, config))
-					ft_fewef(cmd, av.argv, config->env);
-			}
-			else if (ft_access_exec(av.argv[0], av.argv, config))
-				ft_fewef(av.argv[0], av.argv, config->env);
-			ft_strtabfree(av.argv);
-			av.argv = av.memo;
-		}
+	if ((begin = ft_lexer(cmd, config)))
+		ft_lstiter(begin, ft_print_list);
+	ft_freegiveone((void**)&cmd);
+	ft_freelist(begin);
+//	t_arguments	av;
+
+//	if ((av.argv = ft_strsplit(cmd, ' ')) && ft_freegiveone((void **)&cmd))
+//		while (av.argv)
+//		{
+//			av.memo = ft_strtabdiv(av.argv, ";");
+//			if (ft_builtin(av.argv, config))
+//				;
+//			else if ((cmd = ft_return_binpath(config, av.argv[0])))
+//			{
+//				if (ft_access_exec(cmd, av.argv, config))
+//					ft_fewef(cmd, av.argv, config->env);
+//			}
+//			else if (ft_access_exec(av.argv[0], av.argv, config))
+//				ft_fewef(av.argv[0], av.argv, config->env);
+//			ft_strtabfree(av.argv);
+//			av.argv = av.memo;
+//		}
 }
 
 void		ft_minishell(t_config *config)

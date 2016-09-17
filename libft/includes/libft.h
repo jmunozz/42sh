@@ -33,7 +33,7 @@ int		ft_status(int value);
 /*
 ** CHAR <-> INT
 */
-int		ft_atoi(const char *str);
+int		ft_atoi(char *str);
 char	*ft_itoa(int n);
 char	*ft_st_itoa(int n);
 /*
@@ -42,7 +42,7 @@ char	*ft_st_itoa(int n);
 void	ft_putcstr(char *str, char c, int size, char pos);
 void	ft_putstrpad_fd(char *str, int size, char pos, int fd);
 void	ft_putstrpad(char *str, int size, char pos);
-void	ft_putcolendl(char const *s, char const *col);
+void	ft_putcolendl(char *s, char *col);
 void	ft_putstr_nbr_str(char *str, int nbr, char *mtab);
 void	ft_putstr_str_str_fd(char *name, char *file, char *error, int fd);
 void	ft_putstr_nbr_str(char *str, int nbr, char *mtab);
@@ -50,14 +50,14 @@ void	ft_putstr_nbr_str(char *str, int nbr, char *mtab);
 ** PRINT
 */
 void	ft_putchar(char c);
-void	ft_putstr(char const *s);
-void	ft_putendl(char const *s);
+void	ft_putstr(char *s);
+void	ft_putendl(char *s);
 void	ft_putnbr(int n);
 void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char const *s, int fd);
-void	ft_putstrtab(char const **s, char c);
-void	ft_putstrtab_fd(char const **s, char c, int fd);
-void	ft_putendl_fd(char const *s, int fd);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putstrtab(char **s, char c);
+void	ft_putstrtab_fd(char **s, char c, int fd);
+void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 #endif

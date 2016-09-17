@@ -39,6 +39,7 @@ int		ft_strtablen(char **t);
 */
 char	*ft_strsub(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const*s2);
+char	*ft_strinsert(char *dest, char *str, char *pos);
 char	**ft_strtabdup(char **src);
 char	*ft_strdup(const char *s);
 char	*ft_strmap(char const *s, char (*f)(char));
@@ -78,6 +79,7 @@ char	*ft_strrchr(const char *s, int c);
 char	*ft_strstr(const char *haystack, const char *needle);
 int		ft_strstri(const char *haystack, const char *needle);
 char	*ft_strnstr(const char *s1, const char *s2, size_t n);
+void	ft_strtabiter(char **t, void (*f)(char *str));
 char	*ft_strtabfind(char **mtab, char *needle);
 int		ft_strtabifind(char **mtab, char *needle);
 char	*ft_strtabfindstart(char **mtab, char *needle);

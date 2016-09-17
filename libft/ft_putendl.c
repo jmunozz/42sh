@@ -12,13 +12,13 @@
 
 #include "libft.h"
 
-void	ft_putendl(char const *s)
+void	ft_putendl(char *s)
 {
 	ft_putstr(s);
 	ft_putstr("\n");
 }
 
-void	ft_putcolendl(char const *s, char const *col)
+void	ft_putcolendl(char *s, char *col)
 {
 	if (!ft_strcmp(col, "RED"))
 		ft_putstr(ANSI_COLOR_RED);

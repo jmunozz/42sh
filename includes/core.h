@@ -73,6 +73,7 @@ void			ft_free_config(t_config *config);
 */
 void			ft_run_command(t_config *config, char *cmd);
 void			ft_minishell(t_config *config);
+void			ft_print_list(t_list *elem);
 /*
 **signal.c
 */
