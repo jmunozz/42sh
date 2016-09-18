@@ -6,11 +6,18 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/09 09:15:31 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/16 11:19:58 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void			ft_gomatch(t_stream *stream, unsigned int go,
+							void (*mv)(t_stream *))
+{
+	while (stream->pos > go)
+		mv(stream);
+}
 
 int				ft_putcharint(int i)
 {

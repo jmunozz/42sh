@@ -43,6 +43,8 @@ int				ft_putcharint(int	i);
 void			ft_tputs(t_stream *stream);
 void			ft_mvleft(t_stream *stream);
 void			ft_mvright(t_stream *stream);
+void			ft_gomatch(t_stream *stream, unsigned int go,
+							void (*mv)(t_stream *));
 /*
 **arrowlr.c && arrowud.c
 */
