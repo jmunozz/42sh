@@ -86,7 +86,7 @@ static t_list	**ft_av_handle(char *cmd, size_t i, t_list **next,
 	return (ft_quote_handle(next, config));
 }
 
-t_list		**ft_op_handle(char *cmd, size_t *i, t_list **next,
+t_list		*ft_op_handle(char *cmd, size_t *i, t_list **next,
 			t_config *config)
 {
 	if (!*i && !(cmd[*i + 1] = 0)
@@ -104,5 +104,5 @@ t_list		**ft_op_handle(char *cmd, size_t *i, t_list **next,
 			&& ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR))
 			return NULL;
 	}
-	return (next);
+	return (*next);
 }

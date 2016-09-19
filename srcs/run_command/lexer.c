@@ -43,27 +43,27 @@ t_list			*ft_lexer(char *cmd, t_config *config)
 {
 	size_t	i;
 	t_list	*begin;
-	t_list	**next;
+	t_list	*next;
 
 	while (*cmd == ' ')
 		++cmd;
 	if (!*cmd || !(begin = (t_list *)ft_memalloc(sizeof(t_list))))
 		return NULL;
-	next = &begin;
+	next = begin;
 	i = 0;
 	while ((cmd = cmd + i) && !(i = 0) && *cmd)
 	{
 		i = ft_next_op(cmd, i);
 		if (i && (cmd[i] == '>' || cmd[i] == '<') && ft_isdigit(cmd[i - 1]))
 			i--;
-		if (!(next = ft_op_handle(cmd, &i, next, config)))
+		if (!(next = ft_op_handle(cmd, &i, &next, config)))
 			return (ft_freelist(begin));
 		while (cmd[i] == ' ')
 			++i;
-		if (cmd[i] && !((*next)->next = (t_list *)ft_memalloc(sizeof(t_list)))
+		if (cmd[i] && !(next->next = (t_list *)ft_memalloc(sizeof(t_list)))
 			&& ft_error(SHNAME, "lexer", "malloc error", CR_ERROR))
 			return (ft_freelist(begin));
-		*next = (*next)->next;
+		next = next->next;
 	}
 	return (begin);
 }

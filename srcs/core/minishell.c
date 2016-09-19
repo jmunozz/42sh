@@ -14,9 +14,16 @@
 
 void		ft_print_list(t_list *elem)
 {
-	ft_putstr("\nargv :\n");
-	if (elem->data_size)
+	if (!elem->data_size)
+	{
+		ft_putstr("\nargv :\n");
 		ft_putstrtab((char **)(elem->data), '\n');
+	}
+	else
+	{
+		ft_putstr("\nop :\n");
+		ft_putstr((char*)elem->data_size);
+	}
 }
 
 void		ft_run_command(t_config *config, char *cmd)
