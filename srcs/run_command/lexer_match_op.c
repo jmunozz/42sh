@@ -13,6 +13,26 @@ static char		*ft_reduc(size_t *i, size_t j)
 	return (NULL);
 }
 
+static char		*ft_agregation(char *buf, size_t *i, char *cmd, size_t *j)
+{
+	while (ft_isop(cmd[*i]))
+	{
+		if (*j > 3)
+			return (ft_reduc(i, *j));
+		if (*j == 3 && cmd[*i] != '&')
+			return (ft_reduc(i, *j));
+		buf[*j] = cmd[*i];
+		(*i)++;
+		(*j)++;
+	}
+	if (ft_isdigit(cmd[*i]))
+	{
+		buf[(*j)] = cmd[(*i)];
+		(*i)++;
+	}
+	return (ft_strdup(buf));
+}
+
 char			*ft_match_op(char *cmd, size_t *i)
 {
 	char	buf[8];
@@ -25,14 +45,9 @@ char			*ft_match_op(char *cmd, size_t *i)
 	{
 		++j;
 		if (j == 1 && ft_isdigit(buf[0]) && (cmd[*i] == '>' || cmd[*i] == '<'))
-			buf[j] = cmd[*i];
+			return (ft_agregation((char*)buf, i, cmd, &j));
 		else if (cmd[*i] != buf[j - 1] && !(cmd[*i + 1] = 0))
 			return (ft_reduc(i, j));
-		else if (j == 2 && !ft_isdigit(buf[0]) && cmd[*i] == '<')
-			buf[j] = cmd[*i];
-		else if (j == 2 && ft_isdigit(buf[0])
-			&& (cmd[*i] == '<' || cmd[*i] == '>'))
-			buf[j] = cmd[*i];
 		else if ((j == 2 || j == 3) && !(cmd[*i] = 0))
 			return (ft_reduc(i, j));
 		else
