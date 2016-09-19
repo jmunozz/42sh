@@ -36,7 +36,7 @@ static char	**ft_strdodgesplit(char *s, char c)
 		i = 0;
 		if (*s == c && *(s - 1) && *(s - 1) != c && !(*s = 0) && ++s)
 			nb++;
-		else if (i == ft_dodge_quote(s, i))
+		else if ((*s == '\'' || *s == '\"') && (i = ft_dodge_quote(s, i)))
 			s += i;
 		else
 			++s;
@@ -100,9 +100,10 @@ t_list		*ft_op_handle(char *cmd, size_t *i, t_list **next,
 			&& ft_error(SHNAME, "lexer", "malloc error", CR_ERROR))
 			return NULL;
 		*next = (*next)->next;
-		if (!((*next)->data_size = ft_match_op(cmd, i))
+		if (!((*next)->data = (void*)ft_match_op(cmd, i))
 			&& ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR))
 			return NULL;
+		(*next)->data_size = 1;
 	}
 	return (*next);
 }

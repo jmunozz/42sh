@@ -37,8 +37,7 @@ t_list			**ft_quote_handle(t_list **next, t_config *config)
 		while (t[i][j])
 		{
 			if ((t[i][j] == '~' || t[i][j] == '$')
-				&& !(t[i] = ft_envvarinsert(t[i], &j, config))
-				&& ft_error(SHNAME, "lexer", "malloc error", CR_ERROR))
+				&& !(t[i] = ft_envvarinsert(t[i], &j, config)))
 				return NULL;
 			else if (t[i][j] == '\'')
 				j = ft_dodge_quote(t[i], j);

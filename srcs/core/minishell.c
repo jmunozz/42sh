@@ -22,7 +22,8 @@ void		ft_print_list(t_list *elem)
 	else
 	{
 		ft_putstr("\nop :\n");
-		ft_putstr((char*)elem->data_size);
+		ft_putstr((char*)elem->data);
+		ft_putchar('\n');
 	}
 }
 

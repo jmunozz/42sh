@@ -23,6 +23,6 @@ char			*ft_envvarinsert(char *cmd, size_t *i, t_config *config);
 t_list			*ft_op_handle(char *cmd, size_t *i, t_list **next, t_config *config);
 int				ft_dodge_quote(char *cmd, size_t i);
 t_list			**ft_quote_handle(t_list **next, t_config *config);
-size_t			ft_match_op(char *cmd, size_t *i);
+char			*ft_match_op(char *cmd, size_t *i);
 
 #endif

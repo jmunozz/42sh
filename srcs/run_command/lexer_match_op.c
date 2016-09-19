@@ -7,15 +7,15 @@ static char		*ft_isop(char c)
 	return (ft_strchr(t, c));
 }
 
-static size_t	ft_reduc(size_t *i, size_t j)
+static char		*ft_reduc(size_t *i, size_t j)
 {
 	*i -= j;
-	return (0);
+	return (NULL);
 }
 
-size_t			ft_match_op(char *cmd, size_t *i)
+char			*ft_match_op(char *cmd, size_t *i)
 {
-	size_t	op;
+	char	*op;
 	char	buf[8];
 	size_t	j;
 
@@ -37,6 +37,7 @@ size_t			ft_match_op(char *cmd, size_t *i)
 		else if ((j == 2 || j == 3) && !(cmd[*i] = 0))
 			return (ft_reduc(i, j));
 	}
-	op = (size_t)buf;
+	if (!(op = ft_strdup(buf)))
+		ft_error(SHNAME, "lexer", "malloc error", CR_ERROR);
 	return (op);
 }
