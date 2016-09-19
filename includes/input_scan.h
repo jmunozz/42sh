@@ -88,6 +88,7 @@ void			ft_push_history(t_stream *stream, t_config *config);
 void			ft_load_history(t_config *config);
 void			ft_purge_history(t_config *config);
 void			ft_searchengine(t_stream *stream);
+void			ft_searchengineend(t_stream *stream);
 void			ft_sappend(t_stream *stream);
 void			ft_sdel(t_stream *stream);
 void			ft_sprompt(t_stream *stream);

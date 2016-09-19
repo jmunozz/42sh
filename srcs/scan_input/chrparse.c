@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/16 14:30:41 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/19 16:42:54 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int		ft_chrmatch(t_stream *stream)
 {
 	static ssize_t		match[] = {CLF, SUP, CHT, DEL,
 		LEF, RIG, UPP, DOW,
-		CLEF, CRIG, CUPP, CDOW, END, HOM, CRS, NUL};
+		CLEF, CRIG, CUPP, CDOW, END, HOM, CRS, ESC, NUL};
 	int					i;
 
 	i = 0;
@@ -95,7 +95,7 @@ int				ft_chrparse(t_stream *stream)
 	static void			(*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp,
 			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
 			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
-			&ft_goend, &ft_gohome, &ft_searchengine};
+			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend};
 
 	if (!(match = ft_chrmatch(stream)))
 		return (0);

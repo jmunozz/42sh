@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/13 12:20:30 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/16 15:01:45 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/19 15:57:34 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 static void	ft_modifycommand(t_stream *stream)
 {
-	if (stream->config->history[stream->shindex]
-		&& stream->config->history[stream->shindex][0])
-	{
-		ft_freegiveone((void **)&(stream->command));
+	ft_freegiveone((void **)&(stream->command));
+	if (stream->config->history[stream->shindex])
 		stream->command = ft_strdup(stream->config->history[stream->shindex]);
-	}
+	else if (stream->config->history[stream->config->hindex])
+		stream->command = ft_strdup(
+				stream->config->history[stream->config->hindex]);
+	else
+		stream->command = ft_strnew(1);
 }
 
 void		ft_sappend(t_stream *stream)
@@ -29,7 +31,7 @@ void		ft_sappend(t_stream *stream)
 	if ((kill = stream->search))
 	{
 		stream->search = ft_strjoin(stream->search, stream->buf);
-		free(kill);
+		ft_freegiveone((void**)&kill);
 		stream->shindex = stream->config->hindex;
 		ft_searchinhistory(stream);
 		ft_modifycommand(stream);

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:51:46 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/14 10:26:53 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/19 16:40:05 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@
 # define END 0x464F1B //end
 # define HOM 0x484F1B //home
 # define NUL 0x00 //\0
+# define ESC 0x1b //escape
 
 #endif
