@@ -18,6 +18,7 @@ void		ft_print_list(t_list *elem)
 	{
 		ft_putstr("\nargv :\n");
 		ft_putstrtab((char **)(elem->data), '\n');
+		ft_putchar('\n');
 	}
 	else
 	{
