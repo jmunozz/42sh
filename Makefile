@@ -28,6 +28,11 @@ history/searchengine.c \
 history/sprompt.c \
 run_command/files.c \
 run_command/fork.c \
+run_command/lexer.c \
+run_command/lexer_av.c \
+run_command/lexer_env_var.c \
+run_command/lexer_match_op.c \
+run_command/lexer_quote.c \
 scan_input/arrowlr.c \
 scan_input/arrowud.c \
 scan_input/autocomp.c \

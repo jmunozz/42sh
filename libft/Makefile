@@ -32,7 +32,7 @@ BASIC = ft_bzero.c ft_freegiveone.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 	ft_strncpy.c ft_strnequ.c ft_strnew.c ft_strnstr.c ft_strrchr.c \
 	ft_strslashjoin.c ft_strsplit.c ft_strstr.c ft_strsub.c ft_strtabdup.c \
 	ft_strtabfind.c ft_strtabfree.c ft_strtrim.c ft_tolower.c ft_toupper.c \
-	ft_strtabadd.c ft_strtabdiv.c
+	ft_strtabadd.c ft_strtabdiv.c ft_strtabiter.c ft_strinsert.c
 BASICS = $(foreach B, $(BASIC), basics/$(B))
 SRCS = $(SRC) $(LISTS) $(BASICS)
 OBJ = $(SRCS:.c=.o)
