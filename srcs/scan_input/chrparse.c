@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/14 12:32:30 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/19 16:42:54 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void			ft_flushend(t_stream *stream)
 {
 	size_t		size;
 
-	if (stream->search && stream->search[0])
+	if (stream->search)
 		ft_flushsearch(stream);
 	else if (stream->command && stream->command[0])
 	{
@@ -72,7 +72,7 @@ static int		ft_chrmatch(t_stream *stream)
 {
 	static ssize_t		match[] = {CLF, SUP, CHT, DEL,
 		LEF, RIG, UPP, DOW,
-		CLEF, CRIG, CUPP, CDOW, END, HOM, CRS, NUL};
+		CLEF, CRIG, CUPP, CDOW, END, HOM, CRS, ESC, NUL};
 	int					i;
 
 	i = 0;
@@ -95,7 +95,7 @@ int				ft_chrparse(t_stream *stream)
 	static void			(*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp,
 			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
 			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
-			&ft_goend, &ft_gohome, &ft_searchengine};
+			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend};
 
 	if (!(match = ft_chrmatch(stream)))
 		return (0);

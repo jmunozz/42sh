@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/11 20:59:10 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/12 18:05:34 by tboos            ###   ########.fr       */
+/*   Updated: 2016/09/19 16:12:25 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	ft_down_search(t_stream *stream)
 
 void	ft_down(t_stream *stream)
 {
+	if (stream->search)
+		ft_searchengine(stream);
 	if (stream->shindex != stream->config->hindex)
 	{
 		ft_incr_history(&(stream->shindex));

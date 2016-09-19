@@ -43,6 +43,8 @@ int				ft_putcharint(int	i);
 void			ft_tputs(t_stream *stream);
 void			ft_mvleft(t_stream *stream);
 void			ft_mvright(t_stream *stream);
+void			ft_gomatch(t_stream *stream, unsigned int go,
+							void (*mv)(t_stream *));
 /*
 **arrowlr.c && arrowud.c
 */
@@ -86,6 +88,7 @@ void			ft_push_history(t_stream *stream, t_config *config);
 void			ft_load_history(t_config *config);
 void			ft_purge_history(t_config *config);
 void			ft_searchengine(t_stream *stream);
+void			ft_searchengineend(t_stream *stream);
 void			ft_sappend(t_stream *stream);
 void			ft_sdel(t_stream *stream);
 void			ft_sprompt(t_stream *stream);
