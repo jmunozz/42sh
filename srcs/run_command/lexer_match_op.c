@@ -15,7 +15,6 @@ static char		*ft_reduc(size_t *i, size_t j)
 
 char			*ft_match_op(char *cmd, size_t *i)
 {
-	char	*op;
 	char	buf[8];
 	size_t	j;
 
@@ -36,8 +35,8 @@ char			*ft_match_op(char *cmd, size_t *i)
 			buf[j] = cmd[*i];
 		else if ((j == 2 || j == 3) && !(cmd[*i] = 0))
 			return (ft_reduc(i, j));
+		else
+			buf[j] = cmd[*i];
 	}
-	if (!(op = ft_strdup(buf)))
-		ft_error(SHNAME, "lexer", "malloc error", CR_ERROR);
-	return (op);
+	return (ft_strdup(buf));
 }
