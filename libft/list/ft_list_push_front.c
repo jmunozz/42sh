@@ -36,16 +36,15 @@ void		ft_dclist_push_front(t_dclist **begin_list, void *data,
 	}
 }
 
-void		ft_list_push_front(t_list **begin_list, void *data,
-			size_t data_size)
+void		ft_list_push_front(t_list **begin_list, t_list *elem)
 {
 	t_list	*p;
 
 	if (*begin_list == NULL)
-		*begin_list = ft_lstnew(data, data_size);
+		*begin_list = elem;
 	else
 	{
-		p = ft_lstnew(data, data_size);
+		p = elem;
 		p->next = *begin_list;
 		(*begin_list) = p;
 	}

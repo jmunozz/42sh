@@ -34,6 +34,13 @@ static void	ft_pwd(char **argv, t_config *config)
 		ft_putendl(config->pwd);
 }
 
+int			ft_is_no_fork_builtin(char *argv)
+{
+	if (!ft_strcmp(argv, "exit"))
+		return (1);
+	return (0);
+}
+
 int			ft_builtin(char **argv, t_config *config)
 {
 	if (!ft_strcmp(argv[0], "exit"))

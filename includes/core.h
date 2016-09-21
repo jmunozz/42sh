@@ -37,10 +37,12 @@ typedef struct	s_config
 	char		*hloc;
 	int			hindex;
 	int			last_state;
+	t_list		*jobs;
 }				t_config;
 /*
 **builtin.c && environ.c
 */
+int				ft_is_no_fork_builtin(char *argv);
 int				ft_default_env(t_config *config);
 int				ft_builtin(char **argv, t_config *config);
 void			ft_update_pwd(t_config *config);
@@ -61,13 +63,18 @@ void			ft_term_error(t_config *config);
 */
 int				ft_pathtohash(t_config *config);
 char			*ft_return_binpath(t_config *config, char *name);
+int				ft_proscmp(void *pid1, void *pid2);
 int				ft_ascii_cmp(t_bin *s1, t_bin *s2);
 /*
-**free.c
+**free.c && free_pros.c
 */
 void			ft_shell_exit(t_config *config, char **argv);
 void			ft_freebin(void *data, size_t data_size);
 void			ft_free_config(t_config *config);
+void			ft_freepros(t_list *kill);
+void			ft_free_one_process(t_list **process, pid_t pid);
+void			ft_free_all_process(t_list **process, int mode);
+void			ft_free_all_jobs(t_list **job);
 /*
 **main.c && minishell.c
 */

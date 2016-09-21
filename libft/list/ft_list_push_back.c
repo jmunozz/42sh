@@ -33,17 +33,17 @@ void	ft_dclist_push_back(t_dclist **begin_list, void *data, size_t data_size)
 	}
 }
 
-void	ft_list_push_back(t_list **begin_list, void *data, size_t data_size)
+void	ft_list_push_back(t_list **begin_list, t_list *elem)
 {
 	t_list	*p;
 
 	if (*begin_list == NULL)
-		*begin_list = ft_lstnew(data, data_size);
+		*begin_list = elem;
 	else
 	{
 		p = (*begin_list);
 		while (p->next != NULL)
 			p = p->next;
-		p->next = ft_lstnew(data, data_size);
+		p->next = elem;
 	}
 }
