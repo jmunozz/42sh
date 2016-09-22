@@ -2,9 +2,14 @@
 
 static int		*ft_close_pipe(int *new, int *old)
 {
-	close(old[0]);
-	close(old[1]);
-	return (new);
+	if (old)
+	{
+		close(old[0]);
+		close(old[1]);
+	}
+	if (new)
+		return (new);
+	return (NULL);
 }
 
 static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
@@ -18,7 +23,7 @@ static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
 	if (begin->next && begin->next->data_size == PIPE)
 	{
 		dup2(((int *)(begin->next->data))[1], STDOUT_FILENO);
-		close(((int *)(begin->next->data))[1]);
+		close(((int *)(begin->next->data))[0]);
 		close(((int *)(begin->next->data))[1]);
 	}
 	ft_signal_reset();

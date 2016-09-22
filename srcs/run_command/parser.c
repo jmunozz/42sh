@@ -31,6 +31,7 @@ static int		ft_build_pipe(t_list *begin)
 				return (ft_error(SHNAME, "parser", "malloc error on pipe", CR_ERROR));
 			if (-1 == pipe(pip))
 				return (ft_error(SHNAME, "parser", "pipe error", CR_ERROR));
+			ft_freegiveone((void**)&(begin->data));
 			begin->data_size = PIPE;
 			begin->data = (void*)pip;
 		}
