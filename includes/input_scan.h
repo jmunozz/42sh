@@ -8,7 +8,7 @@
 # define TDL "\x1b[K"
 # define TCD "\x1b[J"
 # define TSC "\x1b[s"
-# define TRC "\x1b[s"
+# define TRC "\x1b[u"
 
 typedef struct	s_stream
 {
