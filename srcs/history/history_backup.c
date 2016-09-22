@@ -2,7 +2,7 @@
 
 static int	ft_safeputstr(int fd, char *str)
 {
-	if (str && 0 > write(fd, str, ft_strlen(str)))
+	if (str && (0 > write(fd, "|", 1) || 0 > write(fd, str, ft_strlen(str))))
 	{
 		ft_error(SHNAME, NULL, SAVE_H_ERR, CR_ERROR | SERROR);
 		ft_freegiveone((void **)&str);

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:16 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/19 16:12:10 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/22 15:36:52 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	ft_goend(t_stream *stream)
 {
 	if (stream->command)
 		while (stream->command[stream->pos])
-			ft_right(stream);
+			ft_mvright(stream);
 }
 
 void	ft_gohome(t_stream *stream)
 {
 	while (stream->pos)
-		ft_left(stream);
+		ft_mvleft(stream);
 }
 
 void	ft_ctrlup(t_stream *stream)
