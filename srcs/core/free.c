@@ -33,6 +33,7 @@ void	ft_free_config(t_config *config)
 {
 	if (config)
 	{
+		ft_free_all_jobs(&(config->jobs));
 		ft_freegiveone((void **)&(config->pwd));
 		if (config->env)
 			ft_strtabfree(config->env);

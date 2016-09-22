@@ -12,27 +12,26 @@
 
 #include "minishell.h"
 
-void		ft_fewef(char *command, char **argv, char **env)
+void		ft_execve(char **argv, char **env, t_config *config)
 {
-	pid_t		father;
-	int			stat_loc;
-	char		buf[3];
+	char	*path;
+	char	*bin;
 
-	stat_loc = 0;
-	if (-1 > (father = fork()))
-		ft_error(SHNAME, "fork fail for", command, CR_ERROR | SERROR);
-	else if (father == 0)
+	path = argv[0];
+	bin = ft_return_binpath(config, path);
+	if (ft_access_exec(bin ? bin : path, argv, config))
 	{
-		ft_signal_reset();
-		execve(command, argv, env);
+		if (-1 == execve(bin ? bin : path, argv, env))
+			ft_error(SHNAME, "exec", "execve error", CR_ERROR);
 	}
-	else
-		while (father != 0)
-		{
-			ft_bzero(buf, 3);
-			if (waitpid(father, &stat_loc, WNOHANG) > 0)
-				break ;
-		}
+}
+
+void		ft_launch_process(t_list *begin, t_config *config)
+{
+
+	if (ft_builtin((char **)(begin->data), config))
+		return ;
+	ft_execve((char **)(begin->data), config->env, config);
 }
 
 void		ft_kill_father(t_config *config)
