@@ -19,7 +19,7 @@ static t_list	*ft_cut_lst(t_list *begin, char	*op)
 	return (begin);
 }
 
-static int		ft_build_pipe(t_list *begin)
+int			ft_build_pipe(t_list *begin)
 {
 	int		*pip;
 
@@ -34,6 +34,7 @@ static int		ft_build_pipe(t_list *begin)
 			ft_freegiveone((void**)&(begin->data));
 			begin->data_size = PIPE;
 			begin->data = (void*)pip;
+			break ;
 		}
 		begin = begin->next;
 	}
