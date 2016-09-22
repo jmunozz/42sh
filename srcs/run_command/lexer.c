@@ -58,7 +58,7 @@ t_list			*ft_lexer(char *cmd, t_config *config)
 			i--;
 		if (!(next = ft_op_handle(cmd, &i, &next, config)))
 			return (ft_freelist(begin));
-		while (cmd[i] == ' ')
+		while (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == '\n')
 			++i;
 		if (cmd[i] && !(next->next = (t_list *)ft_memalloc(sizeof(t_list)))
 			&& ft_error(SHNAME, "lexer", "malloc error", CR_ERROR))

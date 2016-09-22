@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/16 11:19:58 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/21 17:04:55 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ void			ft_tputs(t_stream *stream)
 		ft_putstr_fd(TCD, stream->fd);
 	else if (stream->tput[0] == 'd' && stream->tput[1] == 'o')
 		ft_putstr_fd(TDO, stream->fd);
+	else if (stream->tput[0] == 's')
+		ft_putstr_fd(TSC, stream->fd);
+	else if (stream->tput[0] == 'r')
+		ft_putstr_fd(TRC, stream->fd);
 	else
 		ft_putstr_fd(TDL, stream->fd);
 }
@@ -50,16 +54,17 @@ void			ft_mvleft(t_stream *stream)
 {
 	unsigned int	i;
 
+	i = 0;
 	if (stream->pos)
 	{
-		if ((stream->config->prompt_len + stream->pos) % stream->col)
+		if (stream->command[stream->pos - 1] != '\n'
+			&& (stream->config->prompt_len + stream->pos) % stream->col)
 		{
 			stream->tput = "le";
 			ft_tputs(stream);
 		}
 		else
 		{
-			i = 0;
 			stream->tput = "nd";
 			while (++i <= stream->col)
 				ft_tputs(stream);
@@ -67,6 +72,8 @@ void			ft_mvleft(t_stream *stream)
 			ft_tputs(stream);
 		}
 		stream->pos--;
+		if (i)
+			ft_checknewline(stream);
 	}
 }
 
@@ -77,7 +84,7 @@ void			ft_mvright(t_stream *stream)
 	if (stream->command)
 	{
 		if (((stream->config->prompt_len + stream->pos) % stream->col)
-			!= stream->col - 1)
+			!= stream->col - 1 && stream->command[stream->pos] != '\n')
 		{
 			stream->tput = "nd";
 			ft_tputs(stream);

@@ -40,6 +40,7 @@ run_command/wait.c \
 scan_input/arrowlr.c \
 scan_input/arrowud.c \
 scan_input/autocomp.c \
+scan_input/checknewline.c \
 scan_input/chrparse.c \
 scan_input/deletion.c \
 scan_input/prompt.c \

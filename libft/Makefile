@@ -6,7 +6,7 @@
 #   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        #
 #                                                +#+#+#+#+#+   +#+           #
 #   Created: 2015/11/04 18:24:51 by tboos             #+#    #+#             #
-#   Updated: 2015/11/05 00:11:36 by tboos            ###   ########.fr       #
+#*   Updated: 2016/09/21 11:10:11 by rbaran           ###   ########.fr       *#
 #                                                                            #
 # ************************************************************************** #
 .PHONY: mrproper
@@ -32,7 +32,7 @@ BASIC = ft_bzero.c ft_freegiveone.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 	ft_strncpy.c ft_strnequ.c ft_strnew.c ft_strnstr.c ft_strrchr.c \
 	ft_strslashjoin.c ft_strsplit.c ft_strstr.c ft_strsub.c ft_strtabdup.c \
 	ft_strtabfind.c ft_strtabfree.c ft_strtrim.c ft_tolower.c ft_toupper.c \
-	ft_strtabadd.c ft_strtabdiv.c ft_strtabiter.c ft_strinsert.c
+	ft_strtabadd.c ft_strtabdiv.c ft_strtabiter.c ft_strinsert.c ft_isspace.c
 BASICS = $(foreach B, $(BASIC), basics/$(B))
 SRCS = $(SRC) $(LISTS) $(BASICS)
 OBJ = $(SRCS:.c=.o)
