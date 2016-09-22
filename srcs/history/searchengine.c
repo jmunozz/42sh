@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/13 12:07:27 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/19 16:57:48 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/21 17:51:39 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void		ft_searchengineend(t_stream *stream)
 	int	index;
 
 	index = -1;
+	ft_winsize();
 	if (stream->search)
 	{
 		if (stream->command && stream->search[0])
 			index = ft_strstri(stream->command, stream->search);
 		ft_freegiveone((void**)&(stream->search));
 		stream->search = NULL;
-		ft_winsize();
 		if (index != -1)
 			ft_gomatch(stream, (size_t)index, &ft_mvleft);
 	}

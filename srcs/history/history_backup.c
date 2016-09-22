@@ -18,7 +18,7 @@ void		ft_purge_history(t_config *config)
 	int		fd;
 
 	if ((fd = open(config->hloc, O_CREAT | O_WRONLY
-		| O_TRUNC, S_IRUSR | S_IWUSR)) < 0)
+					| O_TRUNC, S_IRUSR | S_IWUSR)) < 0)
 		ft_error(SHNAME, NULL, SAVE_H_ERR, CR_ERROR | SERROR);
 	else
 	{
@@ -27,7 +27,7 @@ void		ft_purge_history(t_config *config)
 		{
 			ft_incr_history(&i);
 			if (!ft_safeputstr(fd, config->history[i])
-				|| i == config->hindex)
+					|| i == config->hindex)
 				break ;
 			if (config->history[i])
 				write(fd, "\n", 1);
@@ -37,18 +37,42 @@ void		ft_purge_history(t_config *config)
 	}
 }
 
+static void	ft_fill_history(t_config *config, char *tmp)
+{
+	char	*kill;
+
+	if (tmp[0] == '|')
+	{
+		if (config->history[config->hindex]
+				&& config->history[config->hindex][0])
+			ft_incr_history(&(config->hindex));
+		ft_freegiveone((void **)&(config->history[config->hindex]));
+		config->history[config->hindex] = (char*)ft_memmove(tmp, tmp + 1
+										,ft_strlen(tmp));
+	}
+	else if (config->history[config->hindex])
+	{
+		kill = config->history[config->hindex];
+		config->history[config->hindex] = ft_strjoin(kill, "\n");
+		ft_freegiveone((void**)&kill);
+		kill = config->history[config->hindex];
+		config->history[config->hindex] = ft_strjoin(kill, tmp);
+		ft_freegiveone((void**)&kill);
+		ft_freegiveone((void**)&tmp);
+	}
+}
+
 void		ft_load_history(t_config *config)
 {
 	int		fd;
+	char	*tmp;
 
 	if ((fd = open(config->hloc, O_RDONLY)) < 0)
 		ft_error(SHNAME, NULL, LOAD_H_ERR, CR_ERROR | SERROR);
 	else
 	{
-		while (ft_freegiveone((void **)&(config->history[config->hindex]))
-			&& get_next_line(fd, &(config->history[config->hindex])) > 0)
-			if (config->history[config->hindex][0])
-				ft_incr_history(&(config->hindex));
+		while (get_next_line(fd, &tmp) > 0)
+			ft_fill_history(config, tmp);
 		get_next_line(-1, NULL);
 		close(fd);
 	}

@@ -7,6 +7,8 @@
 # define TND "\x1b[C"
 # define TDL "\x1b[K"
 # define TCD "\x1b[J"
+# define TSC "\x1b[s"
+# define TRC "\x1b[s"
 
 typedef struct	s_stream
 {
@@ -101,4 +103,8 @@ t_stream		*ft_save_stream(t_stream *stream);
 void			ft_winsize(void);
 void			ft_prompt_reset(t_stream *stream);
 
+/*
+--checknewline.c
+*/
+void			ft_checknewline(t_stream *stream);
 #endif

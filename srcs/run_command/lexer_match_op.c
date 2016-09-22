@@ -48,7 +48,7 @@ char			*ft_match_op(char *cmd, size_t *i)
 			return (ft_agregation((char*)buf, i, cmd, &j));
 		else if (cmd[*i] != buf[j - 1] && !(cmd[*i + 1] = 0))
 			return (ft_reduc(i, j));
-		else if ((j == 2 || j == 3) && !(cmd[*i] = 0))
+		else if ((j >= 2) && !(cmd[*i] = 0))
 			return (ft_reduc(i, j));
 		else
 			buf[j] = cmd[*i];
