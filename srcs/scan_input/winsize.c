@@ -20,6 +20,8 @@ void ft_prompt_reset(t_stream *stream)
 	{
 		stream->tput = "rc";
 		ft_tputs(stream);
+		stream->tput = "sc";
+		ft_tputs(stream);
 		stream->tput = "cd";
 		ft_tputs(stream);
 	}

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/19 16:42:54 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/22 15:45:41 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,6 @@ void			ft_flushend(t_stream *stream)
 		size = ft_strlen(stream->command + stream->pos);
 		ft_putstr(stream->command + stream->pos);
 		stream->pos += size;
-		if (!((stream->pos + stream->config->prompt_len) % stream->col))
-		{
-			ft_putstr ("   ");
-			stream->pos += 3;
-		}
 	}
 	ft_erase(stream);
 }
