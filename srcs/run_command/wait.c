@@ -8,7 +8,7 @@ int		ft_wait(t_list **process)
 	while (1)
 	{
 		stat_loc = 0;
-		if ((pid = waitpid(-1, &stat_loc, WNOHANG)) > 0)
+		if ((pid = waitpid(-1, &stat_loc, 0)) > 0)
 		{
 			if (WIFSTOPPED(stat_loc))
 				return (1);

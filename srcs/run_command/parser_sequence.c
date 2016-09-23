@@ -35,6 +35,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 {
 	t_list	*new;
 	pid_t	pid;
+	pid_t	*mem;
 
 	if (!ft_quote_handle(&begin, config))
 	{
@@ -53,7 +54,8 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	}
 	else if (!pid)
 		ft_pipe_process(begin, config, r_pipe);
-	else if (!(new = ft_lstnew((void *)&pid, PROS)))
+	else if (!(mem = (pid_t*)ft_memalloc(sizeof(pid_t))) || !(*mem = pid)
+		|| !(new = ft_lstnew((void *)mem, PROS)))
 		ft_error(SHNAME, "parser", "malloc error on process control", CR_ERROR);
 	return (new);
 }
