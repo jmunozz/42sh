@@ -15,7 +15,7 @@
 void			ft_gomatch(t_stream *stream, unsigned int go,
 							void (*mv)(t_stream *))
 {
-	while (stream->pos > go)
+	while (stream->pos != go)
 		mv(stream);
 }
 

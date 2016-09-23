@@ -9,40 +9,29 @@ t_stream		*ft_save_stream(t_stream *stream)
 	return (saved);
 }
 
-static size_t	ft_count_line(t_stream *stream)
+static void		ft_secure_prompt(t_stream *stream)
 {
-	size_t	lin;
-	size_t	pos;
-	size_t	col;
-
-	pos = -1;
-	col = (stream->config->prompt_len - 1) % stream->col;
-	lin = (stream->config->prompt_len - 1) / stream->col;
-	if (stream->command)
-		while (++pos <= stream->pos)
-		{
-			++col;
-			if (stream->command[pos] == '\n'
-				|| col - 1 == stream->col)
-			{
-				++lin;
-				col = 0;
-			}
-		}
-	return (lin);
+	ft_prompt(stream->config);
+	if (!((stream->pos + stream->config->prompt_len) % stream->col))
+	{
+		ft_putstr(" ");
+		stream->tput = "le";
+		ft_tputs(stream);
+	}
 }
 
 void			ft_prompt_reset(t_stream *stream)
 {
-	size_t			col;
 	struct winsize	w;
+	size_t			col;
 	size_t			lin;
 
 	ioctl(stream->fd, TIOCGWINSZ, &w);
 	col = w.ws_col;
 	if (stream->col)
 	{
-		lin = ft_count_line(stream);
+		ft_gohome(stream);
+		lin = stream->config->prompt_len / stream->col;
 		stream->tput = "up";
 		while (lin--)
 			ft_tputs(stream);
@@ -53,7 +42,7 @@ void			ft_prompt_reset(t_stream *stream)
 		ft_tputs(stream);
 	}
 	stream->col = col;
-	ft_prompt(stream->config);
+	ft_secure_prompt(stream);
 }
 
 void			ft_winsize(void)
@@ -62,10 +51,10 @@ void			ft_winsize(void)
 	unsigned int	pos;
 
 	stream = ft_save_stream(NULL);
+	pos = stream->pos;
 	ft_prompt_reset(stream);
 	if (stream->command)
 	{
-		pos = stream->pos;
 		stream->pos = 0;
 		ft_flushend(stream);
 		ft_gomatch(stream, pos, ft_mvleft);
