@@ -36,6 +36,11 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	t_list	*new;
 	pid_t	pid;
 
+	if (!ft_quote_handle(&begin, config))
+	{
+		ft_error(SHNAME, "parser", "malloc error handling quote", CR_ERROR);
+		return (NULL);
+	}
 	if (ft_is_no_fork_builtin(((char**)(begin->data))[0]))
 	{
 		ft_launch_process(begin, config);

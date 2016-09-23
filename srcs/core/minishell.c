@@ -32,7 +32,7 @@ void		ft_run_command(t_config *config, char *cmd)
 {
 	t_list		*begin;
 
-	if ((begin = ft_lexer(cmd, config)))
+	if ((begin = ft_lexer(cmd)))
 		ft_lstiter(begin, ft_print_list);
 	ft_freegiveone((void**)&cmd);
 	ft_parse(begin, config);
