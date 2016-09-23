@@ -17,7 +17,7 @@ typedef struct	s_stream
 	int			ret;
 	int			shindex;
 	int			state;
-	char		buf[9];
+	char		buf[256];
 	char		*command;
 	char		*kill;
 	char		*search;

@@ -55,8 +55,8 @@ static void	ft_scan(t_stream *stream)
 	stream->shindex = stream->config->hindex;
 	while (1)
 	{
-		ft_bzero(stream->buf, 9);
-		if (((stream->ret = read(stream->fd, stream->buf, 8)) < 0
+		ft_bzero(stream->buf, 255);
+		if (((stream->ret = read(stream->fd, stream->buf, 255)) < 0
 			&& !ft_try_again(stream) && (stream->state = -1))
 			|| (!ft_chrparse(stream) && (!stream->command
 			|| (ft_quotecheck(stream))))
