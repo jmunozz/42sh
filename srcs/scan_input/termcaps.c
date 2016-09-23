@@ -42,10 +42,6 @@ void			ft_tputs(t_stream *stream)
 		ft_putstr_fd(TCD, stream->fd);
 	else if (stream->tput[0] == 'd' && stream->tput[1] == 'o')
 		ft_putstr_fd(TDO, stream->fd);
-	else if (stream->tput[0] == 's')
-		ft_putstr_fd(TSC, stream->fd);
-	else if (stream->tput[0] == 'r')
-		ft_putstr_fd(TRC, stream->fd);
 	else
 		ft_putstr_fd(TDL, stream->fd);
 }
