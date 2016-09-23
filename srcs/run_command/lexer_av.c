@@ -41,7 +41,7 @@ static char	**ft_strdodgesplit(char *s, char c)
 		else
 			++s;
 	}
-	nb += (*(s - 1) != c ? 1 : 0);
+	nb += ((*(s - 1) && *(s - 1) != c) ? 1 : 0);
 	if (!(t = (char **)ft_memalloc(sizeof(char *) * (nb + 1))))
 		return NULL;
 	return (sft_tabdup(t, m, c, nb));
