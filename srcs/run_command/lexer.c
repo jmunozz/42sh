@@ -8,6 +8,8 @@ void			ft_list_free_av(void *data, size_t data_size)
 {
 	if (!data_size && data)
 		ft_strtabfree((char **)data);
+	else if (data_size == 1 || data_size == 2)
+		free(data);
 }
 
 t_list			*ft_freelist(t_list *begin)
