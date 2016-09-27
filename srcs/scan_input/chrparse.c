@@ -24,7 +24,14 @@ void			ft_flushend(t_stream *stream)
 		ft_putstr(stream->command + stream->pos);
 		stream->pos += size;
 	}
-	ft_erase(stream);
+	if (!((stream->pos + stream->config->prompt_len) % stream->col))
+	{
+		ft_putstr(" ");
+		stream->tput = "le";
+		ft_tputs(stream);
+	}
+	else
+		ft_erase(stream);
 }
 
 void			ft_flush(t_stream *stream)

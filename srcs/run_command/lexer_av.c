@@ -41,7 +41,7 @@ static char	**ft_strdodgesplit(char *s, char c)
 		else
 			++s;
 	}
-	nb += (*(s - 1) != c ? 1 : 0);
+	nb += ((*(s - 1) && *(s - 1) != c) ? 1 : 0);
 	if (!(t = (char **)ft_memalloc(sizeof(char *) * (nb + 1))))
 		return NULL;
 	return (sft_tabdup(t, m, c, nb));
@@ -58,8 +58,7 @@ int				ft_dodge_quote(char *cmd, size_t i)
 	return (i + 1);
 }
 
-static t_list	**ft_av_handle(char *cmd, size_t i, t_list **next,
-				t_config *config)
+static t_list	**ft_av_handle(char *cmd, size_t i, t_list **next)
 {
 	char	**t;
 	char	c[2];
@@ -83,16 +82,15 @@ static t_list	**ft_av_handle(char *cmd, size_t i, t_list **next,
 	cmd[i] = c[0];
 	(*next)->data = (void*)t;
 	(*next)->data_size = 0;
-	return (ft_quote_handle(next, config));
+	return (next);
 }
 
-t_list		*ft_op_handle(char *cmd, size_t *i, t_list **next,
-			t_config *config)
+t_list		*ft_op_handle(char *cmd, size_t *i, t_list **next)
 {
 	if (!*i && !(cmd[*i + 1] = 0)
 		&& ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR))
 		return NULL;
-	if (!(next = ft_av_handle(cmd, *i, next, config)))
+	if (!(next = ft_av_handle(cmd, *i, next)))
 		return NULL;
 	if (cmd[*i])
 	{

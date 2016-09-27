@@ -23,10 +23,9 @@ int				ft_access_exec(char *path, char **argv, t_config *config);
 */
 void			ft_list_free_av(void *data, size_t data_size);
 t_list			*ft_freelist(t_list *begin);
-t_list			*ft_lexer(char *cmd, t_config *config);
+t_list			*ft_lexer(char *cmd);
 char			*ft_envvarinsert(char *cmd, size_t *i, t_config *config);
-t_list			*ft_op_handle(char *cmd, size_t *i, t_list **next,
-				t_config *config);
+t_list			*ft_op_handle(char *cmd, size_t *i, t_list **next);
 int				ft_dodge_quote(char *cmd, size_t i);
 t_list			**ft_quote_handle(t_list **next, t_config *config);
 char			*ft_match_op(char *cmd, size_t *i);

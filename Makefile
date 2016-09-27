@@ -27,15 +27,15 @@ history/history_search_up.c \
 history/scanchr.c \
 history/searchengine.c \
 history/sprompt.c \
+run_command/env_var_replace.c \
 run_command/exec.c \
 run_command/files.c \
 run_command/lexer.c \
 run_command/lexer_av.c \
-run_command/lexer_env_var.c \
 run_command/lexer_match_op.c \
-run_command/lexer_quote.c \
 run_command/parser.c \
 run_command/parser_sequence.c \
+run_command/quote_replace.c \
 run_command/wait.c \
 scan_input/arrowlr.c \
 scan_input/arrowud.c \

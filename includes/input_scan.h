@@ -7,8 +7,6 @@
 # define TND "\x1b[C"
 # define TDL "\x1b[K"
 # define TCD "\x1b[J"
-# define TSC "\x1b[s"
-# define TRC "\x1b[u"
 
 typedef struct	s_stream
 {
@@ -17,7 +15,7 @@ typedef struct	s_stream
 	int			ret;
 	int			shindex;
 	int			state;
-	char		buf[9];
+	char		buf[256];
 	char		*command;
 	char		*kill;
 	char		*search;

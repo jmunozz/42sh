@@ -2,6 +2,7 @@
 
 void	ft_freepros(t_list *kill)
 {
+	free(kill->data);
 	free(kill);
 }
 

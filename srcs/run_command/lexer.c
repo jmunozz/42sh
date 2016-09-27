@@ -8,6 +8,8 @@ void			ft_list_free_av(void *data, size_t data_size)
 {
 	if (!data_size && data)
 		ft_strtabfree((char **)data);
+	else if (data_size == 1 || data_size == 2)
+		free(data);
 }
 
 t_list			*ft_freelist(t_list *begin)
@@ -39,7 +41,7 @@ static int		ft_next_op(char *cmd, size_t i)
 	return (i);
 }
 
-t_list			*ft_lexer(char *cmd, t_config *config)
+t_list			*ft_lexer(char *cmd)
 {
 	size_t	i;
 	t_list	*begin;
@@ -56,7 +58,7 @@ t_list			*ft_lexer(char *cmd, t_config *config)
 		i = ft_next_op(cmd, i);
 		if (i && (cmd[i] == '>' || cmd[i] == '<') && ft_isdigit(cmd[i - 1]))
 			i--;
-		if (!(next = ft_op_handle(cmd, &i, &next, config)))
+		if (!(next = ft_op_handle(cmd, &i, &next)))
 			return (ft_freelist(begin));
 		while (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == '\n')
 			++i;

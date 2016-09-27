@@ -89,7 +89,7 @@ void		ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(),
 
 	if (begin_list && *begin_list)
 	{
-		while (*begin_list && cmp((*begin_list)->data, data_ref) == 0)
+		while (*begin_list && !cmp((*begin_list)->data, data_ref))
 		{
 			rabbit = *begin_list;
 			(*begin_list) = (*begin_list)->next;
