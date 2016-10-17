@@ -37,7 +37,6 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	pid_t	pid;
 	pid_t	*mem;
 
-	mem = NULL;
 	new = NULL;
 	if (!ft_quote_handle(&begin, config))
 	{
@@ -78,7 +77,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 		else if (begin->data_size == PIPE)
 		{
 			r_pipe = ft_close_pipe((int*)(begin->data), r_pipe);
-			if (ft_build_pipe(begin->next))
+			if (ft_build_pipe(begin->next, config, r_pipe))
 				return (process);
 		}
 		begin = begin->next;

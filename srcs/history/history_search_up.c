@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/11 20:15:54 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/19 16:13:54 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/09/22 16:54:32 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	ft_up(t_stream *stream)
 			stream->state = -2;
 			return ;
 		}
-		ft_winsize();
 	}
 	else
 		ft_down(stream);
+	ft_winsize();
 }

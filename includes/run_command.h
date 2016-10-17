@@ -32,9 +32,13 @@ char			*ft_match_op(char *cmd, size_t *i);
 /*
 **parser.c
 */
-int				ft_build_pipe(t_list *begin);
+int				ft_build_pipe(t_list *begin, t_config *config);
 void			ft_parse(t_list *begin, t_config *config);
  t_list			*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe);
+/*
+**redirectpipe.c
+*/
+void			ft_agregate(t_list *begin, int *pip, char *tmp, t_config *config);
 /*
 **wait.c
 */
