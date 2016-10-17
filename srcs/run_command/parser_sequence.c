@@ -37,6 +37,8 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	pid_t	pid;
 	pid_t	*mem;
 
+	mem = NULL;
+	new = NULL;
 	if (!ft_quote_handle(&begin, config))
 	{
 		ft_error(SHNAME, "parser", "malloc error handling quote", CR_ERROR);
