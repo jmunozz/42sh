@@ -34,13 +34,41 @@
    return (NULL);
    }
    */
+
+char	*get_begin(t_stream *stream, int *len)
+{
+	int i;
+
+	i = stream->pos - 1;
+	ft_putnbr(i);
+	while (i >= 0 && (stream->command)[i] != ' ')
+	{
+		if (i > 0)
+			i -= 1;
+		*len += 1;
+	}
+	return (&(stream->command[i]));
+}
+
 void	ft_autocomp(t_stream *stream)
 {
 	int		buf_pos;
+	int		len;
+	char	*begin;
 
+	len = 0;
 	buf_pos = stream->pos;
 	if (stream->command)
+	{
 		while (stream->command[stream->pos] != ' ' && stream->command[stream->pos])
 			ft_mvright(stream);
+		begin = get_begin(stream, &len);
+		if (!len)
+			ft_underline_mess("standard", stream);
+		else
+		{
+			ft_underline_mess(begin, stream);
+		}
+	}
 }
 
