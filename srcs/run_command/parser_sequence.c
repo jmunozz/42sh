@@ -77,7 +77,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 		else if (begin->data_size == PIPE)
 		{
 			r_pipe = ft_close_pipe((int*)(begin->data), r_pipe);
-			if (ft_build_pipe(begin->next, config, r_pipe))
+			if (ft_build_pipe(begin->next, config))
 				return (process);
 		}
 		begin = begin->next;
