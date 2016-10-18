@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 12:13:28 by rbaran            #+#    #+#             */
-/*   Updated: 2016/10/17 12:57:43 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/10/18 13:52:35 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	ft_redirectpipe(t_list *begin, int *pip, t_config *config, char *tmp
 	close(fd);
 }
 
-void		ft_agregate(t_list *begin, int *pip, char *tmp, t_config *config)
+static void	ft_agregate(t_list *begin, int *pip, char *tmp, t_config *config)
 {
 	t_list	*kill;
 
@@ -58,4 +58,31 @@ void		ft_agregate(t_list *begin, int *pip, char *tmp, t_config *config)
 			ft_agregate(begin, pip, tmp, config);
 		}
 	}
+}
+
+int			ft_build_pipe(t_list *begin, t_config *config)
+{
+	int		*pip;
+	char	*tmp;
+
+	tmp = NULL;
+	while (begin)
+	{
+		if (begin->data_size && (!ft_strcmp((char *)(begin->data), "|")
+			|| !ft_strncmp((char *)(begin->data), ">", 1)))
+		{
+			if (!(pip = (int *)ft_memalloc(sizeof(int) * 2)))
+				return (ft_error(SHNAME, "parser", "malloc error on pipe", CR_ERROR));
+			if (-1 == pipe(pip))
+				return (ft_error(SHNAME, "parser", "pipe error", CR_ERROR));
+			tmp = (char*)begin->data;
+			begin->data_size = PIPE;
+			begin->data = (void*)pip;
+			break ;
+		}
+		begin = begin->next;
+	}
+	if (begin && begin->data_size == PIPE)
+		ft_agregate(begin, pip, tmp, config);
+	return (0);
 }

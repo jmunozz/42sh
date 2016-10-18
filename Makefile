@@ -35,9 +35,9 @@ run_command/lexer_av.c \
 run_command/lexer_match_op.c \
 run_command/parser.c \
 run_command/parser_sequence.c \
+run_command/pipehandle.c \
 run_command/quote_replace.c \
 run_command/wait.c \
-run_command/redirectpipe.c \
 scan_input/arrowlr.c \
 scan_input/arrowud.c \
 scan_input/autocomp.c \
