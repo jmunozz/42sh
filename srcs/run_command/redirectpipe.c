@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 12:13:28 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/28 16:32:28 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/10/17 12:57:43 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		ft_agregate(t_list *begin, int *pip, char *tmp, t_config *config)
 
 	if (!ft_strncmp(tmp, "|", 1) && ft_freegiveone((void**)&(tmp)))
 		return ;
-	if (!ft_strncmp(tmp, ">", 1) || !ft_strncmp(tmp, "<", 1))
+	if (!ft_strncmp(tmp, ">", 1))
 			ft_redirectpipe(begin, pip, config, tmp);
 	if (begin->next && begin->next->data)
 	{

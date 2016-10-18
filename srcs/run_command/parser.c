@@ -19,7 +19,7 @@ static t_list	*ft_cut_lst(t_list *begin, char	*op)
 	return (begin);
 }
 
-int			ft_build_pipe(t_list *begin, t_config *config, int *r_pipe)
+int			ft_build_pipe(t_list *begin, t_config *config)
 {
 	int		*pip;
 	char	*tmp;
@@ -42,7 +42,7 @@ int			ft_build_pipe(t_list *begin, t_config *config, int *r_pipe)
 		begin = begin->next;
 	}
 	if (begin && begin->data_size == PIPE)
-		ft_agregate(begin, r_pipe, tmp, config);
+		ft_agregate(begin, pip, tmp, config);
 	return (0);
 }
 /*
@@ -63,10 +63,10 @@ static void		ft_sentence(t_list *begin, t_config *config)
 {
 	t_list	*job;
 	char	*sentence;
-	int		r_pipe;
+	//int		r_pipe;
 
 	sentence = NULL;
-	if ((r_pipe = ft_build_r_pipe(begin, config, NULL)))
+	if ((ft_build_pipe(begin, config)))
 		return ;
 	if ((job = ft_run_sentence(begin, config, NULL)))
 		ft_wait_sentence(job, sentence, config);
