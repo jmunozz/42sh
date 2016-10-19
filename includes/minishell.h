@@ -28,7 +28,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <pwd.h>
-# include "libft.h"
+# include "../libft/includes/libft.h"
 # include "core.h"
 # include "input_scan.h"
 # include "run_command.h"

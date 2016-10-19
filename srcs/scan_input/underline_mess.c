@@ -29,13 +29,13 @@ int			ft_underline_mess(char *mess, t_stream *stream)
 
 	pos_buf = stream->pos;
 	ft_goend(stream);
-	stream->tput = "do";
+	stream->tput = "do"; // move the cursor one line down
 	ft_tputs(stream);
-	stream->tput = "le";
+	stream->tput = "le"; // move the cursor left one column
 	i = stream->col;
 	while (i--)
 		ft_tputs(stream);
-	stream->tput = "cd";
+	stream->tput = "cd"; //clear line cursor and all lines below.
 	ft_tputs(stream);
 	ft_putmess(stream, mess);
 	if (stream->command)

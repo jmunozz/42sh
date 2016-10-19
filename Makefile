@@ -39,7 +39,6 @@ run_command/quote_replace.c \
 run_command/wait.c \
 scan_input/arrowlr.c \
 scan_input/arrowud.c \
-scan_input/autocomp.c \
 scan_input/checknewline.c \
 scan_input/chrparse.c \
 scan_input/deletion.c \
@@ -49,6 +48,9 @@ scan_input/streamscan.c \
 scan_input/termcaps.c \
 scan_input/underline_mess.c \
 scan_input/winsize.c \
+autocomp/autocomp.c \
+autocomp/getenv.c \
+autocomp/buildlist.c \
 
 ifeq ($(OS), Linux)
 	FLAGS += -D LINUX

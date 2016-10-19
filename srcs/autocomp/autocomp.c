@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/autocomp.h"
 
 /*
    static void	get_autocomp(t_stream *stream)
@@ -35,40 +35,90 @@
    }
    */
 
-char	*get_begin(t_stream *stream, int *len)
+char	*list_to_char(t_list *list)
 {
-	int i;
+	char *str;
 
-	i = stream->pos - 1;
-	ft_putnbr(i);
-	while (i >= 0 && (stream->command)[i] != ' ')
+	str = ft_strnew(1000);
+	while (list)
 	{
-		if (i > 0)
-			i -= 1;
+		str = ft_strcat(str, (char*)list->data);
+		str = ft_strcat(str, "\n");
+		list = list->next;
+	}
+	return (str);
+}
+
+int		ft_is_separator(char c)
+{
+	if (c == ';')
+		return (1);
+	if (c == '"')
+		return (1);
+	if (c == '&')
+		return (1);
+	if (c == '|')
+		return (1);
+	if (c == ' ')
+		return (1);
+	return (0);
+}
+
+int		get_mode(int len, char *str, t_stream *stream)
+{
+	int		i;
+	char	co;
+
+	co = 0;
+	i = (stream->pos) - len - 1;
+	while (i >= 0 && str[i] != '|' && str[i] != ';')
+	{
+		if (str[i] != ' ' && str[i] != '|' && str[i] != ';')
+			co = 1;
+		i--;
+	}
+	if (!len)
+		return (!co ? 1 : 0);
+	return (!co ? 3 : 2);
+}
+
+
+char	*get_begin(int i, char *str, int *len)
+{
+	while (i >= 0 && !ft_is_separator(str[i]))
+	{
+		i -= 1;
 		*len += 1;
 	}
-	return (&(stream->command[i]));
+	return (&(str[++i]));
 }
 
 void	ft_autocomp(t_stream *stream)
 {
-	int		buf_pos;
-	int		len;
-	char	*begin;
+	int			buf_pos;
+	int			len;
+	int			mode;
+	char		*begin;
+	t_list		*list;
 
+	list = NULL;
 	len = 0;
 	buf_pos = stream->pos;
 	if (stream->command)
 	{
-		while (stream->command[stream->pos] != ' ' && stream->command[stream->pos])
+		while (!ft_is_separator(stream->command[stream->pos])
+				&& stream->command[stream->pos])
 			ft_mvright(stream);
-		begin = get_begin(stream, &len);
-		if (!len)
-			ft_underline_mess("standard", stream);
+		begin = ft_strsub(get_begin(stream->pos - 1,
+				stream->command,  &len), 0, len);
+		mode = get_mode(len, stream->command, stream);
+		//ft_underline_mess(begin, stream);
+		build_list(&list, begin, mode, stream);
+		if (list)
+			ft_underline_mess(list_to_char(list), stream);
 		else
-		{
-			ft_underline_mess(begin, stream);
-		}
+			ft_underline_mess("pas de liste\n", stream);
+		free(begin);
 	}
 }
 

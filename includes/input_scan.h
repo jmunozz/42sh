@@ -20,7 +20,7 @@ typedef struct	s_stream
 	char		*kill;
 	char		*search;
 	size_t		pos;
-	size_t		col;
+	size_t		col; //nb de colomnes dans une ligne.
 	t_config	*config;
 }				t_stream;
 /*

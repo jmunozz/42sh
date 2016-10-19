@@ -32,6 +32,7 @@ void	ft_strtabfree(char **mtab);
 ** SIZING
 */
 size_t	ft_strlen(const char *s);
+int		ft_strlenc(char *str, char c);
 int		ft_strtablen(char **t);
 
 /*
