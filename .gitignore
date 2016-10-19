@@ -2,4 +2,6 @@
 *.a
 *.swp
 tmp*
-minishell
+21sh
+*test*
+*.bck
