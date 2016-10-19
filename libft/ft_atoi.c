@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/09 22:11:28 by rbaran            #+#    #+#             */
-/*   Updated: 2016/03/15 10:08:35 by rbaran           ###   ########.fr       */
+/*   Created: 2015/11/04 18:24:51 by tboos             #+#    #+#             */
+/*   Updated: 2016/02/22 20:25:28 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include "libft.h"
 
-int		ft_atoi(const char *nptr)
+int		ft_atoi(char *str)
 {
-	int		res;
-	int		signe;
+	int target;
+	int signe;
 
-	res = 0;
 	signe = 1;
-	while (*nptr == ' ' || *nptr == '\t' || *nptr == '\n' || *nptr == '\v' ||
-		*nptr == '\f' || *nptr == '\r')
-		nptr++;
-	if (*nptr == '-')
+	target = 0;
+	while (*str == ' ' || *str == '\n' || *str == '\t'
+			|| *str == '\f' || *str == '\r' || *str == '\v')
+		str++;
+	if (*str == '-')
 		signe = -1;
-	if (*nptr == '-' || *nptr == '+')
-		nptr++;
-	while (*nptr <= '9' && *nptr >= '0')
+	if (*str == '-' || *str == '+')
+		str++;
+	while ('9' >= *str && *str >= '0' && *str)
 	{
-		res = (res * 10) + (*nptr - '0');
-		nptr++;
+		target = (target * 10) + (*str - '0');
+		str++;
 	}
-	return (res * signe);
+	return (target * signe);
 }
