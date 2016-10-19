@@ -37,10 +37,11 @@ static void		ft_sentence(t_list *begin, t_config *config)
 {
 	t_list	*job;
 	char	*sentence;
-	//int		r_pipe;
+	int		*r_pipe;
 
 	sentence = NULL;
-	if ((ft_build_pipe(begin, config)))
+	r_pipe = NULL;
+	if ((ft_build_pipe(begin, config, &r_pipe)))
 		return ;
 	if ((job = ft_run_sentence(begin, config, NULL)))
 		ft_wait_sentence(job, sentence, config);
