@@ -1,29 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/04 18:24:51 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/10 13:51:32 by tboos            ###   ########.fr       */
+/*   Created: 2016/02/11 21:06:30 by rbaran            #+#    #+#             */
+/*   Updated: 2016/03/30 11:41:35 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <libft.h>
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(char const *s, int fd)
 {
 	write(fd, s, ft_strlen(s));
-}
-
-void	ft_putstr_str_str_fd(char *name, char *file,
-		char *error, int fd)
-{
-	if (name)
-		ft_putstr_fd(name, fd);
-	if (file)
-		ft_putstr_fd(file, fd);
-	if (error)
-		ft_putstr_fd(error, fd);
 }

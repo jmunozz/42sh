@@ -3,72 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/04 18:24:51 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/16 14:40:04 by tboos            ###   ########.fr       */
+/*   Created: 2016/02/02 11:32:11 by rbaran            #+#    #+#             */
+/*   Updated: 2016/03/15 10:09:57 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <libft.h>
 
-static char	*ft_nbrchar(char *nbr, int n, int i)
+static size_t	ft_countnbsize(int n)
 {
-	while (n)
+	size_t	size;
+
+	size = 1;
+	while (n / 10)
 	{
-		nbr[i] = '0' - (n % 10);
-		n = n / 10;
-		i--;
+		n /= 10;
+		size++;
 	}
-	return (nbr);
+	if (n < 0)
+		size++;
+	return (size);
 }
 
-char		*ft_st_itoa(int n)
+char			*ft_itoa(int n)
 {
-	int			m;
-	int			i;
-	static char	nbr[12];
+	char	*str;
+	int		limit;
+	int		size;
 
-	i = -1;
-	m = n;
-	while (m)
-	{
-		m = m / 10;
-		i++;
-	}
-	if (n <= 0)
-		i++;
-	bzero(nbr, 12);
+	limit = 0;
 	if (n < 0)
-		nbr[0] = '-';
-	if (n > 0)
-		n = -n;
-	if (!n)
-		nbr[0] = '0';
-	return (ft_nbrchar(nbr, n, i));
-}
-
-char		*ft_itoa(int n)
-{
-	int			m;
-	int			i;
-	char		*nbr;
-
-	i = -1;
-	m = n;
-	while (m)
+		limit = 1;
+	size = (int)ft_countnbsize(n);
+	str = ft_strnew((size_t)size);
+	if (str)
 	{
-		m = m / 10;
-		i++;
+		while (--size >= limit)
+		{
+			if (limit == 0)
+				str[size] = '0' + (n % 10);
+			else
+				str[size] = '0' + (-(n % 10));
+			n /= 10;
+		}
+		if (limit == 1)
+			str[size] = '-';
 	}
-	if (n <= 0)
-		i++;
-	nbr = ft_strnew(i + 1);
-	if (n < 0)
-		nbr[0] = '-';
-	if (n > 0)
-		n = -n;
-	if (!n)
-		nbr[0] = '0';
-	return (ft_nbrchar(nbr, n, i));
+	return (str);
 }

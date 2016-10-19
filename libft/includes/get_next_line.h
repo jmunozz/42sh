@@ -3,31 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/02/09 14:23:09 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/23 17:14:39 by tboos            ###   ########.fr       */
+/*   Created: 2016/03/02 14:22:50 by rbaran            #+#    #+#             */
+/*   Updated: 2016/04/13 15:20:15 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# define BUFF_SIZE 1024
 
-# include "libft.h"
-# define BUFF_SIZE 511
-# define MALLOC (t_line *)ft_memalloc(sizeof(t_line))
-# define RET begin->ret
-# define DATA begin->data
-# define READ 0
-# define FIND 1
-
-typedef struct		s_line
+typedef struct	s_fd
 {
-	char			data[BUFF_SIZE + 1];
-	int				ret;
-	int				fd;
-	struct s_line	*next;
-}					t_line;
+	int			fd;
+	char		*line;
+	char		*begin_line;
+	struct s_fd	*next;
+}				t_fd;
 
-int					get_next_line(int const fd, char **line);
+int				get_next_line(int const fd, char **line);
+
 #endif
