@@ -12,14 +12,16 @@
 
 #include "minishell.h"
 
-static int	ft_redirectpipe(t_list *begin, int *pip, t_config *config, char *tmp)
+static int	ft_redirectpipe(t_list *begin, int *pip, t_config *config,
+			char *tmp)
 {
 	int	flags;
 	int	fd;
 
 	flags = 0;
 	fd = -1;
-	if ((!begin->next || !tmp) && ft_error(SHNAME, "parser", "redirection error", CR_ERROR))
+	if ((!begin->next || !tmp)
+		&& ft_error(SHNAME, "parser", "redirection error", CR_ERROR))
 		return (1);
 	if (!ft_strcmp(tmp, ">"))
 		flags = O_CREAT | O_WRONLY | O_TRUNC;
@@ -30,7 +32,8 @@ static int	ft_redirectpipe(t_list *begin, int *pip, t_config *config, char *tmp)
 	ft_quote_handle(&(begin->next), config);
 	if ((fd = open(((char**)begin->next->data)[0], flags,
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1
-		&& ft_error(SHNAME, ((char**)begin->next->data)[0], "file does not exist", CR_ERROR))
+		&& ft_error(SHNAME, ((char**)begin->next->data)[0],
+		"file does not exist", CR_ERROR))
 		return (1);
 	(flags == O_RDONLY) ? dup2(fd, pip[0]) : dup2(fd, pip[1]);
 	close(fd);
