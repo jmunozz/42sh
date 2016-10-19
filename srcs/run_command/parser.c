@@ -43,7 +43,7 @@ static void		ft_sentence(t_list *begin, t_config *config)
 	r_pipe = NULL;
 	if ((ft_build_pipe(begin, config, &r_pipe)))
 		return ;
-	if ((job = ft_run_sentence(begin, config, NULL)))
+	if ((job = ft_run_sentence(begin, config, r_pipe)))
 		ft_wait_sentence(job, sentence, config);
 }
 
