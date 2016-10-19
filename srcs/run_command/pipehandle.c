@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 12:13:28 by rbaran            #+#    #+#             */
-/*   Updated: 2016/10/19 13:40:42 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/10/19 17:31:57 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,32 +38,6 @@ static int	ft_redirectpipe(t_list *begin, int *pip, t_config *config,
 	(flags == O_RDONLY) ? dup2(fd, pip[0]) : dup2(fd, pip[1]);
 	close(fd);
 	return (0);
-}
-
-static void	ft_agregate(t_list *begin, int *pip, char *tmp, t_config *config)
-{
-	t_list	*kill;
-
-	if (!ft_strncmp(tmp, "|", 1) && ft_freegiveone((void**)&(tmp)))
-		return ;
-	if (!ft_strncmp(tmp, ">", 1) && ft_redirectpipe(begin, pip, config, tmp))
-		return ;
-	if (begin->next && begin->next->data)
-	{
-		ft_freegiveone((void**)&(tmp));
-		ft_strtabfree((char**)(begin->next->data));
-		kill = begin->next;
-		begin->next = begin->next->next;
-		ft_freegiveone((void**)&(kill));
-		if (begin->next)
-		{
-			tmp = (char*)(begin->next->data);
-			kill = begin->next;
-			begin->next = begin->next->next;
-			ft_freegiveone((void**)&(kill));
-			ft_agregate(begin, pip, tmp, config);
-		}
-	}
 }
 
 static int	ft_newpipe(int **pip)
@@ -100,6 +74,34 @@ static int	ft_build_r_pipe(t_list **begin, t_config *config, int **r_pipe)
 	return (0);
 }
 
+static void	ft_agregate(t_list *begin, int **r_pipe, char *tmp, t_config *config)
+{
+	t_list	*kill;
+
+	if (!ft_strncmp(tmp, "|", 1) && ft_freegiveone((void**)&(tmp)))
+		return ;
+	if (!ft_strncmp(tmp, ">", 1) && ft_redirectpipe(begin, begin->data, config, tmp))
+		return ;
+	if (!ft_strncmp(tmp, "<", 1) && ft_build_r_pipe(&(begin->next), config, r_pipe))
+		return ;
+	if (begin->next && begin->next->data)
+	{
+		ft_freegiveone((void**)&(tmp));
+		ft_strtabfree((char**)(begin->next->data));
+		kill = begin->next;
+		begin->next = begin->next->next;
+		ft_freegiveone((void**)&(kill));
+		if (begin->next)
+		{
+			tmp = (char*)(begin->next->data);
+			kill = begin->next;
+			begin->next = begin->next->next;
+			ft_freegiveone((void**)&(kill));
+			ft_agregate(begin, r_pipe, tmp, config);
+		}
+	}
+}
+
 int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
 {
 	int		*pip;
@@ -126,6 +128,6 @@ int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
 			begin = begin->next;
 	}
 	if (begin && begin->data_size == PIPE)
-		ft_agregate(begin, pip, tmp, config);
+		ft_agregate(begin, r_pipe, tmp, config);
 	return (0);
 }
