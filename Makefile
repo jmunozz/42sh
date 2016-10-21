@@ -30,6 +30,7 @@ history/sprompt.c \
 run_command/env_var_replace.c \
 run_command/exec.c \
 run_command/files.c \
+run_command/heredoc.c \
 run_command/lexer.c \
 run_command/lexer_av.c \
 run_command/lexer_match_op.c \

@@ -40,5 +40,9 @@ void			ft_parse(t_list *begin, t_config *config);
 */
 int				ft_wait(t_list **process);
 void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
+/*
+**heredoc.c
+*/
+void			ft_heredoc(char *cmd, size_t *i, t_list **next);
 
 #endif
