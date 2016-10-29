@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	ft_putmess(t_stream *stream, char *mess)
+void	ft_putmess(t_stream *stream, char *mess)
 {
 	size_t			i;
 
@@ -22,7 +22,7 @@ static void	ft_putmess(t_stream *stream, char *mess)
 
 }
 
-int			ft_underline_mess(char *mess, t_stream *stream)
+int		ft_underline_mess(char *mess, t_stream *stream)
 {
 	size_t			i;
 	unsigned int	pos_buf;
@@ -46,6 +46,6 @@ int			ft_underline_mess(char *mess, t_stream *stream)
 	stream->tput = "nd";
 	while (i--)
 		ft_tputs(stream);
-	ft_gomatch(stream, pos_buf, ft_mvleft);
+//	ft_gomatch(stream, pos_buf, ft_mvleft);
 	return (0);
 }

@@ -1,7 +1,7 @@
 .PHONY: fclean re
 .SUFFIXES:
 NAME = 21sh
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Werror
 FLAGSPOSIX = -ansi -pedantic -D_POSIX_SOURCE=1
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
@@ -43,6 +43,7 @@ scan_input/autocomp.c \
 scan_input/checknewline.c \
 scan_input/chrparse.c \
 scan_input/deletion.c \
+scan_input/globing.c \
 scan_input/prompt.c \
 scan_input/quotecheck.c \
 scan_input/streamscan.c \

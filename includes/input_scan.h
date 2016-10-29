@@ -23,6 +23,15 @@ typedef struct	s_stream
 	size_t		col;
 	t_config	*config;
 }				t_stream;
+
+typedef struct	s_globing
+{
+	t_list		*lstmp;
+	t_list		*lstprint;
+	int			ret;
+	int			mode;
+	char		*path;
+}				t_globing;
 /*
 **streamscan.c
 */
@@ -30,6 +39,7 @@ char			*ft_streamscan(t_config *config, t_stream *stream, int fd);
 /*
 **underlinemess.c
 */
+void			ft_putmess(t_stream *stream, char *mess);
 int				ft_underline_mess(char *mess, t_stream *stream);
 /*
 **quotecheck.c
@@ -73,6 +83,16 @@ int				ft_chrparse(t_stream *stream);
 **autocomp.c
 */
 void			ft_autocomp(t_stream *stream);
+/*
+**globing.c
+*/
+void			ft_loop_path(t_stream *stream, t_globing *data);
+int				ft_search_chr(char *str, char c);
+int				ft_checkdir(t_stream *stream, t_list *list, t_globing *glob, char *path, char *needle);
+/*
+**outputfile.c
+*/
+void			ft_print_output(char *str);
 /*
 **prompt.c
 */
