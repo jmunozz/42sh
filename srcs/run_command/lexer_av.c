@@ -101,9 +101,10 @@ t_list		*ft_op_handle(char *cmd, size_t *i, t_list **next)
 		if (!((*next)->data = (void*)ft_match_op(cmd, i))
 			&& ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR))
 			return NULL;
-		if (!ft_strcmp((*next)->data, "<<"))
-			ft_heredoc(cmd, i, next);
-		(*next)->data_size = 1;
+		if (!ft_strcmp((*next)->data, "<<") && (*next)->data_size = HEREDOC)
+			ft_heredocmode(1);
+		else
+			(*next)->data_size = 1;
 	}
 	return (*next);
 }
