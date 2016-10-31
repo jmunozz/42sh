@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/28 13:24:08 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/10/26 15:12:14 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,13 @@ void		ft_run_command(t_config *config, char *cmd)
 	t_list		*begin;
 
 	if ((begin = ft_lexer(cmd)))
+	{
+		if (ft_heredocmode(0))
+			ft_heredoc(begin);
 		ft_lstiter(begin, ft_print_list);
+		ft_parse(begin, config);
+	}
 	ft_freegiveone((void**)&cmd);
-	ft_parse(begin, config);
 }
 
 void		ft_minishell(t_config *config)

@@ -1,10 +1,24 @@
 
 #include "minishell.h"
 
-void	ft_heredoc(char *cmd, size_t *i, t_list **next)
+int		ft_heredocmode(int mode)
 {
-	next = NULL;
-	while (ft_isspace(*(cmd + ++(*i))));
-	ft_putstr(cmd + *i);
+	static int	status = 0;
+	int			tmp;
+	
+	tmp = status;
+	status = mode;
+	return (tmp);
+}
+
+void	ft_heredoc(t_list *begin)
+{
+	while (begin && begin->data_size != HEREDOC)
+		begin = begin->next;
+	if (begin)
+	{
+		
+		ft_heredoc(begin);
+	}
 	return ;
 }
