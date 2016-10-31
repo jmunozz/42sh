@@ -8,7 +8,7 @@ size_t	ft_strtabtotallen(char	**tab)
 	while (*tab)
 	{
 		len += ft_strlen(*tab);
-		++(*tab);
+		++tab;
 	}
 	return (len);
 }
@@ -31,7 +31,7 @@ char	*ft_strtabchrjoin(char **tab, char c)
 			result[len] = c;
 			++len;
 		}
-		++(*tab);
+		++tab;
 	}
 	return (result);
 }

@@ -2,12 +2,27 @@
 
 void		ft_signal_handle(int i)
 {
-	if (i == SIGWINCH)
-		ft_winsize();
-	if (i == SIGINT)
-		++i;
-	if (i == SIGTSTP)
-		++i;
+	t_stream *stream;
+
+	if ((stream = ft_save_stream(NULL)) && stream->config)
+	{
+		if (i == SIGWINCH)
+			ft_winsize();
+		if (i == SIGINT)
+		{
+			if (stream->config->shell_state == RUNNING_COMMAND)
+				stream->config->shell_state = SIGINT_COMMAND;
+			else
+				stream->state = REPROMPT;
+		}
+		if (i == SIGTSTP && stream->config->shell_state == RUNNING_COMMAND)
+			stream->config->shell_state = SIGTSTP_COMMAND;
+	}
+	else
+	{
+		stream->config->shell_state = SIGINT_COMMAND;
+		ft_error(SHNAME, NULL, "error while handling signal", CR_ERROR);
+	}
 	ft_signal();
 }
 
@@ -29,9 +44,9 @@ void		ft_signal_reset(void)
 
 int			ft_signal(void)
 {
-//	if (SIG_ERR == signal(SIGINT, &ft_signal_handle))
-//		return (ft_status(1));
-//	if (SIG_ERR == signal(SIGTSTP, &ft_signal_handle))
-//		return (ft_status(1));
+	if (SIG_ERR == signal(SIGINT, &ft_signal_handle))
+		return (ft_status(1));
+	if (SIG_ERR == signal(SIGTSTP, &ft_signal_handle))
+		return (ft_status(1));
 	return (0);
 }

@@ -30,24 +30,21 @@ static void		ft_termios_handle(t_config *config, int mode)
 
 	if (!state && ft_init_term(config))
 		state = 1;
-	if (mode && state)
-	{
-		if (tcsetattr(STDIN_FILENO, TCSADRAIN, &(config->termios)) == -1)
-		{
-			ft_error(SHNAME, NULL, TERM_ERR, CR_ERROR);
-			return ;
-		}
-	}
-	else if (!mode && state)
-		tcsetattr(STDIN_FILENO, TCSANOW, &(config->termios_backup));
+	if (mode && state
+		&& (tcsetattr(STDIN_FILENO, TCSADRAIN, &(config->termios)) == -1))
+		ft_error(SHNAME, NULL, TERM_ERR, CR_ERROR);
+	else if (!mode && state
+		&& (-1 == tcsetattr(STDIN_FILENO, TCSANOW, &(config->termios_backup))))
+		ft_error(SHNAME, NULL, RESET_TERM_ERR, CR_ERROR);
 	return ;
 }
 
-static int	ft_try_again(t_stream *stream)
+static void	ft_ctrl_d(t_stream *stream)
 {
-	if ((stream->ret = read(stream->fd, stream->buf, 8)) < 0)
-		return false;
-	return true;
+	ft_gohome(stream);
+	ft_freegiveone((void**)&(stream->command));
+	stream->command = ft_strdup("exit");
+	ft_winsize();
 }
 
 static void	ft_scan(t_stream *stream)
@@ -57,7 +54,8 @@ static void	ft_scan(t_stream *stream)
 	{
 		ft_bzero(stream->buf, 255);
 		if (((stream->ret = read(stream->fd, stream->buf, 255)) < 0
-			&& !ft_try_again(stream) && (stream->state = -1))
+			&& (stream->state = -1))
+			|| stream->buf[0] == CTRLD
 			|| (!ft_chrparse(stream) && (!stream->command
 			|| (ft_quotecheck(stream))))
 			|| stream->state < 0)
@@ -79,11 +77,11 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 	ft_sigwinch(0);
 	ft_termios_handle(config, 0);
 	ft_freegiveone((void **)(&(stream->search)));
-	if (stream->state < 0)
-	{
+	if (stream->buf[0] == CTRLD)
+		ft_ctrl_d(stream);
+	if (stream->state < 0 && ft_freegiveone((void **)(&(stream->command)))
+		&& stream->state != REPROMPT)
 		ft_error(SHNAME, NULL, SCAN_ERR, FCR_ERROR);
-		ft_freegiveone((void **)(&(stream->command)));
-	}
 	if (stream->command && stream->command[0]
 		&& stream->shindex == config->hindex)
 	{

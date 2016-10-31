@@ -12,7 +12,7 @@ static t_list	*ft_cut_lst(t_list *begin, char	*op)
 		{
 			begin = begin->next;
 			free(memo->next->data);
-			ft_freegiveone((void **)(memo->next));
+			ft_freegiveone((void **)&(memo->next));
 			break ;
 		}
 	}
@@ -33,7 +33,7 @@ char		*ft_built_sentence(t_list *begin)
 		else
 			tocpy = (char *)begin->data;
 		if (sentence)
-			tmp = ft_strchrjoin(sentence, tocpy, ' ');
+			tmp = ft_strchrjoin(sentence, ' ', tocpy);
 		else
 			tmp = ft_strdup(tocpy);
 		if (tmp && ft_freegiveone((void **)&sentence))
@@ -52,7 +52,6 @@ static void		ft_sentence(t_list *begin, t_config *config)
 	int		*r_pipe;
 
 	sentence = ft_built_sentence(begin);
-dprintf(1, "%s\n", sentence);
 	r_pipe = NULL;
 	if ((ft_build_pipe(begin, config, &r_pipe)))
 		return ;

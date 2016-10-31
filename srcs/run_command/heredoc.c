@@ -10,7 +10,7 @@ int		ft_heredocmode(int mode)
 	status = mode;
 	return (tmp);
 }
-
+/*
 void	ft_heredoc(t_list *begin)
 {
 	while (begin && begin->data_size != HEREDOC)
@@ -22,3 +22,4 @@ void	ft_heredoc(t_list *begin)
 	}
 	return ;
 }
+*/

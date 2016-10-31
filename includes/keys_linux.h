@@ -30,5 +30,6 @@
 # define HOM 0x484F1B //home
 # define NUL 0x00 //\0
 # define ESC 0x1b //escape
+# define CTRLD 0x4 //CTRL D
 
 #endif

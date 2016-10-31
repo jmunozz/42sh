@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+static void	ft_gotonextline(t_stream *stream)
+{
+	ft_putchar('\n');
+	stream->tput = "le";
+	ft_tputs(stream);
+	ft_tputs(stream);
+}
+
 void		ft_print_list(t_list *elem)
 {
 	if (!elem->data_size)
@@ -34,8 +42,8 @@ void		ft_run_command(t_config *config, char *cmd)
 
 	if ((begin = ft_lexer(cmd)))
 	{
-		if (ft_heredocmode(0))
-			ft_heredoc(begin);
+//		if (ft_heredocmode(0))
+//			ft_heredoc(begin);
 		ft_lstiter(begin, ft_print_list);
 		ft_parse(begin, config);
 	}
@@ -53,5 +61,11 @@ void		ft_minishell(t_config *config)
 	ft_save_stream(&stream);
 	while (1)
 		if ((cmd = ft_streamscan(config, &stream, 0)))
+		{
+			config->shell_state = RUNNING_COMMAND;
 			ft_run_command(config, cmd);
+			if (config->shell_state != RUNNING_COMMAND)
+				ft_gotonextline(&stream);
+			config->shell_state = SCANNING_COMMAND;
+		}
 }
