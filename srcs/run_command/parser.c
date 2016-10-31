@@ -19,27 +19,40 @@ static t_list	*ft_cut_lst(t_list *begin, char	*op)
 	return (begin);
 }
 
-/*
-static char		*ft_build_sentence(t_list *begin)
+char		*ft_built_sentence(t_list *begin)
 {
 	char	*tmp;
 	char	*sentence;
+	char	*tocpy;
 
-	sentence = ft_strdup((char *);
+	sentence = NULL;
 	while (begin)
 	{
-		tmp = sentence;
-		sentence = ft_strjoin(sentence
+		if (!begin->data_size)
+			tocpy = ft_strtabchrjoin((char **)begin->data, ' ');
+		else
+			tocpy = (char *)begin->data;
+		if (sentence)
+			tmp = ft_strchrjoin(sentence, tocpy, ' ');
+		else
+			tmp = ft_strdup(tocpy);
+		if (tmp && ft_freegiveone((void **)&sentence))
+			sentence = tmp;
+		if (!begin->data_size)
+			ft_freegiveone((void **)&tocpy);
+		begin = begin->next;
 	}
+	return (sentence);
 }
-*/
+
 static void		ft_sentence(t_list *begin, t_config *config)
 {
 	t_list	*job;
 	char	*sentence;
 	int		*r_pipe;
 
-	sentence = NULL;
+	sentence = ft_built_sentence(begin);
+dprintf(1, "%s\n", sentence);
 	r_pipe = NULL;
 	if ((ft_build_pipe(begin, config, &r_pipe)))
 		return ;
