@@ -25,8 +25,14 @@ void		ft_print_list(t_list *elem)
 	if (!elem->data_size)
 	{
 		ft_putstr("\nargv :\n");
-		ft_putstrtab((char **)(elem->data), '\n');
+		if (elem->data)
+			ft_putstrtab((char **)(elem->data), '\n');
 		ft_putchar('\n');
+	}
+	else if (elem->data_size == SSHELL)
+	{
+		ft_putstr("\nSSHELL :\n");
+		ft_lstiter((t_list *)elem->data, ft_print_list);
 	}
 	else
 	{
@@ -40,11 +46,14 @@ void		ft_run_command(t_config *config, char *cmd)
 {
 	t_list		*begin;
 
+	config->shell_state = RUNNING_COMMAND;
 	if ((begin = ft_lexer(cmd)))
 	{
 //		if (ft_heredocmode(0))
 //			ft_heredoc(begin);
+dprintf(1, "\nlexer result :\n");
 		ft_lstiter(begin, ft_print_list);
+dprintf(1, "\nentering parser :\n");
 		ft_parse(begin, config);
 	}
 	ft_freegiveone((void**)&cmd);
@@ -59,10 +68,10 @@ void		ft_minishell(t_config *config)
 		ft_shell_exit(config, NULL);
 	ft_load_history(config);
 	ft_save_stream(&stream);
+	config->shell_state = SCANNING_COMMAND;
 	while (1)
 		if ((cmd = ft_streamscan(config, &stream, 0)))
 		{
-			config->shell_state = RUNNING_COMMAND;
 			ft_run_command(config, cmd);
 			if (config->shell_state != RUNNING_COMMAND)
 				ft_gotonextline(&stream);

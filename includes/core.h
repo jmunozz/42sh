@@ -59,10 +59,11 @@ void			ft_unsetenv(char **argv, t_config *config);
 /*
 **error.c
 */
+char			*ft_shname_or_file(char	*name);
+size_t			ft_script_line(int mode);
 int				ft_error(char *name, char *other, char *mess, int mode);
 int				ft_initerror(t_config *config);
 void			ft_lexer_error(char *command);
-void			ft_term_error(t_config *config);
 /*
 **hash.c && cmp.c
 */

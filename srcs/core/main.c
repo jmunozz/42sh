@@ -21,24 +21,19 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 	i = 0;
 	while (++i < ac)
 	{
-		if ((fd = open(av[1], O_RDONLY)) < 0)
+		if ((fd = open(av[i], O_RDONLY)) < 0)
 			ft_error(SHNAME, "can't open input file", av[i], CR_ERROR | SERROR);
 		else
 		{
-			while ((get_next_line(fd, &cmd)) > 0)
+			ft_shname_or_file(av[i]);
+			ft_script_line(-1);
+			while ((get_next_line(fd, &cmd)) > 0 && ft_script_line(1))
 				ft_run_command(config, cmd);
 			get_next_line(-1, NULL);
 			close(fd);
+			ft_shname_or_file(SHNAME);
 		}
 	}
-}
-
-static void	ft_tricase(int ac, char **av, t_config *config)
-{
-	if (ac == 1)
-		ft_minishell(config);
-	ft_manage_files(ac, av, config);
-	ft_shell_exit(config, NULL);
 }
 
 static void	ft_termcaps_init(t_config *config)
@@ -49,8 +44,36 @@ static void	ft_termcaps_init(t_config *config)
 	if (i && tgetent(NULL, i + 5))
 		config->term_state = 1;
 	else
-		ft_term_error(config);
+	{
+		ft_error(SHNAME, ANSI_USE, BEAWARE_ERR, CR_ERROR);
+		config->term_state = 0;
+	}
 }
+
+static void	ft_tricase(int ac, char **av, t_config *config)
+{
+	char	*cmd;
+
+	cmd = NULL;
+	if (ac == 1)
+	{
+		if (isatty(0))
+		{
+			ft_termcaps_init(config);
+			ft_minishell(config);
+		}
+		else
+		{
+			while (get_next_line(0, &cmd) > 0 && ft_script_line(1))
+				ft_run_command(config, cmd);
+			get_next_line(-1, NULL);
+		}
+	}
+	else
+		ft_manage_files(ac, av, config);
+	ft_shell_exit(config, NULL);
+}
+
 
 static int	ft_history_loc_init(t_config *config, char *av)
 {
@@ -83,7 +106,6 @@ int			main(int ac, char **av, char **env)
 		ft_setenv("SHLVL", ft_st_itoa(ft_atoi(env[i] + 6) + 1), &config);
 	if (ft_history_loc_init(&config, av[0]))
 		return (1);
-	ft_termcaps_init(&config);
 	ft_tricase(ac, av, &config);
 	return (0);
 }

@@ -55,7 +55,8 @@ static void	ft_scan(t_stream *stream)
 		ft_bzero(stream->buf, 255);
 		if (((stream->ret = read(stream->fd, stream->buf, 255)) < 0
 			&& (stream->state = -1))
-			|| stream->buf[0] == CTRLD
+			|| (stream->buf[0] == CTRLD
+			&& (!stream->command || !stream->command[0]))
 			|| (!ft_chrparse(stream) && (!stream->command
 			|| (ft_quotecheck(stream))))
 			|| stream->state < 0)

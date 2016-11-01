@@ -34,6 +34,7 @@ run_command/heredoc.c \
 run_command/lexer.c \
 run_command/lexer_av.c \
 run_command/lexer_match_op.c \
+run_command/lexer_sshell.c \
 run_command/parser.c \
 run_command/parser_sequence.c \
 run_command/pipehandle.c \

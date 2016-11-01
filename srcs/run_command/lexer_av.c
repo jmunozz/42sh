@@ -87,24 +87,24 @@ static t_list	**ft_av_handle(char *cmd, size_t i, t_list **next)
 
 t_list		*ft_op_handle(char *cmd, size_t *i, t_list **next)
 {
-	if (!*i && !(cmd[*i + 1] = 0)
-		&& ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR))
-		return NULL;
 	if (!(next = ft_av_handle(cmd, *i, next)))
 		return NULL;
-	if (cmd[*i])
+	else if (cmd[*i] == '(' && ++(*i))
+		return (ft_lexer_sshell_on(cmd, i, next));
+	else if (cmd[*i] == ')')
+		return (ft_lexer_sshell_off(cmd, i, next));
+	else if (cmd[*i])
 	{
 		if (!((*next)->next = (t_list *)ft_memalloc(sizeof(t_list)))
 			&& ft_error(SHNAME, "lexer", "malloc error", CR_ERROR))
 			return NULL;
 		*next = (*next)->next;
+		(*next)->data_size = 1;
 		if (!((*next)->data = (void*)ft_match_op(cmd, i))
 			&& ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR))
 			return NULL;
 		if (!ft_strcmp((*next)->data, "<<") && ((*next)->data_size = HEREDOC))
 			ft_heredocmode(1);
-		else
-			(*next)->data_size = 1;
 	}
 	return (*next);
 }
