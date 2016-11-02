@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:51:46 by tboos             #+#    #+#             */
-/*   Updated: 2016/10/17 11:18:22 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/02 11:42:09 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@
 # define HOM 0x485B1B //home
 # define NUL 0x00 //\0
 # define ESC 0x1B //escape
+# define CTRLD 0x4 //CTRL D
 
 #endif
