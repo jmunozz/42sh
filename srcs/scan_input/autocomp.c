@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:29 by tboos             #+#    #+#             */
-/*   Updated: 2016/10/28 15:59:19 by maxpetit         ###   ########.fr       */
+/*   Updated: 2016/11/02 15:08:29 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int ft_check_marge(char c)
 	return (0);
 }
 
-static char *ft_get_path(t_stream *stream)
+static char *ft_get_path(t_stream *stream, t_globing *data)
 {
 	int		i;
 	int		j;
@@ -33,8 +33,10 @@ static char *ft_get_path(t_stream *stream)
 	j = ++i;
 	while (stream->command[i] && (!ft_check_marge(stream->command[i])) && ++len)
 		i++;
+	data->end = i;
 	path = ft_strnew(len);
 	path = ft_strncpy(path, &(stream)->command[j], len);
+	stream->pos = j;
 	if ((ft_strstri(path, "*")) != -1)
 		return (path);
 	return (NULL);
@@ -43,9 +45,10 @@ static char *ft_get_path(t_stream *stream)
 void	ft_autocomp(t_stream *stream)
 {
 	t_globing	data;
+	int			end;
 
 	ft_bzero(stream->buf, 4);
-	if ((data.path = ft_get_path(stream)))
+	if ((data.path = ft_get_path(stream, &data)))
 		ft_loop_path(stream, &data);
 	else
 		ft_underline_mess("NO", stream);

@@ -30,6 +30,8 @@ typedef struct	s_globing
 	t_list		*lstprint;
 	int			ret;
 	int			mode;
+	int			end;
+	int			print;
 	char		*path;
 }				t_globing;
 /*
