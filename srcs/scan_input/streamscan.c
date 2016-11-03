@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/21 17:06:45 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/10/31 13:27:45 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	ft_scan(t_stream *stream)
 		if (((stream->ret = read(stream->fd, stream->buf, 255)) < 0
 			&& !ft_try_again(stream) && (stream->state = -1))
 			|| (!ft_chrparse(stream) && (!stream->command
-			|| (ft_quotecheck(stream))))
+			|| (!stream->config->heredoc && ft_quotecheck(stream))))
 			|| stream->state < 0)
 			break ;
 	}
@@ -85,7 +85,7 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 		ft_freegiveone((void **)(&(stream->command)));
 	}
 	if (stream->command && stream->command[0]
-		&& stream->shindex == config->hindex)
+		&& stream->shindex == config->hindex && !config->heredoc)
 	{
 		ft_push_history(stream, config);
 		ft_incr_history(&(config->hindex));

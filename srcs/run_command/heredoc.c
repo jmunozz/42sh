@@ -11,14 +11,14 @@ int		ft_heredocmode(int mode)
 	return (tmp);
 }
 
-void	ft_heredoc(t_list *begin)
+void	ft_heredoc(t_list *begin, t_config *config)
 {
 	while (begin && begin->data_size != HEREDOC)
 		begin = begin->next;
-	if (begin)
+	if (begin && begin->next)
 	{
-		
-		ft_heredoc(begin);
+		config->heredoc = (char*)begin->next->data;
+		ft_heredoc(begin, config);
 	}
 	return ;
 }
