@@ -37,7 +37,7 @@ typedef struct	s_config
 	char		*hloc;
 	char		*heredoc;
 	int			hindex;
-	int			last_state;
+	char		dot_sequence;
 	t_list		*jobs;
 	int			shell_state;
 	int			last_exit;

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static t_list	*ft_cut_lst(t_list *begin, char	*op)
+static t_list	*ft_cut_lst(t_list *begin, t_config *config)
 {
 	t_list	*memo;
 
@@ -8,8 +8,12 @@ static t_list	*ft_cut_lst(t_list *begin, char	*op)
 	{
 		memo = begin;
 		begin = begin->next;
-		if (begin && begin->data_size && !ft_strcmp(op, (char*)(begin->data)))
+		if (begin && begin->data_size 
+			&& (!ft_strcmp(";", (char*)(begin->data))
+			|| !ft_strcmp("&&", (char*)(begin->data))
+			|| !ft_strcmp("||", (char*)(begin->data))))
 		{
+			config->dot_sequence = ((char*)(begin->data))[0];
 			begin = begin->next;
 			free(memo->next->data);
 			ft_freegiveone((void **)&(memo->next));
@@ -62,13 +66,21 @@ static void		ft_sentence(t_list *begin, t_config *config)
 void			ft_parse(t_list *begin, t_config *config)
 {
 	t_list	*next;
+	char	test;
 
-	while ((next = ft_cut_lst(begin, ";")))
+	config->last_exit = 0;
+	test = ';';
+	while ((next = ft_cut_lst(begin, config)))
 	{
-		ft_sentence(begin, config);
+		if (test == ';' || (test == '&' && !config->last_exit)
+			|| (test == '|' && config->last_exit))
+			ft_sentence(begin, config);
 		ft_freelist(begin);
 		begin = next;
+		test = config->dot_sequence;
 	}
-	ft_sentence(begin, config);
+	if (test == ';' || (test == '&' && !config->last_exit)
+		|| (test == '|' && config->last_exit))
+		ft_sentence(begin, config);
 	ft_freelist(begin);
 }
