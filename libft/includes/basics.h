@@ -32,6 +32,7 @@ void	ft_strtabfree(char **mtab);
 ** SIZING
 */
 size_t	ft_strlen(const char *s);
+size_t	ft_strtabtotallen(char **mtab);
 int		ft_strtablen(char **t);
 
 /*
@@ -56,6 +57,7 @@ char	**ft_strsplit(char *s, char c);
 char	**ft_strncmptabdel(char **dest, char *needle);
 char	**ft_strstrtabdel(char **dest, char *needle);
 char	**ft_strtabdiv(char **mtab, char *needle);
+char	*ft_strtabchrjoin(char **mtab, char c);
 
 /*
 ** COPY && CAT

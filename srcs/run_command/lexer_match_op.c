@@ -2,7 +2,7 @@
 
 static char		*ft_isop(char c)
 {
-	static char	t[] = "<>|;()&#";
+	static char	t[] = "<>|;&#()";
 
 	return (ft_strchr(t, c));
 }
@@ -41,17 +41,19 @@ char			*ft_match_op(char *cmd, size_t *i)
 	j = 0;
 	ft_bzero(&buf, 8);
 	buf[j] = cmd[*i];
-	while (ft_isop(cmd[++(*i)]))
+	while (cmd[++*i] && !ft_strchr("()", cmd[*i]) && ft_isop(cmd[*i]))
 	{
 		++j;
 		if (j == 1 && ft_isdigit(buf[0]) && (cmd[*i] == '>' || cmd[*i] == '<'))
 			return (ft_agregation((char*)buf, i, cmd, &j));
-		else if (cmd[*i] != buf[j - 1] && !(cmd[*i + 1] = 0))
+		else if ((cmd[*i] != buf[j - 1] || buf[0] == ';') && !(cmd[*i + 1] = 0))
 			return (ft_reduc(i, j));
 		else if ((j >= 2) && !(cmd[*i] = 0))
 			return (ft_reduc(i, j));
 		else
 			buf[j] = cmd[*i];
 	}
+	if (!cmd[*i] && ft_strchr("<>|", buf[0]))
+		return (ft_reduc(i, 1));
 	return (ft_strdup(buf));
 }

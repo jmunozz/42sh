@@ -12,6 +12,7 @@
 # define ANSI_USE "unable to get terminal, default ansi code will be use"
 # define BEAWARE_ERR "be aware display problem may occur"
 # define TERM_ERR "fail to set terminal, problems may occur"
+# define RESET_TERM_ERR "fail to reset terminal, so sorry I couldn't !"
 # define SCAN_ERR "error while scanning command"
 
 #endif

@@ -21,7 +21,7 @@ LIST = ft_list_at.c ft_list_find.c ft_list_last.c ft_list_merge.c \
 	ft_list_push_back.c ft_list_push_front.c ft_list_remove_if.c \
 	ft_list_reverse.c ft_list_size.c ft_list_sort.c ft_lstdel.c \
 	ft_lstdelone.c ft_lstiter.c ft_lstiter_if.c ft_lstmap.c ft_lstnew.c \
-	ft_sorted_list_insert.c ft_sorted_list_merge.c
+	ft_sorted_list_insert.c ft_sorted_list_merge.c ft_list_str.c
 LISTS = $(foreach L, $(LIST), list/$(L))
 BASIC = ft_bzero.c ft_freegiveone.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 	ft_isdigit.c ft_isprint.c ft_memalloc.c ft_memccpy.c ft_memchr.c \
@@ -32,7 +32,8 @@ BASIC = ft_bzero.c ft_freegiveone.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 	ft_strncpy.c ft_strnequ.c ft_strnew.c ft_strnstr.c ft_strrchr.c \
 	ft_strslashjoin.c ft_strsplit.c ft_strstr.c ft_strsub.c ft_strtabdup.c \
 	ft_strtabfind.c ft_strtabfree.c ft_strtrim.c ft_tolower.c ft_toupper.c \
-	ft_strtabadd.c ft_strtabdiv.c ft_strtabiter.c ft_strinsert.c ft_isspace.c
+	ft_strtabadd.c ft_strtabdiv.c ft_strtabiter.c ft_strtabjoin.c \
+	ft_strinsert.c ft_isspace.c
 BASICS = $(foreach B, $(BASIC), basics/$(B))
 SRCS = $(SRC) $(LISTS) $(BASICS)
 OBJ = $(SRCS:.c=.o)

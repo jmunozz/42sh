@@ -8,6 +8,10 @@
 # define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
 # define BACK_ERR "missing character after backslash"
 # define DPATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define RUNNING_COMMAND 1
+# define SCANNING_COMMAND 2
+# define SIGTSTP_COMMAND 3
+# define SIGINT_COMMAND 4
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
@@ -24,6 +28,7 @@ typedef struct	s_arguments
 }				t_arguments;
 typedef struct	s_config
 {
+	int			shell_state;
 	char		**env;
 	char		*pwd;
 	char		*pwd_subrep;
@@ -55,10 +60,11 @@ void			ft_unsetenv(char **argv, t_config *config);
 /*
 **error.c
 */
+char			*ft_shname_or_file(char	*name);
+size_t			ft_script_line(int mode);
 int				ft_error(char *name, char *other, char *mess, int mode);
 int				ft_initerror(t_config *config);
 void			ft_lexer_error(char *command);
-void			ft_term_error(t_config *config);
 /*
 **hash.c && cmp.c
 */

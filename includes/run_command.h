@@ -2,8 +2,10 @@
 # define RUN_COMMAND
 
 # include "minishell.h"
+# define OP 1
 # define PIPE 2
 # define HEREDOC 3
+# define SSHELL 4
 # define PROS 100
 # define SENT 101
 # define JOB 102
@@ -30,16 +32,18 @@ t_list			*ft_op_handle(char *cmd, size_t *i, t_list **next);
 int				ft_dodge_quote(char *cmd, size_t i);
 t_list			**ft_quote_handle(t_list **next, t_config *config);
 char			*ft_match_op(char *cmd, size_t *i);
+t_list			*ft_lexer_sshell_off(char *cmd, size_t *i, t_list **next);
+t_list			*ft_lexer_sshell_on(char *cmd, size_t *i, t_list **next);
 /*
 **parser.c
 */
+char			*ft_save_cmd(char *cmd);
 int				ft_build_pipe(t_list *begin, t_config *config, int **r_pipe);
 void			ft_parse(t_list *begin, t_config *config);
  t_list			*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe);
 /*
 **wait.c
 */
-int				ft_wait(t_list **process);
 void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
 /*
 **heredoc.c
