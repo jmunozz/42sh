@@ -5,6 +5,7 @@ static int	ft_wait(t_list **process, t_config *config)
 	int		stat_loc;
 	pid_t	pid;
 
+	config->last_exit = 0;
 	while (1)
 	{
 		stat_loc = 0;
@@ -19,7 +20,10 @@ static int	ft_wait(t_list **process, t_config *config)
 		else if (WIFSTOPPED(stat_loc))
 			return (1);
 		else if (pid && WIFEXITED(stat_loc))
+		{
 			ft_free_one_process(process, pid);
+			config->last_exit |= WEXITSTATUS(stat_loc);
+		}
 		if (!(*process))
 			return (0);
 	}
