@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/10/31 13:27:45 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/03 11:56:07 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	ft_scan(t_stream *stream)
 			|| (stream->buf[0] == CTRLD
 			&& (!stream->command || !stream->command[0]))
 			|| (!ft_chrparse(stream) && (!stream->command
-			|| (!stream->config->heredoc && ft_quotecheck(stream))))
+			|| stream->config->heredoc || ft_quotecheck(stream)))
 			|| stream->state < 0)
 			break ;
 	}

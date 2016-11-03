@@ -48,7 +48,6 @@ void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
 /*
 **heredoc.c
 */
-int				ft_heredocmode(int mode);
-void			ft_heredoc(t_list *begin, t_config *config);
+void			ft_chevron(t_list *begin, t_config *config);
 
 #endif

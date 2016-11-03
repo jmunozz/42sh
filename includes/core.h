@@ -40,7 +40,7 @@ typedef struct	s_config
 	int			term_state;
 	char		*history[HISTORY_SIZE + 1];
 	char		*hloc;
-	char		*heredoc;
+	int			heredoc;
 	int			hindex;
 	int			last_state;
 	t_list		*jobs;
