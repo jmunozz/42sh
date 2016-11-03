@@ -14,6 +14,8 @@ static int		*ft_close_pipe(int *new, int *old)
 
 static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
 {
+	int		i;
+
 	if (r_pipe)
 	{
 		dup2(r_pipe[0], STDIN_FILENO);
@@ -27,8 +29,16 @@ static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
 		close(((int *)(begin->next->data))[1]);
 	}
 	ft_signal_reset();
-	ft_launch_process(begin, config);
-	exit(0);
+	if (begin->data_size == SSHELL && (config->shell_state = RUNNING_SSHELL))
+	{
+		if ((i = ft_strtabifindstart(config->env, "SHLVL")) != -1)
+			ft_setenv("SHLVL", ft_st_itoa(ft_atoi(config->env[i] + 6) - 1),
+			config);
+		ft_parse((t_list*)begin->data, config);
+	}
+	else
+		ft_launch_process(begin, config);
+	exit(config->shell_state == RUNNING_SSHELL ? config->last_exit : 1);
 }
 
 static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
@@ -38,16 +48,13 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	pid_t	*mem;
 
 	new = NULL;
-	if (!ft_quote_handle(&begin, config))
+	if (!begin->data && !ft_quote_handle(&begin, config))
 	{
 		ft_error(SHNAME, "parser", "malloc error handling quote", CR_ERROR);
 		return (NULL);
 	}
-	if (ft_is_no_fork_builtin(((char**)(begin->data))[0]))
-	{
+	if (!begin->data_size && ft_is_no_fork_builtin(((char**)(begin->data))[0]))
 		ft_launch_process(begin, config);
-		return (NULL);
-	}
 	else if ((pid = fork()) == -1)
 	{
 		ft_error(SHNAME, "parser", "fork error", CR_ERROR);
@@ -69,7 +76,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	process = NULL;
 	while (begin)
 	{
-		if (!begin->data_size)
+		if (!begin->data_size || begin->data_size == SSHELL)
 		{
 			if ((tmp = ft_fork_process(begin, config, r_pipe)))
 				ft_list_push_back(&process, tmp);

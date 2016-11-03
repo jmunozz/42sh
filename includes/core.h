@@ -12,6 +12,7 @@
 # define SCANNING_COMMAND 2
 # define SIGTSTP_COMMAND 3
 # define SIGINT_COMMAND 4
+# define RUNNING_SSHELL 5
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
@@ -21,14 +22,8 @@ typedef struct	s_bin
 	char		*name;
 	char		*path_name;
 }				t_bin;
-typedef struct	s_arguments
-{
-	char		**argv;
-	char		**memo;
-}				t_arguments;
 typedef struct	s_config
 {
-	int			shell_state;
 	char		**env;
 	char		*pwd;
 	char		*pwd_subrep;
@@ -44,6 +39,8 @@ typedef struct	s_config
 	int			hindex;
 	int			last_state;
 	t_list		*jobs;
+	int			shell_state;
+	int			last_exit;
 }				t_config;
 /*
 **builtin.c && environ.c
