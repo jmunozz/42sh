@@ -24,16 +24,16 @@ int				ft_access_exec(char *path, char **argv, t_config *config);
 /*
 **lexer.c
 */
-void			ft_list_free_av(void *data, size_t data_size);
-t_list			*ft_freelist(t_list *begin);
 t_list			*ft_lexer(char *cmd);
 char			*ft_envvarinsert(char *cmd, size_t *i, t_config *config);
-t_list			*ft_op_handle(char *cmd, size_t *i, t_list **next);
+t_list			*ft_built_couple(char *cmd, size_t *i);
+t_list			*ft_av_handle(char *cmd, size_t i);
 int				ft_dodge_quote(char *cmd, size_t i);
 t_list			**ft_quote_handle(t_list **next, t_config *config);
 char			*ft_match_op(char *cmd, size_t *i);
-t_list			*ft_lexer_sshell_off(char *cmd, size_t *i, t_list **next);
-t_list			*ft_lexer_sshell_on(char *cmd, size_t *i, t_list **next);
+int				ft_next_op(char *cmd, size_t i);
+void			ft_lexer_sshell_off(char *cmd, size_t i);
+t_list			*ft_lexer_sshell_on(char *cmd, size_t *i, t_list *next);
 /*
 **parser.c
 */
@@ -48,7 +48,7 @@ void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
 /*
 **heredoc.c
 */
-void			ft_chevron(t_list *begin, t_config *config);
+void			ft_herringbone(t_list *begin, t_config *config);
 /*
 **redirectheredoc.c
 */

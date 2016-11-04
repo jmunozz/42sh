@@ -43,7 +43,7 @@ static void	ft_decant(t_list *cmd, t_list *src)
 	}
 }
 
-void		ft_chevron(t_list *begin, t_config *config)
+void		ft_herringbone(t_list *begin, t_config *config)
 {
 	t_list	*cmd;
 

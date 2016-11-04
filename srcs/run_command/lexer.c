@@ -1,35 +1,6 @@
 #include "minishell.h"
 
-/*
-**lexer.c -> lexer_av.c -> lexer_quote.c -> env_var.c
-*/
-
-char			*ft_save_cmd(char *cmd)
-{
-	static char *save = NULL;
-
-	if (cmd)
-		save = cmd;
-	return (save);
-}
-
-void			ft_list_free_av(void *data, size_t data_size)
-{
-	if (!data_size && data)
-		ft_strtabfree((char **)data);
-	else if (data_size == OP || data_size == PIPE)
-		free(data);
-	else if (data_size == SSHELL)
-		ft_freelist((t_list *)data);
-}
-
-t_list			*ft_freelist(t_list *begin)
-{
-	ft_lstdel(&begin, ft_list_free_av);
-	return NULL;
-}
-
-static int		ft_next_op(char *cmd, size_t i)
+int				ft_next_op(char *cmd, size_t i)
 {
 	while (cmd[i] && !ft_strchr("><|&;()#", cmd[i]))
 	{
@@ -45,35 +16,63 @@ static int		ft_next_op(char *cmd, size_t i)
 	return (i);
 }
 
+static t_list	*ft_op_handle(char *cmd, size_t *i)
+{
+	t_list	*next;
+	t_list	*op;
+
+	if (!(next = ft_av_handle(cmd, *i)))
+		return NULL;
+	else if (cmd[*i] == '(' && ++(*i))
+		return (ft_lexer_sshell_on(cmd, i, next));
+	else if (cmd[*i] == ')')
+		return (next);
+	else if (cmd[*i])
+	{
+		if (!(next->next = (t_list *)ft_memalloc(sizeof(t_list)))
+				&& ft_error(SHNAME, "lexer", "malloc error", CR_ERROR))
+			return (ft_freelist(next));
+		op = next->next;
+		op->data_size = 1;
+		if (!(op->data = (void*)ft_match_op(cmd, i))
+				&& ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR))
+			return (ft_freelist(next));
+		if (!ft_strcmp(op->data, "<<"))
+			op->data_size = HEREDOC;
+	}
+	return (next);
+}
+
+t_list			*ft_built_couple(char *cmd, size_t *i)
+{
+	t_list	*next;
+
+	*i = ft_next_op(cmd, *i);
+	if (*i && (cmd[*i] == '>' || cmd[*i] == '<') && ft_isdigit(cmd[*i - 1]))
+		(*i)--;
+	if (!(next = ft_op_handle(cmd, i)))
+		return (ft_freelist(next));
+	return (next);
+}
+
 t_list			*ft_lexer(char *cmd)
 {
 	size_t	i;
 	t_list	*begin;
 	t_list	*next;
 
-dprintf(1, "\nentering lexer :\n");
-	while (*cmd == ' ')
-		++cmd;
-	if (!*cmd || !(begin = (t_list *)ft_memalloc(sizeof(t_list))))
-		return NULL;
-	next = begin;
+	begin = NULL;
 	i = 0;
+	while (*cmd == ' ' || *cmd == '\t' || *cmd == '\n')
+		++cmd;
 	while ((cmd = cmd + i) && !(i = 0) && *cmd && *cmd != ')')
 	{
-		i = ft_next_op(cmd, i);
-		if (i && (cmd[i] == '>' || cmd[i] == '<') && ft_isdigit(cmd[i - 1]))
-			i--;
-		if (!(next = ft_op_handle(cmd, &i, &next)))
+		while (*cmd == ' ' || *cmd == '\t' || *cmd == '\n')
+			++cmd;
+		if (!(next = ft_built_couple(cmd, &i)))
 			return (ft_freelist(begin));
-		while (cmd[i] == ' ' || cmd[i] == '\t' || cmd[i] == '\n')
-			++i;
-		if (cmd[i] && cmd[i] != ')'
-			&& !(next->next = (t_list *)ft_memalloc(sizeof(t_list)))
-			&& ft_error(SHNAME, "lexer", "malloc error", CR_ERROR))
-			return (ft_freelist(begin));
-		next = next->next;
+		ft_list_push_back(&begin, next);
 	}
-	if (*cmd == ')')
-		ft_save_cmd(cmd + 1);
+	ft_lexer_sshell_off(cmd, i);
 	return (begin);
 }

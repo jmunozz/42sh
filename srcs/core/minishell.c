@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/04 15:44:53 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/04 17:26:52 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void		ft_run_command(t_config *config, char *cmd)
 	config->shell_state = RUNNING_COMMAND;
 	if ((begin = ft_lexer(cmd)))
 	{
-		ft_chevron(begin, config);
+		ft_herringbone(begin, config);
 		ft_lstiter(begin, ft_print_list);
 		ft_parse(begin, config);
 	}

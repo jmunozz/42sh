@@ -46,3 +46,19 @@ void	ft_free_config(t_config *config)
 		get_next_line(-1, NULL);
 	}
 }
+
+void			ft_list_free_av(void *data, size_t data_size)
+{
+	if (!data_size && data)
+		ft_strtabfree((char **)data);
+	else if (data_size == OP || data_size == PIPE || data_size == HEREDOC)
+		free(data);
+	else if (data_size == SSHELL)
+		ft_freelist((t_list *)data);
+}
+
+t_list			*ft_freelist(t_list *begin)
+{
+	ft_lstdel(&begin, ft_list_free_av);
+	return NULL;
+}
