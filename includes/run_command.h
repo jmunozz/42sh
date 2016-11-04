@@ -49,5 +49,8 @@ void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
 **heredoc.c
 */
 void			ft_chevron(t_list *begin, t_config *config);
-
+/*
+**redirectheredoc.c
+*/
+int				ft_redirectheredoc(t_list *begin, int **r_pipe);
 #endif

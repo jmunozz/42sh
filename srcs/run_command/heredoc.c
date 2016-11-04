@@ -8,6 +8,8 @@ static void	ft_heredoc(t_list *begin, t_config *config)
 
 	config->shell_state = SCANNING_COMMAND;
 	config->heredoc = 1;
+	config->pwd_subrep = "heredoc> ";
+	config->prompt_len = 9;
 	tmp = ft_streamscan(config, ft_save_stream(NULL), 0);
 	while (!tmp || ft_strcmp(tmp, ((char**)begin->next->data)[0]))
 	{
@@ -22,6 +24,8 @@ static void	ft_heredoc(t_list *begin, t_config *config)
 		tmp = ft_streamscan(config, ft_save_stream(NULL), 0);
 	}
 	config->shell_state = RUNNING_COMMAND;
+	ft_update_pwd(config);
+	config->heredoc = 0;
 }
 
 static void	ft_decant(t_list *cmd, t_list *src)

@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 12:13:28 by rbaran            #+#    #+#             */
-/*   Updated: 2016/10/19 17:31:57 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/04 17:12:00 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,13 @@ static int	ft_build_r_pipe(t_list **begin, t_config *config, int **r_pipe)
 
 	if (!*r_pipe && ft_newpipe(r_pipe))
 		return (1);
-	if (ft_redirectpipe((*begin)->next, *r_pipe, config, (*begin)->next->data))
+	if (!ft_strcmp((*begin)->next->data, "<")
+		&& ft_redirectpipe((*begin)->next, *r_pipe, config, (*begin)->next->data))
 		return (1);
-	if ((*begin)->next->next)
+	else if (!ft_strcmp((*begin)->next->data, "<<")
+			&& ft_redirectheredoc((*begin)->next->next, r_pipe))
+		return (1);
+	if ((*begin)->next)
 	{
 		kill = (*begin)->next;
 		(*begin)->next = (*begin)->next->next;
@@ -111,7 +115,7 @@ int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
 	while (begin)
 	{
 		if (begin->next && begin->next->data_size
-			&& !ft_strcmp((char *)(begin->next->data), "<")
+			&& !ft_strncmp((char *)(begin->next->data), "<", 1)
 			&& ft_build_r_pipe(&begin, config, r_pipe))
 			return (1);
 		else if (begin->data_size && (!ft_strcmp((char *)(begin->data), "|")
@@ -122,12 +126,11 @@ int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
 			tmp = (char*)begin->data;
 			begin->data_size = PIPE;
 			begin->data = (void*)pip;
+			ft_agregate(begin, r_pipe, tmp, config);
 			break ;
 		}
 		else
 			begin = begin->next;
 	}
-	if (begin && begin->data_size == PIPE)
-		ft_agregate(begin, r_pipe, tmp, config);
 	return (0);
 }
