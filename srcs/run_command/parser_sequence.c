@@ -14,8 +14,6 @@ static int		*ft_close_pipe(int *new, int *old)
 
 static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
 {
-	int		i;
-
 	if (r_pipe)
 	{
 		dup2(r_pipe[0], STDIN_FILENO);
@@ -31,14 +29,16 @@ static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
 	ft_signal_reset();
 	if (begin->data_size == SSHELL && (config->shell_state = RUNNING_SSHELL))
 	{
-		if ((i = ft_strtabifindstart(config->env, "SHLVL")) != -1)
-			ft_setenv("SHLVL", ft_st_itoa(ft_atoi(config->env[i] + 6) - 1),
+		if ((config->last_exit = ft_strtabifindstart(config->env, "SHLVL")) != -1)
+			ft_setenv("SHLVL",
+				ft_st_itoa(ft_atoi(config->env[config->last_exit] + 6) - 1),
 			config);
 		ft_parse((t_list*)begin->data, config);
 	}
 	else
 		ft_launch_process(begin, config);
-	exit(config->shell_state == RUNNING_SSHELL ? config->last_exit : 1);
+	ft_status(config->shell_state == RUNNING_SSHELL ? config->last_exit : 1);
+	ft_shell_exit(config, NULL);
 }
 
 static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
@@ -48,7 +48,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	pid_t	*mem;
 
 	new = NULL;
-	if (!begin->data && !ft_quote_handle(&begin, config))
+	if (!begin->data_size && !ft_quote_handle(&begin, config))
 	{
 		ft_error(SHNAME, "parser", "malloc error handling quote", CR_ERROR);
 		return (NULL);

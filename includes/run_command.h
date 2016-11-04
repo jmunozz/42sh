@@ -32,7 +32,8 @@ t_list			*ft_op_handle(char *cmd, size_t *i, t_list **next);
 int				ft_dodge_quote(char *cmd, size_t i);
 t_list			**ft_quote_handle(t_list **next, t_config *config);
 char			*ft_match_op(char *cmd, size_t *i);
-t_list			*ft_lexer_sshell_off(char *cmd, size_t *i, t_list **next);
+int				ft_next_op(char *cmd, size_t i);
+void			ft_lexer_sshell_off(char *cmd, size_t i);
 t_list			*ft_lexer_sshell_on(char *cmd, size_t *i, t_list **next);
 /*
 **parser.c

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_list	*ft_lexer_sshell_on(char *cmd, size_t *i, t_list **next)
+t_list			*ft_lexer_sshell_on(char *cmd, size_t *i, t_list **next)
 {
 	if ((*next)->data && ((char**)(*next)->data)[0]
 			&& ft_error(SHNAME, "parse error near", "(", CR_ERROR))
@@ -12,9 +12,8 @@ t_list	*ft_lexer_sshell_on(char *cmd, size_t *i, t_list **next)
 	return (*next);
 }
 
-t_list	*ft_lexer_sshell_off(char *cmd, size_t *i, t_list **next)
+void			ft_lexer_sshell_off(char *cmd, size_t i)
 {
 	(void)i;
-	(void)cmd;
-	return (*next);
+	ft_save_cmd(cmd + 1);
 }

@@ -75,7 +75,7 @@ static t_list	**ft_av_handle(char *cmd, size_t i, t_list **next)
 	{
 		if (!cmd)
 			ft_error(SHNAME, "parse error near", c, CR_ERROR);
-		else
+		else if (!t)
 			ft_error(SHNAME, "lexer", "malloc error", CR_ERROR);
 		return NULL;
 	}
@@ -92,7 +92,7 @@ t_list		*ft_op_handle(char *cmd, size_t *i, t_list **next)
 	else if (cmd[*i] == '(' && ++(*i))
 		return (ft_lexer_sshell_on(cmd, i, next));
 	else if (cmd[*i] == ')')
-		return (ft_lexer_sshell_off(cmd, i, next));
+		return (*next);
 	else if (cmd[*i])
 	{
 		if (!((*next)->next = (t_list *)ft_memalloc(sizeof(t_list)))

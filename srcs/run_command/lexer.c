@@ -17,7 +17,7 @@ void			ft_list_free_av(void *data, size_t data_size)
 {
 	if (!data_size && data)
 		ft_strtabfree((char **)data);
-	else if (data_size == OP || data_size == PIPE)
+	else if (data_size == OP || data_size == PIPE || data_size == HEREDOC)
 		free(data);
 	else if (data_size == SSHELL)
 		ft_freelist((t_list *)data);
@@ -29,7 +29,7 @@ t_list			*ft_freelist(t_list *begin)
 	return NULL;
 }
 
-static int		ft_next_op(char *cmd, size_t i)
+int				ft_next_op(char *cmd, size_t i)
 {
 	while (cmd[i] && !ft_strchr("><|&;()#", cmd[i]))
 	{
@@ -73,7 +73,6 @@ dprintf(1, "\nentering lexer :\n");
 			return (ft_freelist(begin));
 		next = next->next;
 	}
-	if (*cmd == ')')
-		ft_save_cmd(cmd + 1);
+	ft_lexer_sshell_off(cmd, i);
 	return (begin);
 }
