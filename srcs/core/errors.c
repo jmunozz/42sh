@@ -32,6 +32,15 @@ size_t	ft_script_line(int mode)
 	return (script_line);
 }
 
+static void	ft_last_exit_fail(void)
+{
+	t_stream	*stream;
+
+	stream = ft_save_stream(NULL);
+	if (stream && stream->config)
+		stream->config->last_exit = 3;
+}
+
 int		ft_error(char *name, char *other, char *mess, int mode)
 {
 	if (mode & FCR_ERROR)
@@ -57,18 +66,13 @@ int		ft_error(char *name, char *other, char *mess, int mode)
 		ft_putchar_fd('\n', 2);
 	if (mode & SERROR)
 		ft_status(1);
+	ft_last_exit_fail();
 	return true;
 }
 
 int		ft_initerror(t_config *config)
 {
-	ft_free_config(config);
 	ft_error(SHNAME, NULL, "init error", CR_ERROR);
+	ft_free_config(config);
 	return (1);
-}
-
-void	ft_lexer_error(char *command)
-{
-	ft_error(SHNAME, "lexer error", command, CR_ERROR | SERROR);
-	free(command);
 }

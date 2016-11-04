@@ -61,7 +61,6 @@ t_list			*ft_lexer(char *cmd)
 	t_list	*begin;
 	t_list	*next;
 
-	dprintf(1, "\nentering lexer :\n");
 	begin = NULL;
 	i = 0;
 	while (*cmd == ' ' || *cmd == '\t' || *cmd == '\n')
