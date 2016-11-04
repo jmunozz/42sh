@@ -75,6 +75,8 @@ int				ft_ascii_cmp(t_bin *s1, t_bin *s2);
 void			ft_shell_exit(t_config *config, char **argv);
 void			ft_freebin(void *data, size_t data_size);
 void			ft_free_config(t_config *config);
+void			ft_list_free_av(void *data, size_t data_size);
+t_list			*ft_freelist(t_list *begin);
 void			ft_freepros(t_list *kill);
 void			ft_free_one_process(t_list **process, pid_t pid);
 void			ft_free_all_process(t_list **process, int mode);

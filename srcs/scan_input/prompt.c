@@ -14,7 +14,7 @@
 
 void		ft_prompt(t_config *config)
 {
-	if (!config->last_state)
+	if (!config->last_exit)
 		ft_putstr("\x1b[34m-> \x1b[1;32m");
 	else
 		ft_putstr("\x1b[31m-> \x1b[1;32m");
