@@ -74,7 +74,7 @@ void		ft_minishell(t_config *config)
 	ft_save_stream(&stream);
 	config->shell_state = SCANNING_COMMAND;
 	while (1)
-		if ((cmd = ft_streamscan(config, &stream, 0)))
+		if ((cmd = ft_streamscan(config, &stream, STDIN_FILENO)))
 		{
 			ft_run_command(config, cmd);
 			if (config->shell_state != RUNNING_COMMAND)

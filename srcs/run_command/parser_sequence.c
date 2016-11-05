@@ -17,15 +17,15 @@ static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
 {
 	if (r_pipe)
 	{
-dprintf(1, "on dup2 et read\n");
-		dup2(r_pipe[0], STDIN_FILENO);
+		if (-1 == dup2(r_pipe[0], STDIN_FILENO))
+			ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
 		close(r_pipe[0]);
 		close(r_pipe[1]);
 	}
 	if (begin->next && begin->next->data_size == PIPE)
 	{
-dprintf(1, "on dup2 et write\n");
-		dup2(((int *)(begin->next->data))[1], STDOUT_FILENO);
+		if (-1 == dup2(((int *)(begin->next->data))[1], STDOUT_FILENO))
+			ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
 		close(((int *)(begin->next->data))[0]);
 		close(((int *)(begin->next->data))[1]);
 	}
@@ -69,6 +69,28 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 		|| !(new = ft_lstnew((void *)mem, PROS)))
 		ft_error(SHNAME, "parser", "malloc error on process control", CR_ERROR);
 	return (new);
+}
+
+int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
+{
+	t_list	*rhead;
+
+	while (begin && begin->data_size && begin->data_size != SSHELL)
+		begin = begin->next;
+	if (begin && begin->next)
+	{
+		rhead = begin->next;
+		if (!ft_node_descriptors(begin, &rhead, config, r_pipe))
+			return (0);
+		if (begin->next)
+			begin->next->next = rhead;
+		else
+			begin->next = rhead;
+	}
+	dprintf(1,"LIST = \n");
+	ft_lstiter(begin, ft_print_list);
+	dprintf(1,"FIN LIST\n");
+	return (1);
 }
 
  t_list		*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe)

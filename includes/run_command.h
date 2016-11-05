@@ -9,7 +9,6 @@
 # define PROS 100
 # define SENT 101
 # define JOB 102
-# define OFG (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
 /*
 **exec.c
