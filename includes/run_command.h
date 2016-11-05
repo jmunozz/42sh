@@ -9,6 +9,7 @@
 # define PROS 100
 # define SENT 101
 # define JOB 102
+# define OFG (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
 /*
 **exec.c
@@ -38,6 +39,8 @@ t_list			*ft_lexer_sshell_on(char *cmd, size_t *i, t_list *next);
 **parser.c
 */
 char			*ft_save_cmd(char *cmd);
+int				ft_node_descriptors(t_list *begin, t_list *rhead,
+				t_config *config, int **r_pipe);
 int				ft_build_pipe(t_list *begin, t_config *config, int **r_pipe);
 void			ft_parse(t_list *begin, t_config *config);
  t_list			*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe);
@@ -49,8 +52,4 @@ void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
 **heredoc.c
 */
 void			ft_herringbone(t_list *begin, t_config *config);
-/*
-**redirectheredoc.c
-*/
-int				ft_redirectheredoc(t_list *begin, int **r_pipe);
 #endif
