@@ -6,6 +6,7 @@ static int		*ft_close_pipe(int *new, int *old)
 	{
 		close(old[0]);
 		close(old[1]);
+		free(old);
 	}
 	if (new)
 		return (new);
@@ -16,12 +17,14 @@ static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
 {
 	if (r_pipe)
 	{
+dprintf(1, "on dup2 et read\n");
 		dup2(r_pipe[0], STDIN_FILENO);
 		close(r_pipe[0]);
 		close(r_pipe[1]);
 	}
 	if (begin->next && begin->next->data_size == PIPE)
 	{
+dprintf(1, "on dup2 et write\n");
 		dup2(((int *)(begin->next->data))[1], STDOUT_FILENO);
 		close(((int *)(begin->next->data))[0]);
 		close(((int *)(begin->next->data))[1]);
@@ -48,7 +51,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	pid_t	*mem;
 
 	new = NULL;
-	if (!begin->data_size && !ft_quote_handle(&begin, config))
+	if (!begin->data_size && !ft_quote_handle(begin, config))
 	{
 		ft_error(SHNAME, "parser", "malloc error handling quote", CR_ERROR);
 		return (NULL);

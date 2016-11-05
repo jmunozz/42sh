@@ -70,11 +70,12 @@ char			*ft_return_binpath(t_config *config, char *name);
 int				ft_proscmp(void *pid1, void *pid2);
 int				ft_ascii_cmp(t_bin *s1, t_bin *s2);
 /*
-**free.c && free_pros.c
+**free.c && free_pros.c && free_list.c
 */
 void			ft_shell_exit(t_config *config, char **argv);
 void			ft_freebin(void *data, size_t data_size);
 void			ft_free_config(t_config *config);
+t_list			*ft_partial_freelist(t_list *begin, size_t n);
 void			ft_list_free_av(void *data, size_t data_size);
 t_list			*ft_freelist(t_list *begin);
 void			ft_freepros(t_list *kill);

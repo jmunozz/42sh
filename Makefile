@@ -15,6 +15,7 @@ builtins/environ.c \
 core/cmp.c \
 core/errors.c \
 core/free.c \
+core/free_list.c \
 core/free_pros.c \
 core/hash.c \
 core/main.c \
