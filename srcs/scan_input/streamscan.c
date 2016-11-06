@@ -62,6 +62,7 @@ static void	ft_scan(t_stream *stream)
 			|| stream->state < 0)
 			break ;
 	}
+dprintf(1, "stream->state = %d\n", stream->state);
 	if (stream->config->term_state)
 		ft_underline_mess(" ", stream);
 }
@@ -78,11 +79,11 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 	ft_sigwinch(0);
 	ft_termios_handle(config, 0);
 	ft_freegiveone((void **)(&(stream->search)));
-	if (stream->buf[0] == CTRLD)
+	if (stream->buf[0] == CTRLD
+		|| (stream->state < 0 && ft_freegiveone((void **)(&(stream->command)))
+		&& stream->state != REPROMPT
+		&& ft_error(SHNAME, NULL, SCAN_ERR, FCR_ERROR) && stream->state == -1))
 		ft_ctrl_d(stream);
-	if (stream->state < 0 && ft_freegiveone((void **)(&(stream->command)))
-		&& stream->state != REPROMPT)
-		ft_error(SHNAME, NULL, SCAN_ERR, FCR_ERROR);
 	if (stream->command && stream->command[0]
 		&& stream->shindex == config->hindex && !config->heredoc)
 	{

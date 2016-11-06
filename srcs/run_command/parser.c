@@ -57,7 +57,7 @@ static void		ft_sentence(t_list *begin, t_config *config)
 
 	sentence = ft_built_sentence(begin);
 	r_pipe = NULL;
-	if ((ft_build_pipe(begin, config, &r_pipe)))
+	if (!ft_build_pipe(begin, config, &r_pipe))
 		return ;
 	if ((job = ft_run_sentence(begin, config, r_pipe)))
 		ft_wait_sentence(job, sentence, config);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static t_list	**ft_quote_replace(char	**t, t_list **next)
+static t_list	*ft_quote_replace(char	**t, t_list *next)
 {
 	int			i;
 	size_t		j;
@@ -23,13 +23,13 @@ static t_list	**ft_quote_replace(char	**t, t_list **next)
 	return (next);
 }
 
-t_list			**ft_quote_handle(t_list **next, t_config *config)
+t_list			*ft_quote_handle(t_list *next, t_config *config)
 {
 	char		**t;
 	int			i;
 	size_t		j;
 
-	t = (char **)(*next)->data;
+	t = (char **)next->data;
 	i = -1;
 	while (t[++i])
 	{

@@ -34,10 +34,17 @@ void		ft_print_list(t_list *elem)
 		ft_putstr("\nSSHELL :\n");
 		ft_lstiter((t_list *)elem->data, ft_print_list);
 	}
-	else
+	else if (elem->data_size == OP)
 	{
 		ft_putstr("\nop :\n");
 		ft_putstr((char*)elem->data);
+		ft_putchar('\n');
+	}
+	else
+	{
+		ft_putstr("\npipe :\n");
+		ft_putnbr(((int*)elem->data)[0]);
+		ft_putnbr(((int*)elem->data)[1]);
 		ft_putchar('\n');
 	}
 }
@@ -67,7 +74,7 @@ void		ft_minishell(t_config *config)
 	ft_save_stream(&stream);
 	config->shell_state = SCANNING_COMMAND;
 	while (1)
-		if ((cmd = ft_streamscan(config, &stream, 0)))
+		if ((cmd = ft_streamscan(config, &stream, STDIN_FILENO)))
 		{
 			ft_run_command(config, cmd);
 			if (config->shell_state != RUNNING_COMMAND)

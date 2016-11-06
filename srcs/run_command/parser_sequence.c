@@ -6,6 +6,7 @@ static int		*ft_close_pipe(int *new, int *old)
 	{
 		close(old[0]);
 		close(old[1]);
+		free(old);
 	}
 	if (new)
 		return (new);
@@ -16,13 +17,15 @@ static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
 {
 	if (r_pipe)
 	{
-		dup2(r_pipe[0], STDIN_FILENO);
+		if (-1 == dup2(r_pipe[0], STDIN_FILENO))
+			ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
 		close(r_pipe[0]);
 		close(r_pipe[1]);
 	}
 	if (begin->next && begin->next->data_size == PIPE)
 	{
-		dup2(((int *)(begin->next->data))[1], STDOUT_FILENO);
+		if (-1 == dup2(((int *)(begin->next->data))[1], STDOUT_FILENO))
+			ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
 		close(((int *)(begin->next->data))[0]);
 		close(((int *)(begin->next->data))[1]);
 	}
@@ -48,7 +51,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	pid_t	*mem;
 
 	new = NULL;
-	if (!begin->data_size && !ft_quote_handle(&begin, config))
+	if (!begin->data_size && !ft_quote_handle(begin, config))
 	{
 		ft_error(SHNAME, "parser", "malloc error handling quote", CR_ERROR);
 		return (NULL);
@@ -68,6 +71,28 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	return (new);
 }
 
+int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
+{
+	t_list	*rhead;
+
+	while (begin && begin->data_size && begin->data_size != SSHELL)
+		begin = begin->next;
+	if (begin && begin->next)
+	{
+		rhead = begin->next;
+		if (!ft_node_descriptors(begin, &rhead, config, r_pipe))
+			return (0);
+		if (begin->next)
+			begin->next->next = rhead;
+		else
+			begin->next = rhead;
+	}
+	dprintf(1,"LIST = \n");
+	ft_lstiter(begin, ft_print_list);
+	dprintf(1,"FIN LIST\n");
+	return (1);
+}
+
  t_list		*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe)
 {
 	t_list	*tmp;
@@ -84,7 +109,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 		else if (begin->data_size == PIPE)
 		{
 			r_pipe = ft_close_pipe((int*)(begin->data), r_pipe);
-			if (ft_build_pipe(begin->next, config, &r_pipe))
+			if (!ft_build_pipe(begin->next, config, &r_pipe))
 				return (process);
 		}
 		begin = begin->next;
