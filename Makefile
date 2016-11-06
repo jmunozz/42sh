@@ -51,6 +51,8 @@ scan_input/winsize.c \
 autocomp/autocomp.c \
 autocomp/getenv.c \
 autocomp/buildlist.c \
+autocomp/support.c \
+autocomp/print.c \
 
 ifeq ($(OS), Linux)
 	FLAGS += -D LINUX

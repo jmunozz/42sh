@@ -8,15 +8,16 @@
 	ft_putchar('\n');
 }*/
 
-static void		do_list(t_list **list, struct dirent *file)
+static void		do_list(t_stream *stream, struct dirent *file)
 {
 	size_t data_size;
 
 	data_size = S_ISDIR(file->d_type) ? 1 : 0;
-	if (!*list)
-		*list = ft_lstnew(ft_strdup(file->d_name), data_size);
+	if (!COMP_BEGIN_LIST)
+		COMP_BEGIN_LIST = ft_lstnew(ft_strdup(file->d_name), data_size);
 	else
-		ft_list_push_back(list, ft_lstnew(ft_strdup(file->d_name), data_size));
+		ft_list_push_back(&(COMP_BEGIN_LIST), ft_lstnew(ft_strdup(file->d_name), data_size));
+	get_pad(stream, file->d_name);
 }
 /*
 ** Fonction qui set la chaîne de caractère à comparer aux fichiers du dossier
@@ -65,7 +66,7 @@ char		**set_dir(char *str, int mode,
 ** Appelle set_dir. Construit la liste en fonction du ou des dossiers ouverts
 ** (**dir) et de la chaîne à comparer (*comp). free **dir (à rectifier)
 */
-void		build_list(t_list **list, char *str, int mode, t_stream *stream)
+void		build_list(char *str, int mode, t_stream *stream)
 {
 	DIR				*directory;
 	struct dirent	*file;
@@ -85,18 +86,19 @@ void		build_list(t_list **list, char *str, int mode, t_stream *stream)
 			while ((file = readdir(directory)))
 			{
 				if (!comp || !*comp)
-					do_list(list, file);
+					do_list(stream, file);
 				else if ((!ft_strncmp(comp, file->d_name, len_comp) &&
 				ft_strcmp(file->d_name, ".") && ft_strcmp(file->d_name, "..")))
-					do_list(list, file);
+					do_list(stream, file);
 			}
 			closedir(directory);
 		}
-		else
-			ft_putstr("pas trouve");
+	//	else
+			//ft_putstr("pas trouve");
 		free(dir[i]);
 		dir[i] = NULL;
 	}
+	get_size_list(stream);
 	free(dir);
 }
 

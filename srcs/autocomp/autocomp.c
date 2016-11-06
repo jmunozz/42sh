@@ -35,7 +35,7 @@
    }
    */
 
-char	*list_to_char(t_list *list)
+char	*list_to_char(t_stream *stream, t_list *list)
 {
 	char *str;
 
@@ -46,6 +46,13 @@ char	*list_to_char(t_list *list)
 		str = ft_strcat(str, "\n");
 		list = list->next;
 	}
+	str = ft_strcat(str, "COMP_PAD = ");
+	str = ft_strcat(str, ft_itoa((int)COMP_PAD));
+	str = ft_strcat(str, "; COMP_COL =");
+	str = ft_strcat(str, ft_itoa((int)COMP_COL));
+	str = ft_strcat(str, "; COMP_SIZE_LIST = ");
+	str = ft_strcat(str, ft_itoa((int)COMP_SIZE_LIST));
+	str = ft_strcat(str, "\n");
 	return (str);
 }
 
@@ -99,11 +106,10 @@ void	ft_autocomp(t_stream *stream)
 	int			len;
 	int			mode;
 	char		*begin;
-	t_list		*list;
 
-	list = NULL;
 	len = 0;
 	buf_pos = stream->pos;
+	init_comp(stream);
 	if (stream->command)
 	{
 		while (!ft_is_separator(stream->command[stream->pos])
@@ -112,10 +118,10 @@ void	ft_autocomp(t_stream *stream)
 		begin = ft_strsub(get_begin(stream->pos - 1,
 				stream->command,  &len), 0, len);
 		mode = get_mode(len, stream->command, stream);
-		//ft_underline_mess(begin, stream);
-		build_list(&list, begin, mode, stream);
-		if (list)
-			ft_underline_mess(list_to_char(list), stream);
+	//	ft_underline_mess(begin, stream);
+		build_list(begin, mode, stream);
+		if (COMP_BEGIN_LIST)
+			ft_underline_mess(list_to_char(stream, COMP_BEGIN_LIST), stream);
 		else
 			ft_underline_mess("pas de liste\n", stream);
 		free(begin);

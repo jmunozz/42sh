@@ -69,7 +69,9 @@ static void		ft_append(t_stream *stream)
 	while (len--)
 		ft_mvright(stream);
 }
-
+/*
+** Renvoie l'index du tableau de fonction de chrparse.
+*/
 static int		ft_chrmatch(t_stream *stream)
 {
 	static ssize_t		match[] = {CLF, SUP, CHT, DEL,
@@ -90,7 +92,9 @@ static int		ft_chrmatch(t_stream *stream)
 		return (-1);
 	return (-2);
 }
-
+/*
+** Lance la fonction appropriée en fonction de la touche pressée.
+*/
 int				ft_chrparse(t_stream *stream)
 {
 	int					match;
@@ -98,6 +102,7 @@ int				ft_chrparse(t_stream *stream)
 			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
 			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
 			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend};
+	//ceci est un tableau de fonctions prenant toutes t_stream en parametre.
 
 	if (!(match = ft_chrmatch(stream)))
 		return (0);

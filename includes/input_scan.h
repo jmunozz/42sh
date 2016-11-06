@@ -8,6 +8,15 @@
 # define TDL "\x1b[K"
 # define TCD "\x1b[J"
 
+typedef struct	s_comp
+{
+	size_t		in_col;
+	size_t		nb_col;
+	size_t		pad;
+	size_t		size_list;
+	t_list		*begin_list;
+}				t_comp;
+
 typedef struct	s_stream
 {
 	char		*tput;
@@ -22,6 +31,8 @@ typedef struct	s_stream
 	size_t		pos;
 	size_t		col; //nb de colomnes dans une ligne.
 	t_config	*config;
+	t_comp		*comp;
+
 }				t_stream;
 /*
 **streamscan.c
