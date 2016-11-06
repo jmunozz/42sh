@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:16:34 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/03 17:32:39 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/05 13:57:59 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ static void	ft_pwd(char **argv, t_config *config)
 int			ft_is_no_fork_builtin(char *argv)
 {
 	if (!ft_strcmp(argv, "exit"))
+		return (1);
+	if (!ft_strcmp(argv, "unsetenv"))
+		return (1);
+	if (!ft_strcmp(argv, "setenv"))
+		return (1);
+	if (!ft_strcmp(argv, "cd"))
 		return (1);
 	return (0);
 }

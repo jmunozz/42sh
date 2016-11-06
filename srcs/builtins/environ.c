@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:35 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/11 21:35:14 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/05 21:26:45 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,6 @@ void	ft_setenv(char *name, char *value, t_config *config)
 	if (!ft_strcmp("PATH", name))
 		ft_pathtohash(config);
 	ft_freegiveone((void**)&(memo));
-}
-
-void	ft_env(char **argv, t_config *config)
-{
-	char	*envbin;
-
-	if (!argv[1])
-	{
-		ft_putstrtab((config->env), '\n');
-		ft_putchar('\n');
-	}
-	else if (!(envbin = ft_return_binpath(config, "env")))
-		ft_error(SHNAME, NULL, "unnable to find advanced env", CR_ERROR);
-	else
-		ft_access_exec(envbin, argv, config);
 }
 
 void	ft_readysetenv(char **argv, t_config *config)

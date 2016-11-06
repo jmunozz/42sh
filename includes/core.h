@@ -14,6 +14,15 @@
 # define SIGINT_COMMAND 4
 # define RUNNING_SSHELL 5
 
+/*
+**Env builtin defines (params)
+*/
+# define ENV_I 0x01
+# define ENV_H 0x02
+# define ENV_HELP "--help"
+# define ENV_UNSET "--unset"
+# define ENV_IGNORE "--ignore-environment"
+
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
 typedef struct passwd	t_passwd;
