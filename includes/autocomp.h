@@ -3,11 +3,14 @@
 
 # include "minishell.h"
 
-# define COMP_PAD			stream->comp->pad
+# define COMP_PAD			stream->comp.pad
 # define COMP_COL			stream->col
-# define COMP_SIZE_LIST		stream->comp->size_list
-# define COMP_BEGIN_LIST	stream->comp->begin_list
-# define COMP_IN_COL		stream->comp->in_col
+# define COMP_SIZE_LIST		stream->comp.size_list
+# define COMP_BEGIN_LIST	stream->comp.begin_list
+# define COMP_IN_COL		stream->comp.in_col
+# define COMP_STATE			stream->autocomp_state
+# define COMP_CURRENT		stream->comp.current
+# define COMP_BEGIN			stream->comp.begin
 
 /*
 ** getenv.c
@@ -30,12 +33,19 @@ void	build_list(char *str, int mode, t_stream *stream);
 */
 void	get_pad(t_stream *stream, char *str);
 void	get_size_list(t_stream *stream);
-void	init_comp(t_stream *stream);
+int		ft_is_same_autocomp(t_stream *stream);
+void	reset_autocomp(t_stream *stream);
 /*
 ** print.c
 */
+void	ft_print_elem(t_list *list, t_stream *stream);
 void	ft_print_autocomp(t_stream *stream);
 void	ft_print_col(t_stream *stream);
 void	get_col_elem(t_stream *stream);
-
+/*
+** move.c
+*/
+void	ft_state_one(t_stream *stream);
+void	ft_state_two(t_stream *stream);
+void	ft_comp_select_current(size_t current, t_stream *stream, char mode);
 #endif

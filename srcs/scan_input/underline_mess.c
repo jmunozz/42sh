@@ -1,30 +1,5 @@
 #include "../../includes/minishell.h"
 
-/*
-static void	ft_putmess(t_stream *stream, char *mess)
-{
-	size_t			i;
-
-	ft_putstr(mess); //imprime le message.
-	// si le curseur n'est pas sur la derniere colonne
-	if (!((stream->pos + stream->config->prompt_len) % stream->col))
-	{
-		ft_putstr(" "); //impression
-		stream->tput = "le"; //puis un pas en arriere
-		ft_tputs(stream);
-	}
-	stream->tput = "le";
-	i = stream->col;
-	while (i--)
-		ft_tputs(stream); //permet de revenir sur le premier élément de la ligne.
-	//On remonte le nombre de lignes imprimées + 1 pour celle sautée initialement.
-	i = ft_strlen(mess) / stream->col + 1; // Version Toussaint.
-	//i = COMP_ELEM_IN_COL + 1; // Version Jordan
-	stream->tput = "up";
-	while (i--)
-		ft_tputs(stream);
-
-}*/
 
 int			ft_underline_mess(char *mess, t_stream *stream)
 {

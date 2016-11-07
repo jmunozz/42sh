@@ -14,7 +14,9 @@ typedef struct	s_comp
 	size_t		nb_col;
 	size_t		pad;
 	size_t		size_list;
+	size_t		current;
 	t_list		*begin_list;
+	char		*begin;
 }				t_comp;
 
 typedef struct	s_stream
@@ -30,8 +32,9 @@ typedef struct	s_stream
 	char		*search;
 	size_t		pos;
 	size_t		col; //nb de colomnes dans une ligne.
+	size_t		autocomp_state;
 	t_config	*config;
-	t_comp		*comp;
+	t_comp		comp;
 
 }				t_stream;
 /*
@@ -77,6 +80,7 @@ void			ft_del(t_stream *stream);
 /*
 **chrparse.c
 */
+void			ft_append(t_stream *stream);
 void			ft_flushend(t_stream *stream);
 void			ft_flush(t_stream *stream);
 int				ft_chrparse(t_stream *stream);

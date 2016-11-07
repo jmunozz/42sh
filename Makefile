@@ -53,6 +53,7 @@ autocomp/getenv.c \
 autocomp/buildlist.c \
 autocomp/support.c \
 autocomp/print.c \
+autocomp/move.c \
 
 ifeq ($(OS), Linux)
 	FLAGS += -D LINUX

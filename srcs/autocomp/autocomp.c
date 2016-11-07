@@ -105,7 +105,6 @@ void	ft_autocomp(t_stream *stream)
 	int			buf_pos;
 	int			len;
 	int			mode;
-	char		*begin;
 
 	len = 0;
 	buf_pos = stream->pos;
@@ -124,7 +123,7 @@ void	ft_autocomp(t_stream *stream)
 			COMP_BEGIN = ft_strsub(get_begin(stream->pos - 1,
 					stream->command,  &len), 0, len);
 			mode = get_mode(len, stream->command, stream);
-			build_list(begin, mode, stream);
+			build_list(COMP_BEGIN, mode, stream);
 			//else
 			//	ft_underline_mess("pas de liste\n", stream);*/
 			free(COMP_BEGIN);
