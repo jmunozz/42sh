@@ -28,38 +28,56 @@ static void	ft_heredoc(t_list *begin, t_config *config)
 	config->heredoc = 0;
 }
 
-static void	ft_decant(t_list *cmd, t_list *src)
+static int	ft_decant(t_list *cmd, t_list *src, int i)
 {
-	int		i;
 	char	**kill;
 
-	i = 0;
+	if (!i && (!src || !((char**)src->data)[0] || !((char**)src->data)[0][0]))
+	{
+		if (src && src->next)
+			ft_error(SHNAME, "parse error near", SNDATA, CR_ERROR);
+		else
+			ft_error(SHNAME, "parse error near", "newline", CR_ERROR);
+		return (0);
+	}
+	if (!src)
+		return (1);
 	while (((char**)src->data)[++i])
 	{
 		kill = (char**)cmd->data;
-		cmd->data = (void*)ft_strtabadd((char**)cmd->data, ((char**)src->data)[i]);
+		cmd->data = (void*)ft_strtabadd((char**)cmd->data,
+			((char**)src->data)[i]);
 		((char**)src->data)[i] = NULL;
 		ft_freegiveone((void**)&kill);
 	}
+	return (1);
 }
 
-void		ft_herringbone(t_list *begin, t_config *config)
+int			ft_herringbone(t_list *begin, t_config *config)
 {
 	t_list	*cmd;
 
 	cmd = begin;
-	while (begin && begin->next)
+	while (begin)
 	{
-		if ((begin->data_size == HEREDOC || (begin->data_size == OP
-			&& (((char*)begin->data)[0] == '<'
-				|| ((char*)begin->data)[0] == '>'))))
-			ft_decant(cmd, begin->next);
-		else if (begin->data_size == PIPE || (begin->data_size == OP
-			&& ((char*)begin->data)[0] != '<' && ((char*)begin->data)[0] != '>'))
+		if (begin->data_size == HEREDOC || (begin->data_size == OP
+			&& !ft_strchr(BDATA, '&') && (ft_strstr(BDATA, "<")
+			|| ft_strstr(BDATA, ">"))))
+		{
+			if (!ft_decant(cmd, begin->next, 0))
+				return (0);
+		}
+		else if ((begin->data_size == OP && ft_strchr(BDATA, '&')
+			&& (ft_strstr(BDATA, "<") || ft_strstr(BDATA, ">"))))
+		{
+			if (!ft_decant(cmd, begin->next, -1))
+				return (0);
+		}
+		else if (begin->data_size == PIPE || begin->data_size == OP)
 			cmd = begin->next;
 		if (begin->data_size == HEREDOC)
 			ft_heredoc(begin, config);
 		begin = begin->next;
 	}
-	return ;
+	return (1);
 }

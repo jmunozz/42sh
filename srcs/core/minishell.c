@@ -56,9 +56,13 @@ void		ft_run_command(t_config *config, char *cmd)
 	config->shell_state = RUNNING_COMMAND;
 	if ((begin = ft_lexer(cmd)))
 	{
-		ft_herringbone(begin, config);
-		ft_lstiter(begin, ft_print_list);
-		ft_parse(begin, config);
+		if (!ft_herringbone(begin, config))
+			ft_freelist(begin);
+		else
+		{
+			ft_lstiter(begin, ft_print_list);
+			ft_parse(begin, config);
+		}
 	}
 	ft_freegiveone((void**)&cmd);
 }

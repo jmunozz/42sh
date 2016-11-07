@@ -9,6 +9,14 @@
 # define PROS 100
 # define SENT 101
 # define JOB 102
+# define BDATA ((char*)begin->data)
+# define SNDATA ((char*)src->next->data)
+
+typedef struct	s_pipe
+{
+	int			fixed_pip[2];
+	char		*trucmuch;
+}				t_pipe;
 
 /*
 **exec.c
@@ -50,5 +58,5 @@ void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
 /*
 **heredoc.c
 */
-void			ft_herringbone(t_list *begin, t_config *config);
+int				ft_herringbone(t_list *begin, t_config *config);
 #endif
