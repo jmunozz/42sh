@@ -12,7 +12,7 @@ static void		do_list(t_stream *stream, struct dirent *file)
 {
 	size_t data_size;
 
-	data_size = S_ISDIR(file->d_type) ? 1 : 0;
+	data_size = 0;
 	if (!COMP_BEGIN_LIST)
 		COMP_BEGIN_LIST = ft_lstnew(ft_strdup(file->d_name), data_size);
 	else

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/autocomp.h"
+#include "../includes/minishell.h"
 
 /*
    static void	get_autocomp(t_stream *stream)
@@ -109,22 +109,34 @@ void	ft_autocomp(t_stream *stream)
 
 	len = 0;
 	buf_pos = stream->pos;
-	init_comp(stream);
-	if (stream->command)
+	if (COMP_STATE == 1)
+		ft_state_one(stream);
+	else if (COMP_STATE == 2)
+		ft_state_two(stream);
+	else
 	{
-		while (!ft_is_separator(stream->command[stream->pos])
+		reset_autocomp(stream);
+		if (stream->command)
+		{
+			while (!ft_is_separator(stream->command[stream->pos])
 				&& stream->command[stream->pos])
-			ft_mvright(stream);
-		begin = ft_strsub(get_begin(stream->pos - 1,
-				stream->command,  &len), 0, len);
-		mode = get_mode(len, stream->command, stream);
-	//	ft_underline_mess(begin, stream);
-		build_list(begin, mode, stream);
-		if (COMP_BEGIN_LIST)
-			ft_underline_mess(list_to_char(stream, COMP_BEGIN_LIST), stream);
-		else
-			ft_underline_mess("pas de liste\n", stream);
-		free(begin);
+				ft_mvright(stream);
+			COMP_BEGIN = ft_strsub(get_begin(stream->pos - 1,
+					stream->command,  &len), 0, len);
+			mode = get_mode(len, stream->command, stream);
+			build_list(begin, mode, stream);
+			//else
+			//	ft_underline_mess("pas de liste\n", stream);*/
+			free(COMP_BEGIN);
+			if (COMP_BEGIN_LIST)
+				COMP_STATE = 1;
+		}
+	}
+	if (COMP_BEGIN_LIST)
+	{
+		ft_underline_mess(list_to_char(stream, COMP_BEGIN_LIST), stream);
+		if (COMP_STATE == 2)
+			ft_append(stream);
 	}
 }
 

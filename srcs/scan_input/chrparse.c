@@ -44,7 +44,7 @@ void			ft_flush(t_stream *stream)
 		ft_mvleft(stream);
 }
 
-static void		ft_append(t_stream *stream)
+void		ft_append(t_stream *stream)
 {
 	size_t				pos;
 	size_t				len;
@@ -104,11 +104,16 @@ int				ft_chrparse(t_stream *stream)
 			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend};
 	//ceci est un tableau de fonctions prenant toutes t_stream en parametre.
 
-	if (!(match = ft_chrmatch(stream)))
-		return (0);
-	if (match == -1)
-		stream->search ? ft_sappend(stream) : ft_append(stream);
-	else if (match > 0)
-		(*ftab[match - 1])(stream);
+	if (ft_is_same_autocomp(stream))
+		(*ftab[1])(stream);
+	else
+	{
+		if (!(match = ft_chrmatch(stream)))
+			return (0);
+		if (match == -1)
+			stream->search ? ft_sappend(stream) : ft_append(stream);
+		else if (match > 0)
+			(*ftab[match - 1])(stream);
+	}
 	return (1);
 }

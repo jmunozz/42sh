@@ -26,12 +26,31 @@ void		get_pad(t_stream *stream, char *str)
 		COMP_PAD = size;
 }
 
-void		init_comp(t_stream *stream)
+int		ft_is_same_autocomp(t_stream *stream)
 {
-	stream->comp = (t_comp*)malloc(sizeof(t_comp));
-	COMP_PAD = 0;
-	COMP_COL = stream->col;
-	COMP_SIZE_LIST = 0;
-	COMP_BEGIN_LIST = NULL;
-	COMP_IN_COL = 0;
+	static ssize_t	match[] = {LEF, RIG, UPP, DOW, CHT};
+	int				i;
+	int				is_same;
+
+	i = -1;
+	is_same = 0;
+	while (match[++i])
+		if (((ssize_t*)(stream->buf))[0] == match[i])
+			is_same = (i == 4) ? 2 : 1;
+	if (!is_same)
+		COMP_STATE = 0;
+	else if (COMP_STATE == 1 && is_same != 2)
+		COMP_STATE = 0;
+	else
+		return (1);
+	return (0);
 }
+
+void	reset_autocomp(t_stream *stream)
+{
+	ft_lstdel(&(COMP_BEGIN_LIST), ft_list_free_data);
+	ft_freegiveone((void**)&(COMP_BEGIN));
+	bzero(&(stream->comp), sizeof(t_comp));
+
+}
+
