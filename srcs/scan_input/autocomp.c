@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:29 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/02 15:08:29 by maxpetit         ###   ########.fr       */
+/*   Updated: 2016/11/07 11:50:10 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,14 @@ static char *ft_get_path(t_stream *stream, t_globing *data)
 
 void	ft_autocomp(t_stream *stream)
 {
-	t_globing	data;
+	t_globing	glob;
 	int			end;
 
 	ft_bzero(stream->buf, 4);
-	if ((data.path = ft_get_path(stream, &data)))
-		ft_loop_path(stream, &data);
+	ft_bzero(&glob, sizeof(void*));
+	if ((glob.path = ft_get_path(stream, &glob)))
+		ft_loop_path(stream, &glob);
 	else
 		ft_underline_mess("NO", stream);
-	ft_strdel(&data.path);
+	ft_strdel(&glob.path);
 }
