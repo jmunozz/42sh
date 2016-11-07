@@ -71,6 +71,7 @@ char	*ft_strcat(char *dest, const char *src);
 char	*ft_strncat(char *dest, const char *src, size_t n);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 char	**ft_strtabadd(char **dest, char *new);
+char	**ft_strtabadd_free(char **dest, char *new);
 
 /*
 ** FIND

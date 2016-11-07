@@ -11,11 +11,12 @@
 # define JOB 102
 # define BDATA ((char*)begin->data)
 # define SNDATA ((char*)src->next->data)
+# define BOTHER_FD ((t_pipe*)begin->next->data)->others_fd
 
 typedef struct	s_pipe
 {
 	int			fixed_pip[2];
-	char		*trucmuch;
+	char		**others_fd;
 }				t_pipe;
 
 /*
@@ -51,6 +52,11 @@ int				ft_node_descriptors(t_list *begin, t_list **rhead,
 int				ft_build_pipe(t_list *begin, t_config *config, int **r_pipe);
 void			ft_parse(t_list *begin, t_config *config);
  t_list			*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe);
+int				ft_redirectpipe(char *file, int *pip, char *tmp);
+/*
+**parser_multiple_fd.c
+*/
+void			ft_handle_multiplefd(char **others_fd);
 /*
 **wait.c
 */
