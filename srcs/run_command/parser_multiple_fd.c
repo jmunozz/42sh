@@ -2,24 +2,15 @@
 
 static void	ft_dup_fds(char *op, char *ampersand, char *file, int *fd)
 {
-	int		pip[2];
-dprintf(1, "fd[1] = %d, fd[0] = %d\n", fd[1], fd[0]);
-//if (op[0] == '>
-	if (-1 == pipe(pip))
-		ft_error(SHNAME, "parser", "not enough fd left for pipe", CR_ERROR);
-	else if (ampersand && -1 == dup2(op[0] == '>' ? pip[1] : pip[0], fd[1]))
-		ft_error(SHNAME, "bad file descriptor", ft_st_itoa(fd[0]), CR_ERROR);
-	else if (ampersand && -1 == dup2(op[0] == '>' ? pip[0] : pip[1], fd[0]))
+	int	tmpfd;
+	if (ampersand && -1 == dup2(fd[1], fd[0]))
 		ft_error(SHNAME, "bad file descriptor", ft_st_itoa(fd[1]), CR_ERROR);
-	else if (!ampersand && *op == '>'
-		&& -1 == dup2(op[0] == '>' ? pip[1] : pip[0], fd[0]))
-		ft_error(SHNAME, "bad file descriptor", ft_st_itoa(fd[1]), CR_ERROR);
-	else if (!ampersand && *op == '>' && !ft_redirectpipe(file, pip, op))
-		;
-	else
+	else if (!ampersand)
 	{
-		close(pip[1]);
-		close(pip[0]);
+		if (!(tmpfd = ft_redirectpipe(file, NULL, op)))
+			return ;
+		dup2(tmpfd, fd[0]);
+		close(tmpfd);
 	}
 }
 
@@ -30,7 +21,6 @@ void		ft_handle_multiplefd(char **others_fd, int *w_pipe, int *r_pipe)
 	char	*ampersand;
 	int		fd[2];
 
-dprintf(1, "entering multiplefd\n");
 (void)r_pipe;
 (void)w_pipe;
 	i = -1;

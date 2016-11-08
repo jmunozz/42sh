@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 12:13:28 by rbaran            #+#    #+#             */
-/*   Updated: 2016/11/04 17:12:00 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/08 14:05:37 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	*ft_newpipe(int mode)
 	if (!(pip = (int *)ft_memalloc(sizeof(t_pipe)))
 			&& ft_error(SHNAME, "parser", "malloc error on pipe", CR_ERROR))
 		return (NULL);
-	if (-1 == pipe(pip) && ft_error(SHNAME, "parser", "pipe error", CR_ERROR)
+	if (mode != 2 && -1 == pipe(pip) && ft_error(SHNAME, "parser", "pipe error", CR_ERROR)
 			&& ft_freegiveone((void**)pip))
 		return (NULL);
 	if (mode)
@@ -74,6 +74,8 @@ int			ft_redirectpipe(char *file, int *pip, char *tmp)
 	if ((fd = open(file, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1
 			&& ft_error(SHNAME, file, "file does not exist", CR_ERROR))
 		return (0);
+	if (!pip)
+		return (fd);
 	(flags == O_RDONLY) ? dup2(fd, pip[0]) : dup2(fd, pip[1]);
 	close(fd);
 	return (1);
@@ -122,9 +124,13 @@ int			ft_node_descriptors(t_list *begin, t_list **rhead, t_config *config,
 	if (*rhead)
 	{
 		tmp = ((char*)(*rhead)->data);
-		if ((tmp[0] == '|' || tmp[0] == '>'
-					|| ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
-				&& !begin->next && !(begin->next = ft_newpipe(1)))
+		if ((tmp[0] == '|' || tmp[0] == '>')
+				&& ((begin->next && !((int*)begin->next->data)[0]
+					&& -1 == pipe((int*)begin->next->data))
+				|| (!begin->next && !(begin->next = ft_newpipe(1)))))
+			return (0);
+		if ((ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
+				&& !begin->next && !(begin->next = ft_newpipe(2)))
 			return (0);
 		if (tmp[0] == '<' && !*r_pipe && !(*r_pipe = ft_newpipe(0)))
 			return (0);
