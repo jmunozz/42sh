@@ -56,6 +56,7 @@ void		ft_run_command(t_config *config, char *cmd)
 	config->shell_state = RUNNING_COMMAND;
 	if ((begin = ft_lexer(cmd)))
 	{
+dprintf(1, "entering herringbone\n");
 		if (!ft_herringbone(begin, config))
 			ft_freelist(begin);
 		else
