@@ -39,7 +39,7 @@ int		ft_is_same_autocomp(t_stream *stream)
 			is_same = (i == 4) ? 2 : 1;
 	if (!is_same)
 		COMP_STATE = 0;
-	else if (COMP_STATE == 1 && is_same != 2)
+	else if ((COMP_STATE == 1 || COMP_STATE == 0)  && is_same != 2)
 		COMP_STATE = 0;
 	else
 		return (1);

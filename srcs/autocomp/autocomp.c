@@ -102,12 +102,11 @@ char	*get_begin(int i, char *str, int *len)
 
 void	ft_autocomp(t_stream *stream)
 {
-	int			buf_pos;
 	int			len;
 	int			mode;
 
 	len = 0;
-	buf_pos = stream->pos;
+	//COMP_POS_COMMAND = stream->pos;
 	if (COMP_STATE == 1)
 		ft_state_one(stream);
 	else if (COMP_STATE == 2)
@@ -126,16 +125,11 @@ void	ft_autocomp(t_stream *stream)
 			build_list(COMP_BEGIN, mode, stream);
 			//else
 			//	ft_underline_mess("pas de liste\n", stream);*/
-			free(COMP_BEGIN);
 			if (COMP_BEGIN_LIST)
 				COMP_STATE = 1;
 		}
 	}
 	if (COMP_BEGIN_LIST)
-	{
 		ft_underline_mess(list_to_char(stream, COMP_BEGIN_LIST), stream);
-		if (COMP_STATE == 2)
-			ft_append(stream);
-	}
 }
 

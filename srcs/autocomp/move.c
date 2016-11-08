@@ -28,6 +28,8 @@ void		ft_comp_get_right(t_stream *stream)
 		min = COMP_SIZE_LIST - (COMP_SIZE_LIST % COMP_IN_COL);
 	if (COMP_CURRENT < COMP_SIZE_LIST && COMP_CURRENT >= min)
 		;
+	else if (COMP_CURRENT + COMP_IN_COL >= COMP_SIZE_LIST)
+		;
 	else
 		COMP_CURRENT += COMP_IN_COL;
 }
@@ -53,13 +55,15 @@ void		ft_state_one(t_stream *stream)
 	COMP_CURRENT = 0;
 	ft_comp_select_current(COMP_CURRENT, stream, 'S');
 	COMP_STATE = 2;
+	COMP_POS_COMMAND = stream->pos;
+	ft_autocomp_append(stream);
 }
 
 void		ft_state_two(t_stream *stream)
 {
 	size_t current_tmp;
 
-	current_tmp = COMP_CURRENT;
+current_tmp = COMP_CURRENT;
 	if (((ssize_t *)(stream->buf))[0] == CHT)
 		ft_comp_get_down(stream);
 	else if (((ssize_t *)(stream->buf))[0] == LEF)
@@ -70,8 +74,10 @@ void		ft_state_two(t_stream *stream)
 		ft_comp_get_up(stream);
 	else if (((ssize_t *)(stream->buf))[0] == DOW)
 		ft_comp_get_down(stream);
+	ft_autocomp_delete(stream);
 	ft_comp_select_current(current_tmp, stream, 'U');
 	ft_comp_select_current(COMP_CURRENT, stream, 'S');
+	ft_autocomp_append(stream);
 
 }
 
@@ -84,10 +90,12 @@ void		ft_comp_select_current(size_t current, t_stream *stream, char mode)
 	i = -1;
 	while (++i < current && list)
 		list = list->next;
-	bzero(stream->buf, 256);
-	ft_strcpy(stream->buf, (char*)list->data);
 	if (mode == 'S')
+	{
+		bzero(COMP_BUF, 256);
+		ft_strcpy(COMP_BUF, &list->data[ft_strlen(COMP_BEGIN)]);
 		list->data_size = 1;
+	}
 	else
 		list->data_size = 0;
 }
