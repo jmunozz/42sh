@@ -56,7 +56,8 @@ int				ft_redirectpipe(char *file, int *pip, char *tmp);
 /*
 **parser_multiple_fd.c
 */
-void			ft_handle_multiplefd(char **others_fd);
+void			ft_handle_multiplefd(char **others_fd, int *w_pipe,
+				int *r_pipe);
 /*
 **wait.c
 */

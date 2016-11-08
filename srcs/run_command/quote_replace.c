@@ -29,6 +29,8 @@ t_list			*ft_quote_handle(t_list *next, t_config *config)
 	int			i;
 	size_t		j;
 
+	if (!next || !next->data)
+		return (next ? next : NULL);
 	t = (char **)next->data;
 	i = -1;
 	while (t[++i])

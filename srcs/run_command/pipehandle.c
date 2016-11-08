@@ -86,8 +86,10 @@ static int	ft_agregate(t_list *begin, t_list **rhead, t_config *config,
 
 	ft_quote_handle((*rhead)->next, config);
 	tmp = (char*)(*rhead)->data;
+dprintf(1, "operator : %s\n", tmp);
 	if (ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
 	{
+dprintf(1, "creating multiplefd\n");
 		BOTHER_FD = ft_strtabadd_free(BOTHER_FD, tmp);
 		(*rhead)->data = NULL;
 		if (!ft_strchr(tmp, '&'))
@@ -128,7 +130,8 @@ int			ft_node_descriptors(t_list *begin, t_list **rhead, t_config *config,
 			return (0);
 		if (!ft_strcmp(tmp, "<<"))
 			return (ft_redirectheredoc(begin, rhead, config, r_pipe));
-		if (tmp[0] == '<' || tmp[0] == '>')
+		if (tmp[0] == '<' || tmp[0] == '>'
+					|| ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
 			return (ft_agregate(begin, rhead, config, r_pipe));
 		if (tmp[0] == '|')
 			*rhead = ft_partial_freelist(*rhead, 1);
