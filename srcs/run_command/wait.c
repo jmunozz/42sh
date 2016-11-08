@@ -15,7 +15,8 @@ static int	ft_wait(t_list **process, t_config *config)
 			ft_free_all_process(process, 1);
 			return (0);
 		}
-		else if (!pid && config->shell_state == SIGTSTP_COMMAND)
+		else if (!pid && config->shell_state == SIGTSTP_COMMAND
+			&& (config->shell_state = RUNNING_COMMAND))
 			return (1);
 		else if (WIFSTOPPED(stat_loc))
 			return (1);

@@ -8,6 +8,9 @@
 # define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
 # define BACK_ERR "missing character after backslash"
 # define DPATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+/*
+** SHELL STATES
+*/
 # define RUNNING_COMMAND 1
 # define SCANNING_COMMAND 2
 # define SIGTSTP_COMMAND 3
