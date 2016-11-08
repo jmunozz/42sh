@@ -26,6 +26,18 @@ void		get_pad(t_stream *stream, char *str)
 		COMP_PAD = size;
 }
 
+void		ft_end_autocomp(t_stream *stream)
+{
+	size_t pos_buf;
+
+	pos_buf = stream->pos;
+	COMP_STATE = 0;
+	ft_goend(stream);
+	stream->tput = "cd";
+	ft_tputs(stream);
+	ft_gomatch(stream, pos_buf, ft_mvleft);
+}
+
 int		ft_is_same_autocomp(t_stream *stream)
 {
 	static ssize_t	match[] = {LEF, RIG, UPP, DOW, CHT};
@@ -38,9 +50,9 @@ int		ft_is_same_autocomp(t_stream *stream)
 		if (((ssize_t*)(stream->buf))[0] == match[i])
 			is_same = (i == 4) ? 2 : 1;
 	if (!is_same)
-		COMP_STATE = 0;
+		ft_end_autocomp(stream);
 	else if ((COMP_STATE == 1 || COMP_STATE == 0)  && is_same != 2)
-		COMP_STATE = 0;
+		ft_end_autocomp(stream);
 	else
 		return (1);
 	return (0);

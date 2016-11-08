@@ -70,7 +70,13 @@ int		ft_is_separator(char c)
 		return (1);
 	return (0);
 }
-
+/*
+** Obtient le mode dans lequel va se lancer l'autocomp.
+** 0 = rien n'est écrit il faut chercher dans le dossier courant.
+** 1 = rien n'est écrit il faut chercher dans les binaires.
+** 2 = le début est écrit, il faut chercher dans le dossier ou compléter le PATH.
+** 3 = le début est écrit il faut chercher dans les binanires.
+*/
 int		get_mode(int len, char *str, t_stream *stream)
 {
 	int		i;
@@ -106,7 +112,6 @@ void	ft_autocomp(t_stream *stream)
 	int			mode;
 
 	len = 0;
-	//COMP_POS_COMMAND = stream->pos;
 	if (COMP_STATE == 1)
 		ft_state_one(stream);
 	else if (COMP_STATE == 2)
@@ -123,13 +128,11 @@ void	ft_autocomp(t_stream *stream)
 					stream->command,  &len), 0, len);
 			mode = get_mode(len, stream->command, stream);
 			build_list(COMP_BEGIN, mode, stream);
-			//else
-			//	ft_underline_mess("pas de liste\n", stream);*/
 			if (COMP_BEGIN_LIST)
 				COMP_STATE = 1;
 		}
 	}
 	if (COMP_BEGIN_LIST)
-		ft_underline_mess(list_to_char(stream, COMP_BEGIN_LIST), stream);
+		ft_underline_mess(NULL, stream);
 }
 

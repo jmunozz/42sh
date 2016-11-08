@@ -11,6 +11,8 @@
 # define COMP_STATE			stream->autocomp_state
 # define COMP_CURRENT		stream->comp.current
 # define COMP_BEGIN			stream->comp.begin
+# define COMP_POS_COMMAND	stream->comp.command_pos
+# define COMP_BUF			stream->comp.buf
 
 /*
 ** getenv.c
@@ -35,6 +37,7 @@ void	get_pad(t_stream *stream, char *str);
 void	get_size_list(t_stream *stream);
 int		ft_is_same_autocomp(t_stream *stream);
 void	reset_autocomp(t_stream *stream);
+void	ft_end_autocomp(t_stream *stream);
 /*
 ** print.c
 */
@@ -42,6 +45,8 @@ void	ft_print_elem(t_list *list, t_stream *stream);
 void	ft_print_autocomp(t_stream *stream);
 void	ft_print_col(t_stream *stream);
 void	get_col_elem(t_stream *stream);
+void	ft_autocomp_delete(t_stream *stream);
+void	ft_autocomp_append(t_stream *stream);
 /*
 ** move.c
 */

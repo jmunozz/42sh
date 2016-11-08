@@ -104,7 +104,9 @@ int				ft_chrparse(t_stream *stream)
 			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend};
 	//ceci est un tableau de fonctions prenant toutes t_stream en parametre.
 
-	if (ft_is_same_autocomp(stream))
+	if (COMP_STATE == 2 && ((ssize_t*)(stream->buf))[0] == CLF)
+		ft_end_autocomp(stream);
+	else if(ft_is_same_autocomp(stream))
 		(*ftab[1])(stream);
 	else
 	{

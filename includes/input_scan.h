@@ -10,6 +10,7 @@
 
 typedef struct	s_comp
 {
+	size_t		command_pos;
 	size_t		in_col;
 	size_t		nb_col;
 	size_t		pad;
@@ -17,6 +18,7 @@ typedef struct	s_comp
 	size_t		current;
 	t_list		*begin_list;
 	char		*begin;
+	char		buf[256];
 }				t_comp;
 
 typedef struct	s_stream
