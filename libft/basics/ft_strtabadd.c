@@ -68,3 +68,13 @@ char	**ft_strtabadd(char **dest, char *new)
 		res[i] = dest[i];
 	return (res);
 }
+
+char	**ft_strtabadd_free(char **dest, char *new)
+{
+	char	**kill;
+
+	kill = dest;
+	dest = ft_strtabadd(dest, new);
+	ft_freegiveone((void**)&kill);
+	return (dest);
+}

@@ -6,29 +6,39 @@ static int		*ft_close_pipe(int *new, int *old)
 	{
 		close(old[0]);
 		close(old[1]);
-		free(old);
 	}
 	if (new)
 		return (new);
 	return (NULL);
 }
 
-static void		ft_pipe_process(t_list *begin, t_config *config, int *r_pipe)
+static void		ft_pipe_process(int *r_pipe, t_list *pipe)
 {
+	t_pipe	*w_pipe;
+
 	if (r_pipe)
 	{
 		if (-1 == dup2(r_pipe[0], STDIN_FILENO))
 			ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
-		close(r_pipe[0]);
-		close(r_pipe[1]);
+		ft_close_pipe(NULL, r_pipe);
 	}
-	if (begin->next && begin->next->data_size == PIPE)
+	if (pipe && pipe->data_size == PIPE)
 	{
-		if (-1 == dup2(((int *)(begin->next->data))[1], STDOUT_FILENO))
-			ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
-		close(((int *)(begin->next->data))[0]);
-		close(((int *)(begin->next->data))[1]);
+		w_pipe = (t_pipe*)pipe->data;
+		if (((int*)w_pipe)[0] && ((int*)w_pipe)[1])
+		{
+			if (-1 == dup2(((int*)w_pipe)[1], STDOUT_FILENO))
+				ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
+			ft_close_pipe(NULL, (int *)w_pipe);
+			if (w_pipe->others_fd)
+				ft_handle_multiplefd(w_pipe->others_fd);
+		}
 	}
+}
+
+static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe)
+{
+	ft_pipe_process(r_pipe, begin->next);
 	ft_signal_reset();
 	if (begin->data_size == SSHELL && (config->shell_state = RUNNING_SSHELL))
 	{
@@ -64,33 +74,11 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 		return (NULL);
 	}
 	else if (!pid)
-		ft_pipe_process(begin, config, r_pipe);
+		ft_pack_process(begin, config, r_pipe);
 	else if (!(mem = (pid_t*)ft_memalloc(sizeof(pid_t))) || !(*mem = pid)
 		|| !(new = ft_lstnew((void *)mem, PROS)))
 		ft_error(SHNAME, "parser", "malloc error on process control", CR_ERROR);
 	return (new);
-}
-
-int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
-{
-	t_list	*rhead;
-
-	while (begin && begin->data_size && begin->data_size != SSHELL)
-		begin = begin->next;
-	if (begin && begin->next)
-	{
-		rhead = begin->next;
-		if (!ft_node_descriptors(begin, &rhead, config, r_pipe))
-			return (0);
-		if (begin->next)
-			begin->next->next = rhead;
-		else
-			begin->next = rhead;
-	}
-	dprintf(1,"LIST = \n");
-	ft_lstiter(begin, ft_print_list);
-	dprintf(1,"FIN LIST\n");
-	return (1);
 }
 
  t_list		*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe)

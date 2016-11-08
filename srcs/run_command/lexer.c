@@ -34,8 +34,7 @@ static t_list	*ft_op_handle(char *cmd, size_t *i)
 			return (ft_freelist(next));
 		op = next->next;
 		op->data_size = 1;
-		if (!(op->data = (void*)ft_match_op(cmd, i))
-				&& ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR))
+		if (!(op->data = (void*)ft_match_op(cmd, i)))
 			return (ft_freelist(next));
 		if (!ft_strcmp(op->data, "<<"))
 			op->data_size = HEREDOC;
@@ -48,8 +47,9 @@ t_list			*ft_built_couple(char *cmd, size_t *i)
 	t_list	*next;
 
 	*i = ft_next_op(cmd, *i);
-	if (*i && (cmd[*i] == '>' || cmd[*i] == '<') && ft_isdigit(cmd[*i - 1]))
-		(*i)--;
+	if (*i && (cmd[*i] == '>' || cmd[*i] == '<'))
+		while (*i && ft_isdigit(cmd[*i - 1]))
+			(*i)--;
 	if (!(next = ft_op_handle(cmd, i)))
 		return (ft_freelist(next));
 	return (next);

@@ -49,6 +49,25 @@ char		*ft_built_sentence(t_list *begin)
 	return (sentence);
 }
 
+int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
+{
+	t_list	*rhead;
+
+	while (begin && begin->data_size && begin->data_size != SSHELL)
+		begin = begin->next;
+	if (begin && begin->next)
+	{
+		rhead = begin->next;
+		if (!ft_node_descriptors(begin, &rhead, config, r_pipe))
+			return (0);
+		if (begin->next)
+			begin->next->next = rhead;
+		else
+			begin->next = rhead;
+	}
+	return (1);
+}
+
 static void		ft_sentence(t_list *begin, t_config *config)
 {
 	t_list	*job;
@@ -61,6 +80,7 @@ static void		ft_sentence(t_list *begin, t_config *config)
 		return ;
 	if ((job = ft_run_sentence(begin, config, r_pipe)))
 		ft_wait_sentence(job, sentence, config);
+	ft_freegiveone((void**)&r_pipe);
 }
 
 void			ft_parse(t_list *begin, t_config *config)

@@ -2,10 +2,12 @@
 
 void			ft_list_free_av(void *data, size_t data_size)
 {
+	if (data_size == PIPE && data && ((t_pipe*)data)->others_fd)
+		ft_strtabfree(((t_pipe*)data)->others_fd);
 	if (!data_size && data)
 		ft_strtabfree((char **)data);
-	else if (data_size == OP || data_size == HEREDOC)
-		free(data);
+	else if (data_size == OP || data_size == HEREDOC || data_size == PIPE)
+		ft_freegiveone(&data);
 	else if (data_size == SSHELL)
 		ft_freelist((t_list *)data);
 }

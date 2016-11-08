@@ -17,7 +17,7 @@ static void	*ft_newpipe(int mode)
 	int		*pip;
 	t_list	*new;
 
-	if (!(pip = (int *)ft_memalloc(sizeof(int) * 2))
+	if (!(pip = (int *)ft_memalloc(sizeof(t_pipe)))
 			&& ft_error(SHNAME, "parser", "malloc error on pipe", CR_ERROR))
 		return (NULL);
 	if (-1 == pipe(pip) && ft_error(SHNAME, "parser", "pipe error", CR_ERROR)
@@ -51,19 +51,18 @@ static int	ft_redirectheredoc(t_list *begin, t_list **rhead, t_config *config,
 				ft_strlen(((char**)((*rhead)->next->data))[i]));
 		write((*r_pipe)[1], "\n", 1);
 	}
-	dprintf(1, "heredoc ok\n");
+	*rhead = ft_partial_freelist(*rhead, 2);
 	return (ft_node_descriptors(begin, rhead, config, r_pipe));
 }
 
-static int	ft_redirectpipe(t_list *begin, int *pip, t_config *config,
-		char *tmp)
+int			ft_redirectpipe(char *file, int *pip, char *tmp)
 {
 	int		flags;
 	int		fd;
 
 	flags = 0;
-	fd		= -1;
-	if ((!begin->next || !tmp)
+	fd = -1;
+	if ((!file || !tmp)
 			&& ft_error(SHNAME, "parser", "redirection error", CR_ERROR))
 		return (0);
 	if (!ft_strcmp(tmp, ">"))
@@ -72,11 +71,8 @@ static int	ft_redirectpipe(t_list *begin, int *pip, t_config *config,
 		flags = O_CREAT | O_WRONLY | O_APPEND;
 	else if (!ft_strcmp(tmp, "<"))
 		flags = O_RDONLY;
-	ft_quote_handle(begin->next, config);
-	if ((fd = open(((char**)begin->next->data)[0], flags,
-					S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1
-			&& ft_error(SHNAME, ((char**)begin->next->data)[0],
-				"file does not exist", CR_ERROR))
+	if ((fd = open(file, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1
+			&& ft_error(SHNAME, file, "file does not exist", CR_ERROR))
 		return (0);
 	(flags == O_RDONLY) ? dup2(fd, pip[0]) : dup2(fd, pip[1]);
 	close(fd);
@@ -87,37 +83,54 @@ static int	ft_agregate(t_list *begin, t_list **rhead, t_config *config,
 		int **r_pipe)
 {
 	char	*tmp;
+
+	ft_quote_handle((*rhead)->next, config);
 	tmp = (char*)(*rhead)->data;
-	if (tmp[0] == '>' 
-		&& !ft_redirectpipe(*rhead, begin->next->data, config, tmp))
+	if (ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
+	{
+		BOTHER_FD = ft_strtabadd_free(BOTHER_FD, tmp);
+		(*rhead)->data = NULL;
+		if (!ft_strchr(tmp, '&'))
+		{
+			BOTHER_FD = ft_strtabadd(BOTHER_FD,
+				((char**)(*rhead)->next->data)[0]);
+			ft_freegiveone((void**)&(*rhead)->next->data);
+		}
+		*rhead = ft_partial_freelist(*rhead, 2);
+		return (ft_node_descriptors(begin, rhead, config, r_pipe));
+	}
+	else if (tmp[0] == '>'
+		&& !ft_redirectpipe((*rhead)->next ? ((char**)(*rhead)->next->data)[0] : NULL,
+			begin->next->data, tmp))
 		return (0);
-	else if (tmp[0] == '<' && !ft_redirectpipe(*rhead, *r_pipe, config, tmp))
+	else if (tmp[0] == '<' && !ft_redirectpipe((*rhead)->next ? ((char**)(*rhead)->next->data)[0] : NULL,
+		*r_pipe, tmp))
 		return (0);
+	*rhead = ft_partial_freelist(*rhead, 2);
 	return (ft_node_descriptors(begin, rhead, config, r_pipe));
 }
 
 int			ft_node_descriptors(t_list *begin, t_list **rhead, t_config *config,
 		int **r_pipe)
 {
-	char	tmp;
+	char	*tmp;
 
 	if (begin->next == *rhead)
 		begin->next = NULL;
-	else
-		*rhead = ft_partial_freelist(*rhead, 2);
 	if (*rhead)
 	{
-		tmp = ((char*)(*rhead)->data)[0];
-		if ((tmp == '|' || tmp == '>')
+		tmp = ((char*)(*rhead)->data);
+		if ((tmp[0] == '|' || tmp[0] == '>'
+					|| ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
 				&& !begin->next && !(begin->next = ft_newpipe(1)))
 			return (0);
-		if (tmp == '<' && !*r_pipe && !(*r_pipe = ft_newpipe(0)))
+		if (tmp[0] == '<' && !*r_pipe && !(*r_pipe = ft_newpipe(0)))
 			return (0);
-		if (!ft_strcmp((*rhead)->data, "<<"))
+		if (!ft_strcmp(tmp, "<<"))
 			return (ft_redirectheredoc(begin, rhead, config, r_pipe));
-		if (tmp == '<' || tmp == '>')
+		if (tmp[0] == '<' || tmp[0] == '>')
 			return (ft_agregate(begin, rhead, config, r_pipe));
-		if (tmp == '|')
+		if (tmp[0] == '|')
 			*rhead = ft_partial_freelist(*rhead, 1);
 	}
 	return (1);
