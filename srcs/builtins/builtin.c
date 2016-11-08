@@ -34,15 +34,22 @@ static void	ft_pwd(char **argv, t_config *config)
 		ft_putendl(config->pwd);
 }
 
+static int	ft_node_jobs(char **argv, t_config *config)
+{
+	if (!ft_strcmp(argv[0], "jobs"))
+		ft_jobs(argv, config);
+	else if (!ft_strcmp(argv[0], "fg") || !ft_strcmp(argv[0], "bg"))
+		ft_fgbg(argv, config, !ft_strcmp(argv[0], "fg") ? JOBS_FG : JOBS_BG);
+	else
+		return (0);
+	return (1);
+}
+
 int			ft_is_no_fork_builtin(char *argv)
 {
-	if (!ft_strcmp(argv, "exit"))
-		return (1);
-	if (!ft_strcmp(argv, "unsetenv"))
-		return (1);
-	if (!ft_strcmp(argv, "setenv"))
-		return (1);
-	if (!ft_strcmp(argv, "cd"))
+	if (!ft_strcmp(argv, "exit") || !ft_strcmp(argv, "unsetenv")
+		|| !ft_strcmp(argv, "setenv") || !ft_strcmp(argv, "cd")
+		|| !ft_strcmp(argv, "fg") || !ft_strcmp(argv, "bg"))
 		return (1);
 	return (0);
 }
@@ -53,6 +60,8 @@ int			ft_builtin(char **argv, t_config *config)
 		ft_shell_exit(config, argv);
 	else if (!ft_strcmp(argv[0], "exitfather"))
 		ft_kill_father(config);
+	else if (ft_node_jobs(argv, config))
+		;
 	else if (!ft_strcmp(argv[0], "pwd"))
 		ft_pwd(argv, config);
 	else if (!ft_strcmp(argv[0], "echo"))
