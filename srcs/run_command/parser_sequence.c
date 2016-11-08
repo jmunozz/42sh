@@ -20,7 +20,6 @@ static void		ft_pipe_process(int *r_pipe, t_list *pipe)
 	{
 		if (-1 == dup2(r_pipe[0], STDIN_FILENO))
 			ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
-		ft_close_pipe(NULL, r_pipe);
 	}
 	if (pipe && pipe->data_size == PIPE)
 	{
@@ -29,11 +28,12 @@ static void		ft_pipe_process(int *r_pipe, t_list *pipe)
 		{
 			if (-1 == dup2(((int*)w_pipe)[1], STDOUT_FILENO))
 				ft_error(SHNAME, "dup error", "writing end", CR_ERROR);
-			ft_close_pipe(NULL, (int *)w_pipe);
-			if (w_pipe->others_fd)
-				ft_handle_multiplefd(w_pipe->others_fd);
 		}
+		if (w_pipe->others_fd)
+			ft_handle_multiplefd(w_pipe->others_fd, (int*)w_pipe, r_pipe);
 	}
+	ft_close_pipe(NULL, (int *)w_pipe);
+	ft_close_pipe(NULL, r_pipe);
 }
 
 static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe)

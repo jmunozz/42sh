@@ -3,12 +3,13 @@
 static void	ft_dup_fds(char *op, char *ampersand, char *file, int *fd)
 {
 	int		pip[2];
-
+dprintf(1, "fd[1] = %d, fd[0] = %d\n", fd[1], fd[0]);
+//if (op[0] == '>
 	if (-1 == pipe(pip))
 		ft_error(SHNAME, "parser", "not enough fd left for pipe", CR_ERROR);
-	else if (ampersand && -1 == dup2(op[0] == '>' ? pip[1] : pip[0], fd[0]))
+	else if (ampersand && -1 == dup2(op[0] == '>' ? pip[1] : pip[0], fd[1]))
 		ft_error(SHNAME, "bad file descriptor", ft_st_itoa(fd[0]), CR_ERROR);
-	else if (ampersand && -1 == dup2(op[0] == '>' ? pip[0] : pip[1], fd[1]))
+	else if (ampersand && -1 == dup2(op[0] == '>' ? pip[0] : pip[1], fd[0]))
 		ft_error(SHNAME, "bad file descriptor", ft_st_itoa(fd[1]), CR_ERROR);
 	else if (!ampersand && *op == '>'
 		&& -1 == dup2(op[0] == '>' ? pip[1] : pip[0], fd[0]))
@@ -22,13 +23,16 @@ static void	ft_dup_fds(char *op, char *ampersand, char *file, int *fd)
 	}
 }
 
-void		ft_handle_multiplefd(char **others_fd)
+void		ft_handle_multiplefd(char **others_fd, int *w_pipe, int *r_pipe)
 {
 	int		i;
 	char	*op;
 	char	*ampersand;
 	int		fd[2];
 
+dprintf(1, "entering multiplefd\n");
+(void)r_pipe;
+(void)w_pipe;
 	i = -1;
 	while (others_fd[++i] && !(fd[0] = 0) && !(fd[1] = 0))
 	{
