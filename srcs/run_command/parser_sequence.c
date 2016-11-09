@@ -62,7 +62,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 
 	new = NULL;
 	if (!begin->data_size && (ft_is_no_fork_builtin(begin->data, config)
-		|| !ft_path_handle(begin, config)))
+		|| !ft_path_handle(begin->data, config)))
 		return (NULL);
 	else if ((pid = fork()) == -1
 		&& ft_error(SHNAME, "parser", "fork error", CR_ERROR))

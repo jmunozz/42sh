@@ -12,12 +12,10 @@
 
 #include "minishell.h"
 
-int			ft_path_handle(t_list *begin, t_config *config)
+int			ft_path_handle(char **argv, t_config *config)
 {
-	char	**argv;
 	char	*bin;
 
-	argv = (char**)begin->data;
 	if (!ft_strcmp(argv[0], "pwd") || !ft_strcmp(argv[0], "echo")
 		||!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
 		return (1);
@@ -25,7 +23,6 @@ int			ft_path_handle(t_list *begin, t_config *config)
 		&& ft_freegiveone((void**)&(argv[0]))
 		&& !(argv[0] = ft_strdup(bin)))
 		ft_error(SHNAME, "exec", "malloc error", CR_ERROR);
-	begin->data = (void*)argv;
 	return (ft_access_exec(argv[0], argv, config));
 }
 
