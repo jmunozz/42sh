@@ -46,6 +46,8 @@ static void	ft_path_follow(char *path, t_config *config)
 		ft_error(SHNAME, "access denied", path, CR_ERROR);
 	else if (!S_ISDIR(buf.st_mode))
 		ft_error(SHNAME, "not a directory", path, CR_ERROR);
+	else if (-1 == access(path, X_OK))
+		ft_error(SHNAME, "permission denied", path, CR_ERROR);
 	else if (!chdir(path))
 		ft_update_pwd(config);
 	else
