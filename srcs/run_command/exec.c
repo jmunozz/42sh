@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:20:26 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/03 17:54:16 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/08 14:31:51 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ void		ft_execve(char **argv, char **env, t_config *config)
 	}
 }
 
-void		ft_launch_process(t_list *begin, t_config *config)
+void		ft_launch_process(char **argv, t_config *config)
 {
-	if (ft_builtin((char **)(begin->data), config))
+	if (ft_builtin(argv, config))
 		return ;
-	ft_execve((char **)(begin->data), config->env, config);
+	else
+		ft_execve(argv, config->env, config);
 }
 
 void		ft_kill_father(t_config *config)

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:16:34 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/06 11:11:16 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/08 14:34:05 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,7 @@ int			ft_builtin(char **argv, t_config *config)
 	else if (!ft_strcmp(argv[0], "echo"))
 		ft_echo(argv);
 	else if (!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
-	{
 		ft_env(argv, config);
-		return (0);
-	}
 	else if (!ft_strcmp(argv[0], "unsetenv") || !ft_strcmp(argv[0], "unset"))
 		ft_unsetenv(argv, config);
 	else if (!ft_strcmp(argv[0], "setenv") || !ft_strcmp(argv[0], "set")

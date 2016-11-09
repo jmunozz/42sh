@@ -23,7 +23,7 @@ typedef struct	s_pipe
 **exec.c
 */
 void			ft_execve(char **argv, char **env, t_config *config);
-void			ft_launch_process(t_list *begin, t_config *config);
+void			ft_launch_process(char **argv, t_config *config);
 void			ft_kill_father(t_config *config);
 /*
 **files.c

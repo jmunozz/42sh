@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/05 14:14:44 by rbaran            #+#    #+#             */
-/*   Updated: 2016/11/06 11:00:16 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/08 14:52:46 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ static void	ft_printhelp(void)
 
 static int	ft_parseparams(char **argv, int *param, t_config *config)
 {
-	char	*unset[2];
+	char	*unset[3];
 	int		i;
 
-	unset[1] = NULL;
+	unset[2] = NULL;
 	i = 0;
 	while (argv[++i] && argv[i][0] == '-')
 	{
@@ -36,7 +36,7 @@ static int	ft_parseparams(char **argv, int *param, t_config *config)
 			*param |= ENV_I;
 		else if ((argv[i][1] == 'u' || !ft_strcmp(argv[i], ENV_UNSET)) && ++i)
 		{
-			unset[0] = argv[i];
+			unset[1] = argv[i];
 			ft_unsetenv((char**)unset, config);
 		}
 		else
@@ -45,15 +45,16 @@ static int	ft_parseparams(char **argv, int *param, t_config *config)
 	return (i);
 }
 
-static void	ft_createenv(char **argv, t_config *config, int index)
+static void	ft_createenv(char **argv, t_config *config, int *index)
 {
 	char	*equal;
 
-	while (argv[index] && (equal = ft_strchr(argv[index], '=')))
+	while (argv[*index] && (equal = ft_strchr(argv[*index], '=')))
 	{
 		*equal = '\0';
-		ft_setenv(argv[index], equal + 1, config);
-		index++;
+		ft_setenv(argv[*index], equal + 1, config);
+		ft_putstrtab(config->env, '\n');
+		(*index)++;
 	}
 }
 
@@ -76,6 +77,10 @@ void		ft_env(char **argv, t_config *config)
 		return ;
 	}
 	if (param & ENV_I)
-		ft_unsetenv(config->env, config);
-	ft_createenv(argv, config, i);
+	{
+		ft_strtabfree(config->env);
+		config->env = NULL;
+	}
+	ft_createenv(argv, config, &i);
+	ft_launch_process(argv + i, config);
 }
