@@ -132,7 +132,13 @@ void	ft_autocomp(t_stream *stream)
 				COMP_STATE = 1;
 		}
 	}
-	if (COMP_BEGIN_LIST)
+	if (COMP_SIZE_LIST == 1)
+	{
+		ft_comp_select_current(0, stream, 'S');
+		ft_autocomp_append(stream);
+		COMP_STATE = 0;
+	}
+	else if (COMP_BEGIN_LIST)
 		ft_underline_mess(NULL, stream);
 }
 

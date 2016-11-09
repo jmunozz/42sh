@@ -40,15 +40,18 @@ static void		do_list(t_stream *stream, struct dirent *file)
 */
 void			set_comp(char *str, char **comp, size_t *len_comp, int mode, t_stream *stream)
 {
+	char *tmp;
+
 	if (!mode || mode == 1)
 		*comp = NULL;
 	else if (!(*comp = ft_strrchr(str, '/')))
-		*comp = str;
+		*comp = ft_strdup(str);
 	else
 	{
-		(*comp)++;
-		ft_freegiveone((void**)&COMP_BEGIN);
+		*comp = ft_strdup(++(*comp));
+		tmp = COMP_BEGIN;
 		COMP_BEGIN = ft_strdup(*comp);
+		ft_freegiveone((void**)&tmp);
 	}
 	*len_comp = (!mode || mode == 1) ? 0 : ft_strlen(*comp);
 }
@@ -94,20 +97,23 @@ void		build_list(char *str, int mode, t_stream *stream)
 	char			*comp;
 	int				i;
 
-
 	i = -1;
 	dir = set_dir(str, mode, stream, &comp, &len_comp);
+	//ft_putstr("comp: ");
+	//ft_putstr(comp);
+	//ft_putstr("comp_begin: ");
+	//ft_putstr(COMP_BEGIN);
+	//ft_putstr("dir :");
+	//ft_putstr(dir[0]);
 	while (dir[++i])
 	{
 		if ((directory = opendir(dir[i])))
 		{
 			while ((file = readdir(directory)))
-			{
 				if (!comp || !*comp)
 					do_list(stream, file);
-				else if (!ft_strncmp(comp, file->d_name, len_comp))
+				else if (!ft_strncmp(COMP_BEGIN, file->d_name, len_comp))
 					do_list(stream, file);
-			}
 			closedir(directory);
 		}
 		free(dir[i]);
@@ -115,5 +121,6 @@ void		build_list(char *str, int mode, t_stream *stream)
 	}
 	get_size_list(stream);
 	free(dir);
+	ft_freegiveone((void**)&comp);
 }
 
