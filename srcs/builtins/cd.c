@@ -49,9 +49,10 @@ static void	ft_path_follow(char *path, t_config *config)
 	else if (-1 == access(path, X_OK))
 		ft_error(SHNAME, "permission denied", path, CR_ERROR);
 	else if (!chdir(path))
-		ft_update_pwd(config);
+		;
 	else
 		ft_error(SHNAME, "failed moving to directory", path, CR_ERROR);
+	ft_update_pwd(config);
 	free(path);
 }
 

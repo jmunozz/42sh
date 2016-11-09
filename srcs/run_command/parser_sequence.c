@@ -50,7 +50,8 @@ static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe)
 	}
 	else
 		ft_launch_process(begin, config);
-	ft_status(config->shell_state == RUNNING_SSHELL ? config->last_exit : 1);
+	if (config->shell_state == RUNNING_SSHELL)
+		ft_status(config->last_exit);
 	ft_shell_exit(config, NULL);
 }
 
