@@ -49,8 +49,9 @@ static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe)
 		ft_parse((t_list*)begin->data, config);
 	}
 	else
-		ft_launch_process(begin->data, config);
-	ft_status(config->shell_state == RUNNING_SSHELL ? config->last_exit : 1);
+		ft_launch_process(begin, config);
+	if (config->shell_state == RUNNING_SSHELL)
+		ft_status(config->last_exit);
 	ft_shell_exit(config, NULL);
 }
 
@@ -62,7 +63,7 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 
 	new = NULL;
 	if (!begin->data_size && (ft_is_no_fork_builtin(begin->data, config)
-		|| !ft_path_handle(begin, config)))
+		|| !ft_path_handle(begin->data, config)))
 		return (NULL);
 	else if ((pid = fork()) == -1
 		&& ft_error(SHNAME, "parser", "fork error", CR_ERROR))

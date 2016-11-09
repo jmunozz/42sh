@@ -36,12 +36,23 @@ void		ft_update_pwd(t_config *config)
 
 static void	ft_path_follow(char *path, t_config *config)
 {
+	struct stat	buf;
+
 	if (path[1] && !ft_access_dir(path))
 		;
+	else if (-1 == access(path, F_OK))
+		ft_error(SHNAME, "no directory or file named", path, CR_ERROR);
+	else if (-1 == stat(path, &buf))
+		ft_error(SHNAME, "access denied", path, CR_ERROR);
+	else if (!S_ISDIR(buf.st_mode))
+		ft_error(SHNAME, "not a directory", path, CR_ERROR);
+	else if (-1 == access(path, X_OK))
+		ft_error(SHNAME, "permission denied", path, CR_ERROR);
 	else if (!chdir(path))
-		ft_update_pwd(config);
+		;
 	else
 		ft_error(SHNAME, "failed moving to directory", path, CR_ERROR);
+	ft_update_pwd(config);
 	free(path);
 }
 

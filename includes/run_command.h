@@ -28,7 +28,7 @@ typedef struct	s_pipe
 /*
 **exec.c
 */
-int				ft_path_handle(t_list *begin, t_config *config);
+int				ft_path_handle(char **argv, t_config *config);
 void			ft_execve(char **argv, char **env);
 void			ft_launch_process(t_list *begin, t_config *config);
 void			ft_kill_father(t_config *config);

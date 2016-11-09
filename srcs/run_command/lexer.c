@@ -16,6 +16,15 @@ int				ft_next_op(char *cmd, size_t i)
 	return (i);
 }
 
+static int		ft_test_emptysshell(char *cmd, size_t i)
+{
+	while (ft_isspace(cmd[i]))
+		++i;
+	if (cmd[i] == ')')
+		return (ft_error(SHNAME, "parse error", "empty sshell", CR_ERROR));
+	return (0);
+}
+
 static t_list	*ft_op_handle(char *cmd, size_t *i)
 {
 	t_list	*next;
@@ -23,9 +32,8 @@ static t_list	*ft_op_handle(char *cmd, size_t *i)
 
 	if (!(next = ft_av_handle(cmd, *i)))
 		return NULL;
-	else if (cmd[*i] == '(' && cmd[ft_next_op(cmd, *i + 1)] == ')'
-		&& ft_error(SHNAME, "parse error", "empty sshell", CR_ERROR))
-		return (NULL);
+	else if (cmd[*i] == '(' && ft_test_emptysshell(cmd, *i + 1))
+		return NULL;
 	else if (cmd[*i] == '(' && ++(*i))
 		return (ft_lexer_sshell_on(cmd, i, next));
 	else if (cmd[*i] == ')')
