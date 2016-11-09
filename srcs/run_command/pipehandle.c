@@ -86,7 +86,6 @@ static int	ft_agregate(t_list *begin, t_list **rhead, t_config *config,
 {
 	char	*tmp;
 
-	ft_quote_handle((*rhead)->next, config);
 	tmp = (char*)(*rhead)->data;
 	if (ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
 	{

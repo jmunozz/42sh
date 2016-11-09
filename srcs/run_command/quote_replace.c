@@ -23,14 +23,14 @@ static t_list	*ft_quote_replace(char	**t, t_list *next)
 	return (next);
 }
 
-t_list			*ft_quote_handle(t_list *next, t_config *config)
+static t_list	*ft_quote_handle(t_list *next, t_config *config)
 {
 	char		**t;
 	int			i;
 	size_t		j;
 
 	if (!next || !next->data)
-		return (next ? next : NULL);
+		return (next);
 	t = (char **)next->data;
 	i = -1;
 	while (t[++i])
@@ -50,4 +50,17 @@ t_list			*ft_quote_handle(t_list *next, t_config *config)
 		}
 	}
 	return (ft_quote_replace(t, next));
+}
+
+int				ft_quote(t_list *begin, t_config *config)
+{
+	while (begin)
+	{
+		if (!begin->data_size && !ft_quote_handle(begin, config))
+			return (0);
+		else if (begin->data_size == SSHELL && !ft_quote(begin->data, config))
+			return (0);
+		begin = begin->next;
+	}
+	return (1);
 }

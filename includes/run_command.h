@@ -44,7 +44,6 @@ char			*ft_envvarinsert(char *cmd, size_t *i, t_config *config);
 t_list			*ft_built_couple(char *cmd, size_t *i);
 t_list			*ft_av_handle(char *cmd, size_t i);
 int				ft_dodge_quote(char *cmd, size_t i);
-t_list			*ft_quote_handle(t_list *next, t_config *config);
 char			*ft_match_op(char *cmd, size_t *i);
 int				ft_next_op(char *cmd, size_t i);
 void			ft_lexer_sshell_off(char *cmd, size_t i);
@@ -70,5 +69,6 @@ void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
 /*
 **heredoc.c
 */
+int				ft_quote(t_list *begin, t_config *config);
 int				ft_herringbone(t_list *begin, t_config *config);
 #endif
