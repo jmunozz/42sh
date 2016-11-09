@@ -16,6 +16,7 @@
 # define SIGTSTP_COMMAND 3
 # define SIGINT_COMMAND 4
 # define RUNNING_SSHELL 5
+# define RUNNING_SON 6
 /*
 **Env builtin defines (params)
 */

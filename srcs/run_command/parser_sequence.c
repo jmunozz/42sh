@@ -39,6 +39,7 @@ static void		ft_pipe_process(int *r_pipe, t_list *pipe)
 static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe,
 				char *path)
 {
+	config->shell_state = RUNNING_SON;
 	ft_pipe_process(r_pipe, begin->next);
 	ft_signal_reset();
 	if (begin->data_size == SSHELL && (config->shell_state = RUNNING_SSHELL))
