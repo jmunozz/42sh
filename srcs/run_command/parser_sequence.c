@@ -32,7 +32,7 @@ static void		ft_pipe_process(int *r_pipe, t_list *pipe)
 			ft_close_pipe(NULL, (int *)w_pipe);
 		}
 		if (w_pipe->others_fd)
-			ft_handle_multiplefd(w_pipe->others_fd, (int*)w_pipe, r_pipe);
+			ft_handle_multiplefd(w_pipe->others_fd);
 	}
 }
 

@@ -2,6 +2,9 @@
 # define RUN_COMMAND
 
 # include "minishell.h"
+/*
+** POLYMORPHIC CHAINLIST
+*/
 # define OP 1
 # define PIPE 2
 # define HEREDOC 3
@@ -9,6 +12,9 @@
 # define PROS 100
 # define SENT 101
 # define JOB 102
+/*
+** MOST USED DEFFERENTIATION
+*/
 # define BDATA ((char*)begin->data)
 # define SNDATA ((char*)src->next->data)
 # define BOTHER_FD ((t_pipe*)begin->next->data)->others_fd
@@ -56,8 +62,7 @@ int				ft_redirectpipe(char *file, int *pip, char *tmp);
 /*
 **parser_multiple_fd.c
 */
-void			ft_handle_multiplefd(char **others_fd, int *w_pipe,
-				int *r_pipe);
+void			ft_handle_multiplefd(char **others_fd);
 /*
 **wait.c
 */

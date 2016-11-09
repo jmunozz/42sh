@@ -21,20 +21,23 @@ static char		*ft_agregation(char *buf, size_t *i, char *cmd, size_t *j)
 {
 	while (ft_isdigit(cmd[*i]) && (*j < 256))
 		buf[(*j)++] = cmd[(*i)++];
-	buf[(*j)++] = cmd[(*i)++];
-	if (((cmd[*i - 1] == '>' && cmd[*i] == '>')
+	if ((buf[(*j)++] = cmd[(*i)++]) && ((cmd[*i - 1] == '>' && cmd[*i] == '>')
 		|| (cmd[*i - 1] == '<' && cmd[*i] == '<')) && (*j < 256))
 		buf[(*j)++] = cmd[(*i)++];
 	if (cmd[*i] != '&' && ft_isop(cmd[*i]) && (cmd[*i + 1] = 0)
 		&& (*j < 256))
 		return (ft_reduc(i, 0, NULL, cmd));
-	else if (*i > 1 && cmd[*i] == '&' && (cmd[*i - 1] == '<'
-		|| cmd[*i - 2] == '>' || !ft_isdigit(cmd[*i + 1]))
-		&& !(cmd[*i + 1] = 0))
+	else if (*i > 1 && cmd[*i] == '&' && (cmd[*i - 2] == '<'
+		|| cmd[*i - 2] == '>') && !(cmd[*i + 1] = 0))
 		return (ft_reduc(i, 0, NULL, cmd));
+	if (cmd[*i] == '&' && !ft_isdigit(cmd[*i + 1])
+		&& cmd[*i + 1] != '-' && ++(*i))
+		return (ft_strdup(buf));
 	if (cmd[*i] == '&' && (*j < 256))
 		buf[(*j)++] = cmd[(*i)++];
 	else
+		return (ft_strdup(buf));
+	if (cmd[*i] == '-' && (buf[(*j)++] = cmd[(*i)++]))
 		return (ft_strdup(buf));
 	while (ft_isdigit(cmd[*i]) && (*j < 256))
 		buf[(*j)++] = cmd[(*i)++];

@@ -92,7 +92,8 @@ void			ft_parse(t_list *begin, t_config *config)
 	test = ';';
 	while ((next = ft_cut_lst(begin, config)))
 	{
-		if (config->shell_state == RUNNING_COMMAND
+		if ((config->shell_state == RUNNING_COMMAND
+			|| config->shell_state == RUNNING_SSHELL)
 			&& (test == ';' || (test == '&' && !config->last_exit)
 			|| (test == '|' && config->last_exit)))
 			ft_sentence(begin, config);
@@ -100,7 +101,8 @@ void			ft_parse(t_list *begin, t_config *config)
 		begin = next;
 		test = config->dot_sequence;
 	}
-	if (config->shell_state == RUNNING_COMMAND
+	if ((config->shell_state == RUNNING_COMMAND 
+		|| config->shell_state == RUNNING_SSHELL)
 		&& (test == ';' || (test == '&' && !config->last_exit)
 		|| (test == '|' && config->last_exit)))
 		ft_sentence(begin, config);
