@@ -50,7 +50,7 @@ int		ft_access_exec(char *path, char **argv, t_config *config)
 		return (1 ^ ft_error(SHNAME, "command not found", path, CR_ERROR));
 	else if (-1 == stat(path, &buf))
 		return (1 ^ ft_error(SHNAME, "access denied", path, CR_ERROR));
-	else if (S_ISDIR(buf.st_mode))
+	else if (config->shell_state != RUNNING_SON && S_ISDIR(buf.st_mode))
 	{
 		ft_cd(argv, config);
 		return false;
