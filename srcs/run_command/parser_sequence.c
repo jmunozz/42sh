@@ -36,7 +36,8 @@ static void		ft_pipe_process(int *r_pipe, t_list *pipe)
 	}
 }
 
-static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe)
+static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe,
+				char *path)
 {
 	ft_pipe_process(r_pipe, begin->next);
 	ft_signal_reset();
@@ -49,9 +50,8 @@ static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe)
 		ft_parse((t_list*)begin->data, config);
 	}
 	else
-		ft_launch_process(begin, config);
-	if (config->shell_state == RUNNING_SSHELL)
-		ft_status(config->last_exit);
+		ft_launch_process(path, begin->data, config);
+	ft_status(config->last_exit);
 	ft_shell_exit(config, NULL);
 }
 
@@ -60,23 +60,24 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	t_list	*new;
 	pid_t	pid;
 	pid_t	*mem;
+	char	*path;
 
 	new = NULL;
 	if (!begin->data_size && (ft_is_no_fork_builtin(begin->data, config)
-		|| !ft_path_handle(begin->data, config)))
+		|| !(path = ft_path_handle(begin->data, config))))
 		return (NULL);
 	else if ((pid = fork()) == -1
 		&& ft_error(SHNAME, "parser", "fork error", CR_ERROR))
 		return (NULL);
 	else if (!pid)
-		ft_pack_process(begin, config, r_pipe);
+		ft_pack_process(begin, config, r_pipe, path);
 	else if (!(mem = (pid_t*)ft_memalloc(sizeof(pid_t))) || !(*mem = pid)
 		|| !(new = ft_lstnew((void *)mem, PROS)))
 		ft_error(SHNAME, "parser", "malloc error on process control", CR_ERROR);
 	return (new);
 }
 
- t_list		*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe)
+t_list			*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe)
 {
 	t_list	*tmp;
 	t_list	*process;
