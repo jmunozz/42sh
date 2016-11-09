@@ -61,13 +61,12 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	pid_t	*mem;
 
 	new = NULL;
-	if (!begin->data_size && ft_is_no_fork_builtin(((char**)(begin->data))[0]))
-		ft_launch_process(begin, config);
-	else if ((pid = fork()) == -1)
-	{
-		ft_error(SHNAME, "parser", "fork error", CR_ERROR);
+	if (!begin->data_size && (ft_is_no_fork_builtin(begin->data, config)
+		|| !ft_path_handle(begin, config)))
 		return (NULL);
-	}
+	else if ((pid = fork()) == -1
+		&& ft_error(SHNAME, "parser", "fork error", CR_ERROR))
+		return (NULL);
 	else if (!pid)
 		ft_pack_process(begin, config, r_pipe);
 	else if (!(mem = (pid_t*)ft_memalloc(sizeof(pid_t))) || !(*mem = pid)

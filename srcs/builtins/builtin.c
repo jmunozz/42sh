@@ -45,16 +45,7 @@ static int	ft_node_jobs(char **argv, t_config *config)
 	return (1);
 }
 
-int			ft_is_no_fork_builtin(char *argv)
-{
-	if (!ft_strcmp(argv, "exit") || !ft_strcmp(argv, "unsetenv")
-		|| !ft_strcmp(argv, "setenv") || !ft_strcmp(argv, "cd")
-		|| !ft_strcmp(argv, "fg") || !ft_strcmp(argv, "bg"))
-		return (1);
-	return (0);
-}
-
-int			ft_builtin(char **argv, t_config *config)
+int			ft_is_no_fork_builtin(char **argv, t_config *config)
 {
 	if (!ft_strcmp(argv[0], "exit"))
 		ft_shell_exit(config, argv);
@@ -62,15 +53,6 @@ int			ft_builtin(char **argv, t_config *config)
 		ft_kill_father(config);
 	else if (ft_node_jobs(argv, config))
 		;
-	else if (!ft_strcmp(argv[0], "pwd"))
-		ft_pwd(argv, config);
-	else if (!ft_strcmp(argv[0], "echo"))
-		ft_echo(argv);
-	else if (!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
-	{
-		ft_env(argv, config);
-		return (0);
-	}
 	else if (!ft_strcmp(argv[0], "unsetenv") || !ft_strcmp(argv[0], "unset"))
 		ft_unsetenv(argv, config);
 	else if (!ft_strcmp(argv[0], "setenv") || !ft_strcmp(argv[0], "set")
@@ -78,6 +60,19 @@ int			ft_builtin(char **argv, t_config *config)
 		ft_readysetenv(argv, config);
 	else if (!ft_strcmp(argv[0], "cd"))
 		ft_cd(argv, config);
+	else
+		return (0);
+	return (1);
+}
+
+int			ft_builtin(char **argv, t_config *config)
+{
+	if (!ft_strcmp(argv[0], "pwd"))
+		ft_pwd(argv, config);
+	else if (!ft_strcmp(argv[0], "echo"))
+		ft_echo(argv);
+	else if (!ft_strcmp(argv[0], "env"))
+		return (ft_env(argv, config));
 	else
 		return (0);
 	return (1);

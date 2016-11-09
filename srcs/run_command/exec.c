@@ -12,25 +12,34 @@
 
 #include "minishell.h"
 
-void		ft_execve(char **argv, char **env, t_config *config)
+int			ft_path_handle(t_list *begin, t_config *config)
 {
-	char	*path;
+	char	**argv;
 	char	*bin;
 
-	path = argv[0];
-	bin = ft_return_binpath(config, path);
-	if (ft_access_exec(bin ? bin : path, argv, config))
-	{
-		if (-1 == execve(bin ? bin : path, argv, env))
-			ft_error(SHNAME, "exec", "execve error", CR_ERROR);
-	}
+	argv = (char**)begin->data;
+	if (!ft_strcmp(argv[0], "pwd") || !ft_strcmp(argv[0], "echo")
+		||!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
+		return (1);
+	if ((bin = ft_return_binpath(config, argv[0]))
+		&& ft_freegiveone((void**)&(argv[0]))
+		&& !(argv[0] = ft_strdup(bin)))
+		ft_error(SHNAME, "exec", "malloc error", CR_ERROR);
+	begin->data = (void*)argv;
+	return (ft_access_exec(argv[0], argv, config));
+}
+
+void		ft_execve(char **argv, char **env)
+{
+	if (-1 == execve(argv[0], argv, env))
+		ft_error(SHNAME, "exec", "execve error", CR_ERROR);
 }
 
 void		ft_launch_process(t_list *begin, t_config *config)
 {
 	if (ft_builtin((char **)(begin->data), config))
 		return ;
-	ft_execve((char **)(begin->data), config->env, config);
+	ft_execve((char **)(begin->data), config->env);
 }
 
 void		ft_kill_father(t_config *config)

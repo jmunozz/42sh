@@ -61,12 +61,12 @@ typedef struct	s_config
 /*
 **builtin.c && environ.c
 */
-int				ft_is_no_fork_builtin(char *argv);
+int				ft_is_no_fork_builtin(char **argv, t_config *config);
 int				ft_default_env(t_config *config);
 int				ft_builtin(char **argv, t_config *config);
 void			ft_update_pwd(t_config *config);
 void			ft_cd(char **argv, t_config *config);
-void			ft_env(char **argv, t_config *config);
+int				ft_env(char **argv, t_config *config);
 void			ft_setenv(char *name, char *value, t_config *config);
 void			ft_readysetenv(char **argv, t_config *config);
 void			ft_unsetenv(char **argv, t_config *config);

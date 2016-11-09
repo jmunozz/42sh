@@ -57,7 +57,7 @@ static void	ft_createenv(char **argv, t_config *config, int index)
 	}
 }
 
-void		ft_env(char **argv, t_config *config)
+int			ft_env(char **argv, t_config *config)
 {
 	int		param;
 	int		i;
@@ -66,16 +66,17 @@ void		ft_env(char **argv, t_config *config)
 	{
 		ft_putstrtab((config->env), '\n');
 		ft_putchar('\n');
-		return ;
+		return (1);
 	}
 	param = 0;
 	i = ft_parseparams(argv, &param, config);
 	if (param & ENV_H)
 	{
 		ft_printhelp();
-		return ;
+		return (1);
 	}
 	if (param & ENV_I)
 		ft_unsetenv(config->env, config);
 	ft_createenv(argv, config, i);
+	return (0);
 }
