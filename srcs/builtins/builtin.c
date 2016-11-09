@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:16:34 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/09 19:29:38 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/09 21:28:19 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			ft_builtin(char **argv, t_config *config)
 	else if (!ft_strcmp(argv[0], "echo"))
 		ft_echo(argv);
 	else if (!ft_strcmp(argv[0], "env"))
-		return (ft_env(argv, config));
+		ft_env(argv, config);
 	else
 		return (0);
 	return (1);
