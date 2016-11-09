@@ -32,7 +32,7 @@ static void		ft_pipe_process(int *r_pipe, t_list *pipe)
 			ft_close_pipe(NULL, (int *)w_pipe);
 		}
 		if (w_pipe->others_fd)
-			ft_handle_multiplefd(w_pipe->others_fd, (int*)w_pipe, r_pipe);
+			ft_handle_multiplefd(w_pipe->others_fd);
 	}
 }
 
@@ -61,18 +61,12 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	pid_t	*mem;
 
 	new = NULL;
-	if (!begin->data_size && !ft_quote_handle(begin, config))
-	{
-		ft_error(SHNAME, "parser", "malloc error handling quote", CR_ERROR);
+	if (!begin->data_size && (ft_is_no_fork_builtin(begin->data, config)
+		|| !ft_path_handle(begin, config)))
 		return (NULL);
-	}
-	if (!begin->data_size && ft_is_no_fork_builtin(((char**)(begin->data))[0]))
-		ft_launch_process(begin->data, config);
-	else if ((pid = fork()) == -1)
-	{
-		ft_error(SHNAME, "parser", "fork error", CR_ERROR);
+	else if ((pid = fork()) == -1
+		&& ft_error(SHNAME, "parser", "fork error", CR_ERROR))
 		return (NULL);
-	}
 	else if (!pid)
 		ft_pack_process(begin, config, r_pipe);
 	else if (!(mem = (pid_t*)ft_memalloc(sizeof(pid_t))) || !(*mem = pid)

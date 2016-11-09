@@ -8,12 +8,14 @@
 # define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
 # define BACK_ERR "missing character after backslash"
 # define DPATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+/*
+** SHELL STATES
+*/
 # define RUNNING_COMMAND 1
 # define SCANNING_COMMAND 2
 # define SIGTSTP_COMMAND 3
 # define SIGINT_COMMAND 4
 # define RUNNING_SSHELL 5
-
 /*
 **Env builtin defines (params)
 */
@@ -22,6 +24,11 @@
 # define ENV_HELP "--help"
 # define ENV_UNSET "--unset"
 # define ENV_IGNORE "--ignore-environment"
+/*
+**jobs builtin defines
+*/
+#define JOBS_FG 0
+#define JOBS_BG 1
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
@@ -54,15 +61,22 @@ typedef struct	s_config
 /*
 **builtin.c && environ.c
 */
-int				ft_is_no_fork_builtin(char *argv);
+int				ft_is_no_fork_builtin(char **argv, t_config *config);
 int				ft_default_env(t_config *config);
 int				ft_builtin(char **argv, t_config *config);
 void			ft_update_pwd(t_config *config);
 void			ft_cd(char **argv, t_config *config);
-void			ft_env(char **argv, t_config *config);
+int				ft_env(char **argv, t_config *config);
 void			ft_setenv(char *name, char *value, t_config *config);
 void			ft_readysetenv(char **argv, t_config *config);
 void			ft_unsetenv(char **argv, t_config *config);
+/*
+**jobs.c && jobs_utils.c
+*/
+int				ft_cmp_jobs(t_list *s, char *description, int i);
+void			ft_print_jobs(t_list *sentence, char *description);
+void			ft_jobs(char **argv, t_config *config);
+void			ft_fgbg(char **argv, t_config *config, int mode);
 /*
 **error.c
 */

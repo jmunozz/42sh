@@ -92,15 +92,19 @@ void			ft_parse(t_list *begin, t_config *config)
 	test = ';';
 	while ((next = ft_cut_lst(begin, config)))
 	{
-		if (test == ';' || (test == '&' && !config->last_exit)
-			|| (test == '|' && config->last_exit))
+		if ((config->shell_state == RUNNING_COMMAND
+			|| config->shell_state == RUNNING_SSHELL)
+			&& (test == ';' || (test == '&' && !config->last_exit)
+			|| (test == '|' && config->last_exit)))
 			ft_sentence(begin, config);
 		ft_freelist(begin);
 		begin = next;
 		test = config->dot_sequence;
 	}
-	if (test == ';' || (test == '&' && !config->last_exit)
-		|| (test == '|' && config->last_exit))
+	if ((config->shell_state == RUNNING_COMMAND 
+		|| config->shell_state == RUNNING_SSHELL)
+		&& (test == ';' || (test == '&' && !config->last_exit)
+		|| (test == '|' && config->last_exit)))
 		ft_sentence(begin, config);
 	ft_freelist(begin);
 }

@@ -86,12 +86,9 @@ static int	ft_agregate(t_list *begin, t_list **rhead, t_config *config,
 {
 	char	*tmp;
 
-	ft_quote_handle((*rhead)->next, config);
 	tmp = (char*)(*rhead)->data;
-dprintf(1, "operator : %s\n", tmp);
 	if (ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
 	{
-dprintf(1, "creating multiplefd\n");
 		BOTHER_FD = ft_strtabadd_free(BOTHER_FD, tmp);
 		(*rhead)->data = NULL;
 		if (!ft_strchr(tmp, '&'))

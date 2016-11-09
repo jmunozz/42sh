@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:16:34 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/08 14:34:05 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/09 19:29:38 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,25 @@ static void	ft_pwd(char **argv, t_config *config)
 		ft_putendl(config->pwd);
 }
 
-int			ft_is_no_fork_builtin(char *argv)
+static int	ft_node_jobs(char **argv, t_config *config)
 {
-	if (!ft_strcmp(argv, "exit"))
-		return (1);
-	if (!ft_strcmp(argv, "unsetenv"))
-		return (1);
-	if (!ft_strcmp(argv, "setenv"))
-		return (1);
-	if (!ft_strcmp(argv, "cd"))
-		return (1);
-	return (0);
+	if (!ft_strcmp(argv[0], "jobs"))
+		ft_jobs(argv, config);
+	else if (!ft_strcmp(argv[0], "fg") || !ft_strcmp(argv[0], "bg"))
+		ft_fgbg(argv, config, !ft_strcmp(argv[0], "fg") ? JOBS_FG : JOBS_BG);
+	else
+		return (0);
+	return (1);
 }
 
-int			ft_builtin(char **argv, t_config *config)
+int			ft_is_no_fork_builtin(char **argv, t_config *config)
 {
 	if (!ft_strcmp(argv[0], "exit"))
 		ft_shell_exit(config, argv);
 	else if (!ft_strcmp(argv[0], "exitfather"))
 		ft_kill_father(config);
-	else if (!ft_strcmp(argv[0], "pwd"))
-		ft_pwd(argv, config);
-	else if (!ft_strcmp(argv[0], "echo"))
-		ft_echo(argv);
-	else if (!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
-		ft_env(argv, config);
+	else if (ft_node_jobs(argv, config))
+		;
 	else if (!ft_strcmp(argv[0], "unsetenv") || !ft_strcmp(argv[0], "unset"))
 		ft_unsetenv(argv, config);
 	else if (!ft_strcmp(argv[0], "setenv") || !ft_strcmp(argv[0], "set")
@@ -66,6 +60,19 @@ int			ft_builtin(char **argv, t_config *config)
 		ft_readysetenv(argv, config);
 	else if (!ft_strcmp(argv[0], "cd"))
 		ft_cd(argv, config);
+	else
+		return (0);
+	return (1);
+}
+
+int			ft_builtin(char **argv, t_config *config)
+{
+	if (!ft_strcmp(argv[0], "pwd"))
+		ft_pwd(argv, config);
+	else if (!ft_strcmp(argv[0], "echo"))
+		ft_echo(argv);
+	else if (!ft_strcmp(argv[0], "env"))
+		return (ft_env(argv, config));
 	else
 		return (0);
 	return (1);

@@ -35,11 +35,9 @@ void		ft_print_list(t_list *elem)
 		ft_lstiter((t_list *)elem->data, ft_print_list);
 	}
 	else if (elem->data_size == OP)
-	{
-		ft_putstr("\nop :\n");
-		ft_putstr((char*)elem->data);
-		ft_putchar('\n');
-	}
+		FT_PUTSTRFD("\nop :\n", (char*)elem->data, "\n", 1);
+	else if (elem->data_size == JOB)
+		ft_print_jobs(elem->data, NULL);
 	else
 	{
 		ft_putstr("\npipe :\n");
@@ -56,7 +54,8 @@ void		ft_run_command(t_config *config, char *cmd)
 	config->shell_state = RUNNING_COMMAND;
 	if ((begin = ft_lexer(cmd)))
 	{
-		if (!ft_herringbone(begin, config))
+		if (!ft_quote(begin, config)
+			|| !ft_herringbone(begin, config))
 			ft_freelist(begin);
 		else
 		{

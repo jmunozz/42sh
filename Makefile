@@ -13,6 +13,8 @@ builtins/builtin.c \
 builtins/cd.c \
 builtins/env.c \
 builtins/environ.c \
+builtins/jobs.c \
+builtins/jobs_utils.c \
 core/cmp.c \
 core/errors.c \
 core/free.c \
