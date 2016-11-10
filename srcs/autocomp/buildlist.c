@@ -1,13 +1,8 @@
 #include "../../includes/autocomp.h"
-
-/*static	void	debug(char *str, char *str2, int nb)
-{
-	ft_putendl(str);
-	ft_putendl(str2);
-	ft_putnbr(nb);
-	ft_putchar('\n');
-}*/
-
+/*
+** Construit la liste si elle n'existe pas. Ajoute un élément si la liste existe.
+** Filtre les fichiers cachés et dans tous les cas "." et "..";
+*/
 static void		do_list(t_stream *stream, struct dirent *file)
 {
 	size_t data_size;
@@ -99,12 +94,6 @@ void		build_list(char *str, int mode, t_stream *stream)
 
 	i = -1;
 	dir = set_dir(str, mode, stream, &comp, &len_comp);
-	//ft_putstr("comp: ");
-	//ft_putstr(comp);
-	//ft_putstr("comp_begin: ");
-	//ft_putstr(COMP_BEGIN);
-	//ft_putstr("dir :");
-	//ft_putstr(dir[0]);
 	while (dir[++i])
 	{
 		if ((directory = opendir(dir[i])))
