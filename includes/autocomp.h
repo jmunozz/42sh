@@ -5,6 +5,7 @@
 
 # define COMP_PAD			stream->comp.pad
 # define COMP_COL			stream->col
+# define COMP_ROW			stream->row
 # define COMP_SIZE_LIST		stream->comp.size_list
 # define COMP_BEGIN_LIST	stream->comp.begin_list
 # define COMP_IN_COL		stream->comp.in_col
@@ -12,6 +13,7 @@
 # define COMP_CURRENT		stream->comp.current
 # define COMP_BEGIN			stream->comp.begin
 # define COMP_POS_COMMAND	stream->comp.command_pos
+# define COMP_DISPLAYABLE	stream->comp.displayable
 # define COMP_BUF			stream->comp.buf
 
 /*
@@ -43,10 +45,15 @@ void	ft_end_autocomp(t_stream *stream);
 */
 void	ft_print_elem(t_list *list, t_stream *stream);
 void	ft_print_autocomp(t_stream *stream);
-void	ft_print_col(t_stream *stream);
+//void	ft_print_col(t_stream *stream);
 void	get_col_elem(t_stream *stream);
 void	ft_autocomp_delete(t_stream *stream);
 void	ft_autocomp_append(t_stream *stream);
+void	ft_autocomp_print_line(t_list *list, size_t elem, t_stream *stream);
+void	ft_autocomp_print(size_t start, size_t end, t_stream *stream);
+int		ft_autocomp_is_oversize(t_stream *stream);
+void	ft_autocomp_underline(t_stream *stream, char mode);
+void	ft_autocomp_scroll(t_stream *stream);
 /*
 ** move.c
 */

@@ -16,6 +16,7 @@ typedef struct	s_comp
 	size_t		pad;
 	size_t		size_list;
 	size_t		current;
+	size_t		displayable;
 	t_list		*begin_list;
 	char		*begin;
 	char		buf[256];
@@ -33,7 +34,8 @@ typedef struct	s_stream
 	char		*kill;
 	char		*search;
 	size_t		pos;
-	size_t		col; //nb de colomnes dans une ligne.
+	size_t		col; // largeur du terminal.
+	size_t		row; // hauteur du terminal.
 	size_t		autocomp_state;
 	t_config	*config;
 	t_comp		comp;
