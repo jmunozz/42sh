@@ -12,49 +12,6 @@
 
 #include "../includes/minishell.h"
 
-/*
-   static void	get_autocomp(t_stream *stream)
-   {
-   }
-
-   static char	*ft_last_separators(const char *str, char c)
-   {
-   int i;
-   char *ret;
-
-   i = 0;
-   if (!str || !*str)
-   return (NULL);
-   while (str[i])
-   i++;
-   if (str[--i] == c)
-   return (NULL);
-   if ((ret = ft_strrchr(str, c)))
-   return (ret + 1);
-   return (NULL);
-   }
-   */
-
-char	*list_to_char(t_stream *stream, t_list *list)
-{
-	char *str;
-
-	str = ft_strnew(1000);
-	while (list)
-	{
-		str = ft_strcat(str, (char*)list->data);
-		str = ft_strcat(str, "\n");
-		list = list->next;
-	}
-	str = ft_strcat(str, "COMP_PAD = ");
-	str = ft_strcat(str, ft_itoa((int)COMP_PAD));
-	str = ft_strcat(str, "; COMP_COL =");
-	str = ft_strcat(str, ft_itoa((int)COMP_COL));
-	str = ft_strcat(str, "; COMP_SIZE_LIST = ");
-	str = ft_strcat(str, ft_itoa((int)COMP_SIZE_LIST));
-	str = ft_strcat(str, "\n");
-	return (str);
-}
 
 int		ft_is_separator(char c)
 {
@@ -94,8 +51,11 @@ int		get_mode(int len, char *str, t_stream *stream)
 		return (!co ? 1 : 0);
 	return (!co ? 3 : 2);
 }
-
-
+/*
+** Permet de définir COMP_BEGIN (moyennant intervention de ft_strsub) qui
+** représente le début de la chaîne à comparer. COMP_BEGIN est modifié dans
+** build_list.c dans le cas où on chercher à compléter un chemin.
+*/
 char	*get_begin(int i, char *str, int *len)
 {
 	while (i >= 0 && !ft_is_separator(str[i]))
@@ -105,7 +65,12 @@ char	*get_begin(int i, char *str, int *len)
 	}
 	return (&(str[++i]));
 }
-
+/*
+** Fonction principale d'exécution de l'autocomp.
+** Lance les différents comportements en fonction de COMP_STATE.
+** Si COMP_SIZE_LIST = 1, modifie directement la ligne de commande.
+** Sinon imprime la liste en colonnes.
+*/
 void	ft_autocomp(t_stream *stream)
 {
 	int			len;
