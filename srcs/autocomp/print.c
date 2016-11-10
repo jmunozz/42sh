@@ -77,13 +77,23 @@ void		ft_print_autocomp(t_stream *stream)
 
 	get_col_elem(stream); // obtient COMP_IN_COL.
 	ft_autocomp_underline(stream, 'D'); //Positionne le curseur en dessous de la ligne de commande.
-	ft_autocomp_print(stream); //imprime les colonnes.
 	if (ft_autocomp_is_oversize(stream))
-		ft_winsize();
+	{
+		if (COMP_STATE == 1)
+		{
+			ft_autocomp_print(0, COMP_IN_COL, stream);//imprime les colonnes.
+			stream->tput = "do";
+			ft_tputs(stream);
+			ft_winsize();
+		}
+		else
+			ft_autocomp_scroll(stream);
+	}
 	else
 	{
+		ft_autocomp_print(0, COMP_IN_COL, stream); //imprime les colonnes.
 		stream->tput = "up";
-		i = COMP_IN_COL + 1;
+		i = COMP_IN_COL;
 		while (i--)
 			ft_tputs(stream);
 		ft_autocomp_underline(stream, 'U'); // Positionne le curseur à sa place sur la commande.
@@ -144,25 +154,27 @@ void		ft_autocomp_delete(t_stream *stream)
 /*
  ** Imprime une ligne. Assure le retour à la ligne et la bonne incrémentation de la liste.
  */
-void		ft_autocomp_print(t_stream *stream)
+void		ft_autocomp_print(size_t start, size_t end, t_stream *stream)
 {
-	size_t	i;
 	size_t	j;
 	t_list	*list;
 
 	list = COMP_BEGIN_LIST;
-	i = 0;
-	while (i < COMP_IN_COL)
+	j = -1;
+	while (++j < start)
+		list = list->next;
+	while (start < end)
 	{
-		ft_autocomp_print_line(list, i, stream);
+		ft_autocomp_print_line(list, start, stream);
 		stream->tput = "le";
 		j = COMP_COL;
 		while (j--)
 			ft_tputs(stream);
 		stream->tput = "do";
-		ft_tputs(stream);
+		if (start != end - 1)
+			ft_tputs(stream);
 		list = list->next;
-		i++;
+		start++;
 	}
 }
 /*
@@ -197,7 +209,7 @@ int		ft_autocomp_is_oversize(t_stream *stream)
 	command_size = (command_size) ?
 		(stream->config->prompt_len + ft_strlen(stream->command)) / COMP_COL + 1 :
 		(stream->config->prompt_len + ft_strlen(stream->command)) / COMP_COL;
-	if (COMP_IN_COL > COMP_ROW - command_size)
+	if (COMP_IN_COL > (COMP_DISPLAYABLE = COMP_ROW - command_size))
 		return (1);
 	return (0);
 }
@@ -232,4 +244,32 @@ void		ft_autocomp_underline(t_stream *stream, char mode)
 			ft_tputs(stream); //on se retrouve sur le dernier caractère de la ligne de commande.
 		ft_gomatch(stream, pos_buf, ft_mvleft); //on remonte jusqu'au caractère enregistré.
 	}
+}
+
+void	ft_autocomp_scroll(t_stream *stream)
+{
+	static int		start = 0;
+	int				current;
+	int				end;
+
+	current = (int)COMP_CURRENT;
+	while (current - (int)COMP_IN_COL > 0 || (current == (int)COMP_IN_COL))
+		current -= COMP_IN_COL;
+	end = start + COMP_DISPLAYABLE;
+	if (current < start)
+	{
+		start = current;
+		end = start + COMP_DISPLAYABLE;
+	}
+	else if (current >= end)
+	{
+		end = current + 1;
+ 		start = end - COMP_DISPLAYABLE;
+	}
+	ft_autocomp_print(start, end, stream);
+	stream->tput = "up";
+	end = end - start + 1;
+	while (end--)
+		ft_tputs(stream);
+	ft_autocomp_underline(stream, 'U');
 }
