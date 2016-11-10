@@ -1,5 +1,7 @@
 #include "../includes/autocomp.h"
-
+/*
+** Obtient la taille de la liste COMP_SIZE_LIST.
+*/
 void		get_size_list(t_stream *stream)
 {
 	t_list	*list;
@@ -17,7 +19,9 @@ void		get_size_list(t_stream *stream)
 	COMP_SIZE_LIST = i;
 	}
 }
-
+/*
+** Lancée sur chaque chaîne, permet d'obtenir le padding de la plus grande.
+*/
 void		get_pad(t_stream *stream, char *str)
 {
 	size_t	size;
@@ -25,7 +29,9 @@ void		get_pad(t_stream *stream, char *str)
 	if ((size = ft_strlen(str)) > COMP_PAD)
 		COMP_PAD = size;
 }
-
+/*
+** Permet d'effacer la liste. Remet COMP_STATE à 0.
+*/
 void		ft_end_autocomp(t_stream *stream)
 {
 	size_t pos_buf;
@@ -37,7 +43,10 @@ void		ft_end_autocomp(t_stream *stream)
 	ft_tputs(stream);
 	ft_gomatch(stream, pos_buf, ft_mvleft);
 }
-
+/*
+** Check si la touche pressée interrompt l'autocomp.
+** Si pas d'interruption retourne 1 sinon 0.
+*/
 int		ft_is_same_autocomp(t_stream *stream)
 {
 	static ssize_t	match[] = {LEF, RIG, UPP, DOW, CHT};
@@ -57,7 +66,10 @@ int		ft_is_same_autocomp(t_stream *stream)
 		return (1);
 	return (0);
 }
-
+/*
+** Réinitialise la liste. Libère tous les éléments de la liste et COMP_BEGIN.
+** Met tous les éléments statiques de la structure à 0.
+*/
 void	reset_autocomp(t_stream *stream)
 {
 	ft_lstdel(&(COMP_BEGIN_LIST), ft_list_free_data);
