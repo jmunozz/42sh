@@ -11,13 +11,17 @@
 /* ************************************************************************** */
 
 #include "../includes/autocomp.h"
-
+/*
+** Fixe le nouveau COMP_CURRENT pour flèche gauche.
+*/
 void		ft_comp_get_left(t_stream *stream)
 {
 	if (COMP_CURRENT >= COMP_IN_COL)
 		COMP_CURRENT -= COMP_IN_COL;
 }
-
+/*
+** Fixe le nouveau COMP_CURRENT pour flèche droite.
+*/
 void		ft_comp_get_right(t_stream *stream)
 {
 	size_t	min;
@@ -33,7 +37,9 @@ void		ft_comp_get_right(t_stream *stream)
 	else
 		COMP_CURRENT += COMP_IN_COL;
 }
-
+/*
+** Fixe le nouveau COMP_CURRENT pour flèche du haut.
+*/
 void		ft_comp_get_up(t_stream *stream)
 {
 	if (COMP_CURRENT == 0)
@@ -41,7 +47,9 @@ void		ft_comp_get_up(t_stream *stream)
 	else
 		COMP_CURRENT -= 1;
 }
-
+/*
+** Fixe le nouveau COMP_CURRENT pour flèche du bas.
+*/
 void		ft_comp_get_down(t_stream *stream)
 {
 	if (COMP_CURRENT == COMP_SIZE_LIST - 1)
@@ -49,7 +57,10 @@ void		ft_comp_get_down(t_stream *stream)
 	else
 		COMP_CURRENT += 1;
 }
-
+/*
+** Détermine le comportement dans l'état 1 :
+** Surbrillance de l'élément 0; Modification en conséquence de la commande.
+*/
 void		ft_state_one(t_stream *stream)
 {
 	COMP_CURRENT = 0;
@@ -58,7 +69,11 @@ void		ft_state_one(t_stream *stream)
 	COMP_POS_COMMAND = stream->pos;
 	ft_autocomp_append(stream);
 }
-
+/*
+** Détermine le comportement dans l'état 2:
+** Désélection de l'élément précédent. Surbrillance de l'élément en fonction de la flèche pressée;
+** Modification en conséquence de la commande.
+*/
 void		ft_state_two(t_stream *stream)
 {
 	size_t current_tmp;
@@ -78,9 +93,10 @@ current_tmp = COMP_CURRENT;
 	ft_comp_select_current(current_tmp, stream, 'U');
 	ft_comp_select_current(COMP_CURRENT, stream, 'S');
 	ft_autocomp_append(stream);
-
 }
-
+/*
+** Sélectionne ou désélectionne l'élément numéroté.
+*/
 void		ft_comp_select_current(size_t current, t_stream *stream, char mode)
 {
 	t_list	*list;
