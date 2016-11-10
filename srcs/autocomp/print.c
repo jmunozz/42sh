@@ -1,5 +1,7 @@
 #include "../../includes/autocomp.h"
-
+/*
+** Récupère le nombre d'éléments par colonnes COMP_IN_COL.
+*/
 void		get_col_elem(t_stream *stream)
 {
 	size_t col_nb;
@@ -9,12 +11,14 @@ void		get_col_elem(t_stream *stream)
 	else
 		COMP_IN_COL = 1;
 }
-
-
+/*
+** Gère l'impression d'un élément avec le padding approprié. Si data_size = 1, imprime
+** l'élément en surbrillance.
+*/
 void		ft_print_elem(t_list *list, t_stream *stream)
 {
 	if (!list->data_size)
-		ft_putstr(list->data);
+		ft_putstrpad(list->data, COMP_PAD, 'L');
 	else
 	{
 		stream->tput = "mr";
@@ -24,7 +28,7 @@ void		ft_print_elem(t_list *list, t_stream *stream)
 		ft_tputs(stream);
 	}
 }
-
+/*
 void		ft_print_col(t_stream *stream)
 {
 	t_list		*list;
@@ -62,29 +66,20 @@ void		ft_print_col(t_stream *stream)
 		while (j--)
 			ft_tputs(stream);
 	}
-}
-void		ft_debug(t_stream *stream)
-{
-	bzero(stream->buf, 256);
-	ft_strcpy(stream->buf, "coco");
-	ft_putstr("buf =");
-	ft_putstr(COMP_BUF);
-	ft_putstr("---pos_command = ");
-	ft_putnbr(COMP_POS_COMMAND);
-}
-
+}*/
+/*
+** Fonction intermédiaire destinée à s'étoffer ou disparaitre.
+*/
 void		ft_print_autocomp(t_stream *stream)
 {
 
 	get_col_elem(stream);
-	//ft_putstr(list_to_char(stream, COMP_BEGIN_LIST));
-	//ft_putnbr(COMP_IN_COL);
-	ft_print_col(stream); //imprime les colonnes.
-	//ft_putnbr(COMP_CURRENT);
-	//ft_putnbr(COMP_STATE);
+	ft_autocomp_print(stream); //imprime les colonnes.
 
 }
-
+/*
+** Version de append qui diffère en ce qu'elle fait appel à un buffer particulier COMP_BUF.
+*/
 void		ft_autocomp_append(t_stream *stream)
 {
 	size_t				pos;
@@ -110,8 +105,9 @@ void		ft_autocomp_append(t_stream *stream)
 	while (len--)
 		ft_mvright(stream);
 }
-
-
+/*
+** Remet la ligne de commande à l'état qui précédait l'appel à ft_autocomp_append.
+*/
 void		ft_autocomp_delete(t_stream *stream)
 {
 	char	*kill;
@@ -133,3 +129,55 @@ void		ft_autocomp_delete(t_stream *stream)
 	}
 	ft_gomatch(stream, COMP_POS_COMMAND, ft_mvleft);
 }
+/*
+** Imprime une ligne. Assure le retour à la ligne et la bonne incrémentation de la liste.
+** A la fin, remonte d'autant de ligne qu'imprimées + 1.
+*/
+void		ft_autocomp_print(t_stream *stream)
+{
+	size_t	i;
+	size_t	j;
+	t_list	*list;
+
+	list = COMP_BEGIN_LIST;
+	i = 0;
+	while (i < COMP_IN_COL)
+	{
+		ft_autocomp_print_line(list, i, stream);
+		stream->tput = "le";
+		j = COMP_COL;
+		while (j--)
+			ft_tputs(stream);
+		stream->tput = "do";
+		ft_tputs(stream);
+		list = list->next;
+		i++;
+	}
+	j = COMP_IN_COL + 1;
+	stream->tput = "up";
+	while (j--)
+		ft_tputs(stream);
+}
+/*
+** Imprime une ligne élément par élément.
+** Imprime un élément puis l'élément n + COMP_IN_COL de manière récursive.
+*/
+void	ft_autocomp_print_line(t_list *list, size_t elem, t_stream *stream)
+{
+	size_t	new_elem;
+	size_t	j;
+
+	ft_print_elem(list, stream);
+	if ((new_elem = elem + COMP_IN_COL) < COMP_SIZE_LIST)
+	{
+		stream->tput = "nd";
+		ft_tputs(stream);
+		ft_tputs(stream);
+		j = COMP_IN_COL;
+		while (j--)
+			list = list->next;
+		ft_autocomp_print_line(list, new_elem, stream);
+	}
+
+}
+
