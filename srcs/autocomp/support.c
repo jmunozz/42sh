@@ -1,35 +1,5 @@
 #include "../includes/autocomp.h"
 /*
-** Obtient la taille de la liste COMP_SIZE_LIST.
-*/
-void		get_size_list(t_stream *stream)
-{
-	t_list	*list;
-	size_t	i;
-
-	if (COMP_BEGIN_LIST)
-	{
-		i = 1;
-		list = COMP_BEGIN_LIST;
-		while (list->next)
-		{
-			i++;
-			list = list->next;
-		}
-	COMP_SIZE_LIST = i;
-	}
-}
-/*
-** Lancée sur chaque chaîne, permet d'obtenir le padding de la plus grande.
-*/
-void		get_pad(t_stream *stream, char *str)
-{
-	size_t	size;
-
-	if ((size = ft_strlen(str)) > COMP_PAD)
-		COMP_PAD = size;
-}
-/*
 ** Permet d'effacer la liste. Remet COMP_STATE à 0.
 */
 void		ft_end_autocomp(t_stream *stream)
@@ -75,6 +45,31 @@ void	reset_autocomp(t_stream *stream)
 	ft_lstdel(&(COMP_BEGIN_LIST), ft_list_free_data);
 	ft_freegiveone((void**)&(COMP_BEGIN));
 	bzero(&(stream->comp), sizeof(t_comp));
-
 }
+/*
+** Execute time fois le termcaps "term".
+*/
+void	ft_repeat_termcaps(size_t time, char *term, t_stream *stream)
+{
+	size_t i;
 
+	i = time;
+	stream->tput = term;
+	while (i--)
+		ft_tputs(stream);
+}
+/*
+** Check si l'impression de la liste dépasse la taille de l'écran.
+*/
+int		ft_autocomp_is_oversize(t_stream *stream)
+{
+	size_t	command_size;
+
+	command_size = (stream->config->prompt_len + ft_strlen(stream->command)) % COMP_COL;
+	command_size = (command_size) ?
+		(stream->config->prompt_len + ft_strlen(stream->command)) / COMP_COL + 1 :
+		(stream->config->prompt_len + ft_strlen(stream->command)) / COMP_COL;
+	if (COMP_IN_COL > (COMP_DISPLAYABLE = COMP_ROW - command_size))
+		return (1);
+	return (0);
+}
