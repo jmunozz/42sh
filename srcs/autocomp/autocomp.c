@@ -104,6 +104,6 @@ void	ft_autocomp(t_stream *stream)
 		COMP_STATE = 0;
 	}
 	else if (COMP_BEGIN_LIST)
-		ft_underline_mess(NULL, stream);
+		ft_print_autocomp(stream);
 }
 
