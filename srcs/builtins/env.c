@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/05 14:14:44 by rbaran            #+#    #+#             */
-/*   Updated: 2016/11/09 21:36:19 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/11 13:45:15 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	ft_createenv(char **argv, t_config *config, int *i)
 	{
 		*equal = '\0';
 		ft_setenv(argv[*i], equal + 1, config);
-		ft_putstrtab(config->env, '\n');
+		printf("TEST: %s      %s\n", argv[*i], equal + 1);
 		(*i)++;
 	}
 }
@@ -81,6 +81,7 @@ void		ft_env(char **argv, t_config *config)
 		config->env = NULL;
 	}
 	ft_createenv(argv, config, &index);
+	printf("Location : %s\n", argv[index]);
 	if ((path = ft_path_handle(argv + index, config)))
 		ft_launch_process(path, argv + index, config);
 }
