@@ -28,8 +28,12 @@
 /*
 **jobs builtin defines
 */
-#define JOBS_FG 0
-#define JOBS_BG 1
+# define JOBS_FG 0
+# define JOBS_BG 1
+/*
+**Signal string errors defines (used for ft_printsignal)
+*/
+# define ERR_SEGV "Segmentation fault"
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
@@ -59,6 +63,10 @@ typedef struct	s_config
 	int			shell_state;
 	int			last_exit;
 }				t_config;
+typedef enum	e_sigerr
+{
+	SEGV
+}				t_sigerr;
 /*
 **builtin.c && environ.c
 */
@@ -119,5 +127,6 @@ int				ft_signal(void);
 void			ft_signal_handle(int i);
 void			ft_signal_reset(void);
 void			ft_sigwinch(int mode);
+void			ft_printsignal(int signum, pid_t pid, t_list **process);
 
 #endif
