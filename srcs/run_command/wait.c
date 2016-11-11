@@ -13,6 +13,7 @@ static int	ft_wait(t_list **process, t_config *config)
 		if (pid < 0 || config->shell_state == SIGINT_COMMAND)
 		{
 			ft_free_all_process(process, 1);
+			config->last_exit = 1;
 			return (0);
 		}
 		else if (!pid && config->shell_state == SIGTSTP_COMMAND
@@ -24,6 +25,13 @@ static int	ft_wait(t_list **process, t_config *config)
 		{
 			ft_free_one_process(process, pid);
 			config->last_exit |= WEXITSTATUS(stat_loc);
+		}
+		else if (pid && WIFSIGNALED(stat_loc))
+		{
+			ft_printsignal(WTERMSIG(stat_loc), pid, process);
+			ft_free_all_process(process, 1);
+			config->last_exit = 1;
+			return (0);
 		}
 		if (!(*process))
 			return (0);

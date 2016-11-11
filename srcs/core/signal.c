@@ -1,5 +1,18 @@
 #include "minishell.h"
 
+void		ft_printsignal(int signum, pid_t pid, t_list **process)
+{
+	static char	*errors[] = {ERR_SEGV};
+	t_sigerr	i;
+	char		*str;
+
+	if (signum == SEGV)
+		i = SEGV;
+	str = ft_strchrjoin(ft_st_itoa(pid), ' ', ((char*)(*process)->data));
+	ft_error(SHNAME, str, errors[i], CR_ERROR);
+	free(str);
+}
+
 void		ft_signal_handle(int i)
 {
 	t_stream *stream;
