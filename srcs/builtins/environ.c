@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:35 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/11 13:53:14 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/11 14:15:05 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,40 +36,28 @@ void	ft_setenv(char *name, char *value, t_config *config)
 	char	*memo;
 
 	f = config->env;
-	printf("---- setenv -----\n");
-	if ((i = ft_strtabifindstart(f, name)) >= 0
-		&& printf("first condition\n")
+	if (((i = ft_strtabifindstart(f, name)) >= 0
 		&& (memo = f[i])
 		&& ((value && value [0] && !(f[i] = ft_strchrjoin(name, '=', value)))
 		|| (!value && !(f[i] = ft_strjoin(name, "="))))
-		&& (f[i] = memo))
+		&& (f[i] = memo)))
 		ft_error(SHNAME, "error while setenv for", name, CR_ERROR);
-	else if (i >= 0 && !ft_strcmp(name, "PWD")
-		&& printf("second condition\n"))
+	else if (i >= 0 && !ft_strcmp(name, "PWD")) 
 		ft_setenv("OLDPWD", memo + 4, config);
-	else if (i < 0 
-		&& printf("third condition\n")
-		&& ((value && value[0]
+	else if (i < 0 && ((value && value[0]
 		&& !(memo = ft_strchrjoin(name, '=', value)))
 		|| (!value && !(memo = ft_strjoin(name , "=")))))
 		ft_error(SHNAME, "malloc error during setenv for", name, CR_ERROR);
-	else if (i < 0
-		&& printf("fourth condition\n")
-		&& !(config->env = ft_strtabadd(config->env, memo))
+	else if (i < 0 && !(config->env = ft_strtabadd(config->env, memo))
 		&& ft_freegiveone((void **)&memo) && (config->env = f))
 		ft_error(SHNAME, "malloc error during setenv for", name, CR_ERROR);
-	else if (f 
-		&& printf("fifth condition\n")
-		&& config->env && f != config->env)
+	else if (f && config->env && f != config->env)
 		free(f);
 	if (config->shell_state != RUNNING_SON
-		&& printf("sixth condition\n")
 		&& name && !ft_strcmp("PATH", name))
 		ft_pathtohash(config);
-	if (i >= 0
-		&& printf("last condition\n"))
+	if (i >= 0)
 		ft_freegiveone((void**)&(memo));
-	printf("---- end setenv -----\n");
 }
 
 void	ft_readysetenv(char **argv, t_config *config)
