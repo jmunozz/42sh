@@ -71,8 +71,10 @@ int			ft_redirectpipe(char *file, int *pip, char *tmp)
 		flags = O_CREAT | O_WRONLY | O_APPEND;
 	else if (!ft_strcmp(tmp, "<"))
 		flags = O_RDONLY;
-	if ((fd = open(file, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1
-			&& ft_error(SHNAME, file, "file does not exist", CR_ERROR))
+	if (!ft_access_file(file, flags)
+		|| ((fd = open(file, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1
+		&& (fd = open(file, flags)) == -1
+		&& ft_error(SHNAME, file, "open error", CR_ERROR)))
 		return (0);
 	if (!pip)
 		return (fd);

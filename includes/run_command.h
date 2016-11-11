@@ -35,6 +35,7 @@ void			ft_kill_father(t_config *config);
 /*
 **files.c
 */
+int				ft_access_file(char *path, int flags);
 int				ft_access_dir(char const *path);
 int				ft_access_exec(char *path, char **argv, t_config *config);
 /*
