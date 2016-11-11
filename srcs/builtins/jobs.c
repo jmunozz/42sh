@@ -67,7 +67,7 @@ void		ft_fgbg(char **argv, t_config *config, int mode)
 {
 	size_t	i;
 
-	i = 1;
+	i = (argv[0][0] == '%' ? 0 : 1);
 	if (!argv[i])
 		ft_continue(config, NULL, mode);
 	else

@@ -38,8 +38,9 @@ static int	ft_node_jobs(char **argv, t_config *config)
 {
 	if (!ft_strcmp(argv[0], "jobs"))
 		ft_jobs(argv, config);
-	else if (!ft_strcmp(argv[0], "fg") || !ft_strcmp(argv[0], "bg"))
-		ft_fgbg(argv, config, !ft_strcmp(argv[0], "fg") ? JOBS_FG : JOBS_BG);
+	else if (argv[0][0] == '%' || !ft_strcmp(argv[0], "fg")
+		|| !ft_strcmp(argv[0], "bg"))
+		ft_fgbg(argv, config, !ft_strcmp(argv[0], "bg") ? JOBS_BG : JOBS_FG);
 	else
 		return (0);
 	return (1);
