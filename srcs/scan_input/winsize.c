@@ -28,6 +28,7 @@ void			ft_prompt_reset(t_stream *stream)
 
 	ioctl(stream->fd, TIOCGWINSZ, &w);
 	col = w.ws_col;
+	stream->row = w.ws_row;
 	if (stream->col)
 	{
 		ft_gohome(stream);

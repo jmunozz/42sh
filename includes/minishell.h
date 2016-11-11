@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 //# include "posix.h"
 # include <limits.h>
 # include <sys/types.h>

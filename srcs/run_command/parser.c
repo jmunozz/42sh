@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static t_list	*ft_cut_lst(t_list *begin, char	*op)
+static t_list	*ft_cut_lst(t_list *begin, t_config *config)
 {
 	t_list	*memo;
 
@@ -8,74 +8,103 @@ static t_list	*ft_cut_lst(t_list *begin, char	*op)
 	{
 		memo = begin;
 		begin = begin->next;
-		if (begin && begin->data_size && !ft_strcmp(op, (char*)(begin->data)))
+		if (begin && begin->data_size 
+			&& (!ft_strcmp(";", (char*)(begin->data))
+			|| !ft_strcmp("&&", (char*)(begin->data))
+			|| !ft_strcmp("||", (char*)(begin->data))))
 		{
+			config->dot_sequence = ((char*)(begin->data))[0];
 			begin = begin->next;
 			free(memo->next->data);
-			ft_freegiveone((void **)(memo->next));
+			ft_freegiveone((void **)&(memo->next));
 			break ;
 		}
 	}
 	return (begin);
 }
 
-int			ft_build_pipe(t_list *begin)
-{
-	int		*pip;
-
-	while (begin)
-	{
-		if (begin->data_size && !ft_strcmp((char *)(begin->data), "|"))
-		{
-			if (!(pip = (int *)ft_memalloc(sizeof(int) * 2)))
-				return (ft_error(SHNAME, "parser", "malloc error on pipe", CR_ERROR));
-			if (-1 == pipe(pip))
-				return (ft_error(SHNAME, "parser", "pipe error", CR_ERROR));
-			ft_freegiveone((void**)&(begin->data));
-			begin->data_size = PIPE;
-			begin->data = (void*)pip;
-			break ;
-		}
-		begin = begin->next;
-	}
-	return (0);
-}
-/*
-static char		*ft_build_sentence(t_list *begin)
+char		*ft_built_sentence(t_list *begin)
 {
 	char	*tmp;
 	char	*sentence;
+	char	*tocpy;
 
-	sentence = ft_strdup((char *);
+	sentence = NULL;
 	while (begin)
 	{
-		tmp = sentence;
-		sentence = ft_strjoin(sentence
+		if (!begin->data_size)
+			tocpy = ft_strtabchrjoin((char **)begin->data, ' ');
+		else
+			tocpy = (char *)begin->data;
+		if (sentence)
+			tmp = ft_strchrjoin(sentence, ' ', tocpy);
+		else
+			tmp = ft_strdup(tocpy);
+		if (tmp && ft_freegiveone((void **)&sentence))
+			sentence = tmp;
+		if (!begin->data_size)
+			ft_freegiveone((void **)&tocpy);
+		begin = begin->next;
 	}
+	return (sentence);
 }
-*/
+
+int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
+{
+	t_list	*rhead;
+
+	while (begin && begin->data_size && begin->data_size != SSHELL)
+		begin = begin->next;
+	if (begin && begin->next)
+	{
+		rhead = begin->next;
+		if (!ft_node_descriptors(begin, &rhead, config, r_pipe))
+			return (0);
+		if (begin->next)
+			begin->next->next = rhead;
+		else
+			begin->next = rhead;
+	}
+	return (1);
+}
+
 static void		ft_sentence(t_list *begin, t_config *config)
 {
 	t_list	*job;
 	char	*sentence;
+	int		*r_pipe;
 
-	sentence = NULL;
-	if (ft_build_pipe(begin))
+	sentence = ft_built_sentence(begin);
+	r_pipe = NULL;
+	if (!ft_build_pipe(begin, config, &r_pipe))
 		return ;
-	if ((job = ft_run_sentence(begin, config, NULL)))
+	if ((job = ft_run_sentence(begin, config, r_pipe)))
 		ft_wait_sentence(job, sentence, config);
+	ft_freegiveone((void**)&r_pipe);
 }
 
 void			ft_parse(t_list *begin, t_config *config)
 {
 	t_list	*next;
+	char	test;
 
-	while ((next = ft_cut_lst(begin, ";")))
+	config->last_exit = 0;
+	test = ';';
+	while ((next = ft_cut_lst(begin, config)))
 	{
-		ft_sentence(begin, config);
+		if ((config->shell_state == RUNNING_COMMAND
+			|| config->shell_state == RUNNING_SSHELL)
+			&& (test == ';' || (test == '&' && !config->last_exit)
+			|| (test == '|' && config->last_exit)))
+			ft_sentence(begin, config);
 		ft_freelist(begin);
 		begin = next;
+		test = config->dot_sequence;
 	}
-	ft_sentence(begin, config);
+	if ((config->shell_state == RUNNING_COMMAND 
+		|| config->shell_state == RUNNING_SSHELL)
+		&& (test == ';' || (test == '&' && !config->last_exit)
+		|| (test == '|' && config->last_exit)))
+		ft_sentence(begin, config);
 	ft_freelist(begin);
 }

@@ -8,6 +8,28 @@
 # define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
 # define BACK_ERR "missing character after backslash"
 # define DPATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+/*
+** SHELL STATES
+*/
+# define RUNNING_COMMAND 1
+# define SCANNING_COMMAND 2
+# define SIGTSTP_COMMAND 3
+# define SIGINT_COMMAND 4
+# define RUNNING_SSHELL 5
+# define RUNNING_SON 6
+/*
+**Env builtin defines (params)
+*/
+# define ENV_I 0x01
+# define ENV_H 0x02
+# define ENV_HELP "--help"
+# define ENV_UNSET "--unset"
+# define ENV_IGNORE "--ignore-environment"
+/*
+**jobs builtin defines
+*/
+#define JOBS_FG 0
+#define JOBS_BG 1
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
@@ -17,11 +39,6 @@ typedef struct	s_bin
 	char		*name;
 	char		*path_name;
 }				t_bin;
-typedef struct	s_arguments
-{
-	char		**argv;
-	char		**memo;
-}				t_arguments;
 typedef struct	s_config
 {
 	char		**env;
@@ -35,14 +52,17 @@ typedef struct	s_config
 	int			term_state;
 	char		*history[HISTORY_SIZE + 1];
 	char		*hloc;
+	int			heredoc;
 	int			hindex;
-	int			last_state;
+	char		dot_sequence;
 	t_list		*jobs;
+	int			shell_state;
+	int			last_exit;
 }				t_config;
 /*
 **builtin.c && environ.c
 */
-int				ft_is_no_fork_builtin(char *argv);
+int				ft_is_no_fork_builtin(char **argv, t_config *config);
 int				ft_default_env(t_config *config);
 int				ft_builtin(char **argv, t_config *config);
 void			ft_update_pwd(t_config *config);
@@ -52,12 +72,20 @@ void			ft_setenv(char *name, char *value, t_config *config);
 void			ft_readysetenv(char **argv, t_config *config);
 void			ft_unsetenv(char **argv, t_config *config);
 /*
+**jobs.c && jobs_utils.c
+*/
+int				ft_cmp_jobs(t_list *s, char *description, int i);
+void			ft_print_jobs(t_list *sentence, char *description);
+void			ft_jobs(char **argv, t_config *config);
+void			ft_fgbg(char **argv, t_config *config, int mode);
+/*
 **error.c
 */
+char			*ft_shname_or_file(char	*name);
+size_t			ft_script_line(int mode);
 int				ft_error(char *name, char *other, char *mess, int mode);
 int				ft_initerror(t_config *config);
 void			ft_lexer_error(char *command);
-void			ft_term_error(t_config *config);
 /*
 **hash.c && cmp.c
 */
@@ -66,11 +94,14 @@ char			*ft_return_binpath(t_config *config, char *name);
 int				ft_proscmp(void *pid1, void *pid2);
 int				ft_ascii_cmp(t_bin *s1, t_bin *s2);
 /*
-**free.c && free_pros.c
+**free.c && free_pros.c && free_list.c
 */
 void			ft_shell_exit(t_config *config, char **argv);
 void			ft_freebin(void *data, size_t data_size);
 void			ft_free_config(t_config *config);
+t_list			*ft_partial_freelist(t_list *begin, size_t n);
+void			ft_list_free_av(void *data, size_t data_size);
+t_list			*ft_freelist(t_list *begin);
 void			ft_freepros(t_list *kill);
 void			ft_free_one_process(t_list **process, pid_t pid);
 void			ft_free_all_process(t_list **process, int mode);

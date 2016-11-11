@@ -17,7 +17,7 @@ int			ft_underline_mess(char *mess, t_stream *stream)
 		ft_tputs(stream); //ATTENTION peut-être une incohérence.
 	stream->tput = "cd"; //clear line cursor and all lines below.
 	ft_tputs(stream);
-	ft_print_autocomp(stream);
+	ft_comp_print(stream);
 	if (stream->command)
 		i = stream->config->prompt_len + ft_strlen(stream->command); // i = prompt + commande
 	else

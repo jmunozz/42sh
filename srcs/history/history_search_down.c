@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/11 20:59:10 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/19 16:12:25 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/02 15:19:23 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,14 @@ void	ft_down(t_stream *stream)
 		ft_freegiveone((void **)&(stream->command));
 		if (stream->config->history[stream->shindex]
 			&& (stream->command = stream->config->history[stream->shindex])
-			&& !(stream->command = ft_strdup(stream->command)))
-			stream->state = -2;
+			&& !(stream->command = ft_strdup(stream->command))
+			&& (stream->state = -2))
+			return ;
 		else
+		{
 			stream->pos = 0;
-		ft_winsize();
+			ft_goend(stream);
+		}
 	}
+	ft_winsize();
 }

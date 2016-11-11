@@ -7,6 +7,7 @@
 # define TND "\x1b[C"
 # define TDL "\x1b[K"
 # define TCD "\x1b[J"
+# define REPROMPT -10
 
 typedef struct	s_comp
 {

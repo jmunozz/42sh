@@ -6,32 +6,39 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:20:26 by tboos             #+#    #+#             */
-/*   Updated: 2016/04/29 12:21:42 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/09 19:35:48 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		ft_execve(char **argv, char **env, t_config *config)
+char		*ft_path_handle(char **argv, t_config *config)
 {
 	char	*path;
-	char	*bin;
 
-	path = argv[0];
-	bin = ft_return_binpath(config, path);
-	if (ft_access_exec(bin ? bin : path, argv, config))
-	{
-		if (-1 == execve(bin ? bin : path, argv, env))
-			ft_error(SHNAME, "exec", "execve error", CR_ERROR);
-	}
+	if (!ft_strcmp(argv[0], "pwd") || !ft_strcmp(argv[0], "echo")
+		||!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
+		return (argv[0]);
+	if ((path = ft_return_binpath(config, argv[0])))
+		;
+	else
+		path = argv[0];
+	if (!ft_access_exec(path, argv, config))
+		return (NULL);
+	return (path);
 }
 
-void		ft_launch_process(t_list *begin, t_config *config)
+void		ft_execve(char *path, char **argv, char **env)
 {
+	if (-1 == execve(path, argv, env))
+		ft_error(SHNAME, "exec", "execve error", CR_ERROR);
+}
 
-	if (ft_builtin((char **)(begin->data), config))
+void		ft_launch_process(char *path, char **argv, t_config *config)
+{
+	if (ft_builtin(argv, config))
 		return ;
-	ft_execve((char **)(begin->data), config->env, config);
+	ft_execve(path, argv, config->env);
 }
 
 void		ft_kill_father(t_config *config)
