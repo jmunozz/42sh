@@ -120,6 +120,8 @@ void			ft_flushsearch(t_stream *stream);
 t_stream		*ft_save_stream(t_stream *stream);
 void			ft_winsize(void);
 void			ft_prompt_reset(t_stream *stream);
+void			ft_flush_command(t_stream *stream);
+void			ft_secure_prompt(t_stream *stream);
 
 /*
 --checknewline.c

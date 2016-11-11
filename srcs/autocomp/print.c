@@ -1,4 +1,4 @@
-#include "../../includes/autocomp.h"
+#include "autocomp.h"
 /*
 ** Gère l'impression d'un élément avec le padding approprié. Si data_size = 1, imprime
 ** l'élément en surbrillance.
@@ -106,7 +106,8 @@ void		ft_comp_print(t_stream *stream)
 			ft_autocomp_print_grid(0, COMP_IN_COL, stream);//imprime les colonnes.
 			stream->tput = "do";
 			ft_tputs(stream);
-			ft_winsize();
+			ft_secure_prompt(stream);
+			ft_flush_command(stream);
 		}
 		else
 			ft_autocomp_scroll(stream);

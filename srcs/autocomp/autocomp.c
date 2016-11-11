@@ -74,7 +74,7 @@ static void		ft_state_zero(t_stream *stream)
 
 	len = 0;
 	reset_autocomp(stream);
-	if (stream->command)
+	if (stream->command && stream->command[0])
 	{
 		while (!ft_is_separator(stream->command[stream->pos])
 				&& stream->command[stream->pos])
