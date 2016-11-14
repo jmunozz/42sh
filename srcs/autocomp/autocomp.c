@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:29 by tboos             #+#    #+#             */
-/*   Updated: 2016/10/17 16:46:05 by jmunoz           ###   ########.fr       */
+/*   Updated: 2016/11/14 19:14:57 by jmunoz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void		ft_autocomp(t_stream *stream)
 	{
 		ft_comp_select_current(0, stream, 'S');
 		ft_autocomp_append(stream);
-		COMP_STATE = 0;
+		ft_end_autocomp(stream);
 	}
 	else if (COMP_BEGIN_LIST)
 		ft_comp_print(stream);

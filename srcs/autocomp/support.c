@@ -6,6 +6,7 @@ void		ft_end_autocomp(t_stream *stream)
 {
 	size_t pos_buf;
 
+	reset_autocomp(stream);
 	pos_buf = stream->pos;
 	COMP_STATE = 0;
 	ft_goend(stream);
