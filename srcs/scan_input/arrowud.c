@@ -15,14 +15,14 @@
 void	ft_goend(t_stream *stream)
 {
 	if (stream->command)
-		while (stream->command[stream->pos])
-			ft_mvright(stream);
+		while (stream->command[stream->pos])//tant qu'on est pas au bout de stream->command...
+			ft_mvright(stream); //on bouge le curseur à droite.
 }
 
 void	ft_gohome(t_stream *stream)
 {
-	while (stream->pos)
-		ft_mvleft(stream);
+	while (stream->pos) //tant qu'on est pas au début de la ligne de commande (stream->pos = 0)
+		ft_mvleft(stream);//on bouge le curseur à gauche.
 }
 
 void	ft_ctrlup(t_stream *stream)

@@ -9,6 +9,13 @@ TERMCAPS = -lm -lncurses
 HEAD = -I libft/includes -I includes
 OS = $(shell uname -s)
 SRC = \
+autocomp/autocomp.c \
+autocomp/buildlist.c \
+autocomp/command.c \
+autocomp/getenv.c \
+autocomp/move.c \
+autocomp/print.c \
+autocomp/support.c \
 builtins/builtin.c \
 builtins/cd.c \
 builtins/env.c \
@@ -47,7 +54,6 @@ run_command/quote_replace.c \
 run_command/wait.c \
 scan_input/arrowlr.c \
 scan_input/arrowud.c \
-scan_input/autocomp.c \
 scan_input/checknewline.c \
 scan_input/chrparse.c \
 scan_input/deletion.c \
