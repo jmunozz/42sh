@@ -131,6 +131,6 @@ int				ft_signal(void);
 void			ft_signal_handle(int i);
 void			ft_signal_reset(void);
 void			ft_sigwinch(int mode);
-void			ft_printsignal(int signum, pid_t pid, t_list **process);
+void			ft_printsignal(int signum, pid_t pid, t_list *process);
 
 #endif

@@ -28,7 +28,7 @@ static int	ft_wait(t_list **process, t_config *config)
 		}
 		else if (pid && WIFSIGNALED(stat_loc))
 		{
-			ft_printsignal(WTERMSIG(stat_loc), pid, process);
+			ft_printsignal(WTERMSIG(stat_loc), pid, *process);
 			ft_free_all_process(process, 1);
 			config->last_exit = 1;
 			return (0);
