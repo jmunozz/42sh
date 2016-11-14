@@ -45,6 +45,7 @@ typedef struct	s_bin
 }				t_bin;
 typedef struct	s_config
 {
+	int			shell_state;
 	char		**env;
 	char		*pwd;
 	char		*pwd_subrep;
@@ -55,12 +56,15 @@ typedef struct	s_config
 	t_termios	termios_backup;
 	int			term_state;
 	char		*history[HISTORY_SIZE + 1];
+	int			hindex;
 	char		*hloc;
 	int			heredoc;
-	int			hindex;
-	char		dot_sequence;
 	t_list		*jobs;
-	int			shell_state;
+	char		*fg_sentence;
+	char		*command;
+	t_list		*chimera;
+	t_list		*chimera_tail;
+	char		dot_sequence;
 	int			last_exit;
 }				t_config;
 typedef enum	e_sigerr
@@ -104,12 +108,12 @@ int				ft_ascii_cmp(t_bin *s1, t_bin *s2);
 /*
 **free.c && free_pros.c && free_list.c
 */
-void			ft_shell_exit(t_config *config, char **argv);
+void			ft_shell_exit(t_config *config);
 void			ft_freebin(void *data, size_t data_size);
 void			ft_free_config(t_config *config);
 t_list			*ft_partial_freelist(t_list *begin, size_t n);
 void			ft_list_free_av(void *data, size_t data_size);
-t_list			*ft_freelist(t_list *begin);
+t_list			*ft_freelist(t_list **begin);
 void			ft_freepros(t_list *kill);
 void			ft_free_one_process(t_list **process, pid_t pid);
 void			ft_free_all_process(t_list **process, int mode);
@@ -117,7 +121,7 @@ void			ft_free_all_jobs(t_list **job);
 /*
 **main.c && minishell.c
 */
-void			ft_run_command(t_config *config, char *cmd);
+void			ft_run_command(t_config *config);
 void			ft_minishell(t_config *config);
 void			ft_print_list(t_list *elem);
 /*

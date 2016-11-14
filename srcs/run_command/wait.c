@@ -38,14 +38,15 @@ static int	ft_wait(t_list **process, t_config *config)
 	}
 }
 
-void		ft_wait_sentence(t_list *job, char *sentence, t_config *config)
+void		ft_wait_sentence(t_list *job, t_config *config)
 {
 	t_list	*new;
 
-	if (sentence && !(new = ft_lstnew((void*)sentence, SENT))
-			&& ft_freegiveone((void **)&sentence))
+	if (!(config->fg_sentence)
+		|| (!(new = ft_lstnew((void*)config->fg_sentence, SENT))
+		&& ft_freegiveone((void **)&config->fg_sentence)))
 		ft_error(SHNAME, "parser", "malloc error on process control", CR_ERROR);
-	else if (sentence)
+	else if (config->fg_sentence && !(config->fg_sentence = NULL))
 		ft_list_push_front(&job, new);
 	if (ft_wait(&job, config))
 	{
@@ -57,4 +58,54 @@ void		ft_wait_sentence(t_list *job, char *sentence, t_config *config)
 		else
 			ft_list_push_front(&(config->jobs), new);
 	}
+}
+
+static char	*ft_build_sshell_sentence(t_list *begin, t_config *config)
+{
+	char	*tmp;
+	char	*tocpy;
+	char	*memo;
+
+	memo = config->fg_sentence;
+	config->fg_sentence = NULL;
+	if (!(ft_build_sentence(begin, config)))
+		return (NULL);
+	tmp = config->fg_sentence;
+	config->fg_sentence = memo;
+	if (!(tocpy = ft_strnew(ft_strlen(tmp) + 4))
+		&& ft_freegiveone((void**)&tmp))
+		return (NULL);
+	ft_strcpy(tocpy, "( ");
+	ft_strcpy(tocpy + 2, tmp);
+	ft_strcat(tocpy, " )");
+	ft_freegiveone((void**)&tmp);
+	return (tocpy);
+}
+
+int			ft_build_sentence(t_list *begin, t_config *config)
+{
+	char	*tmp;
+	char	*tocpy;
+
+	while (begin)
+	{
+		tocpy = NULL;
+		if (!begin->data_size)
+			tocpy = ft_strtabchrjoin((char **)begin->data, ' ');
+		else if (begin->data_size == SSHELL)
+			tocpy = ft_build_sshell_sentence(begin->data, config);
+		else
+			tocpy = ft_strdup((char *)begin->data);
+		if (!tocpy && ft_freegiveone((void**)&config->fg_sentence))
+			return (0);
+		if (config->fg_sentence)
+			tmp = ft_strchrjoin(config->fg_sentence, ' ', tocpy);
+		else
+			tmp = ft_strdup(tocpy);
+		ft_freegiveone((void **)&config->fg_sentence);
+		ft_freegiveone((void **)&tocpy);
+		config->fg_sentence = tmp;
+		begin = begin->next;
+	}
+	return (1);
 }

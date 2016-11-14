@@ -39,6 +39,8 @@ static void		ft_pipe_process(int *r_pipe, t_list *pipe)
 static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe,
 				char *path)
 {
+	t_list	*sshell;
+
 	config->shell_state = RUNNING_SON;
 	ft_pipe_process(r_pipe, begin->next);
 	ft_signal_reset();
@@ -48,12 +50,17 @@ static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe,
 			ft_setenv("SHLVL",
 				ft_st_itoa(ft_atoi(config->env[config->last_exit] + 6) - 1),
 			config);
-		ft_parse((t_list*)begin->data, config);
+		sshell = (t_list*)begin->data;
+		begin->data = NULL;
+		ft_freelist(&config->chimera);
+		ft_freelist(&config->chimera_tail);
+		config->chimera = sshell;
+		ft_parse(config);
 	}
 	else
 		ft_launch_process(path, begin->data, config);
 	ft_status(config->last_exit);
-	ft_shell_exit(config, NULL);
+	ft_shell_exit(config);
 }
 
 static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)

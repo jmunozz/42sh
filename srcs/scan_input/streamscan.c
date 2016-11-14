@@ -84,7 +84,7 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 		&& ft_error(SHNAME, NULL, SCAN_ERR, FCR_ERROR) && stream->state == -1))
 		ft_ctrl_d(stream);
 	if (stream->command && stream->command[0]
-		&& stream->shindex == config->hindex && !config->heredoc)
+		&& !config->heredoc && stream->state != REPROMPT)
 	{
 		ft_push_history(stream, config);
 		ft_incr_history(&(config->hindex));

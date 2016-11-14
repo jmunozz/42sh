@@ -45,7 +45,8 @@ static void	ft_continue(t_config *config, char *description, int mode)
 		p = target;
 		while ((p = p->next))
 			kill(*((pid_t*)p->data), SIGCONT);
-		ft_wait_sentence(target, NULL, config);
+		ft_freegiveone((void**)&config->fg_sentence);
+		ft_wait_sentence(target, config);
 	}
 }
 

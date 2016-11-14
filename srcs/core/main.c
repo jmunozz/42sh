@@ -14,7 +14,6 @@
 
 static void	ft_manage_files(int ac, char **av, t_config *config)
 {
-	char		*cmd;
 	int			fd;
 	int			i;
 
@@ -27,8 +26,9 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 		{
 			ft_shname_or_file(av[i]);
 			ft_script_line(-1);
-			while ((get_next_line(fd, &cmd)) > 0 && ft_script_line(1))
-				ft_run_command(config, cmd);
+			while ((get_next_line(fd, &config->command)) > 0
+				&& ft_script_line(1))
+				ft_run_command(config);
 			get_next_line(-1, NULL);
 			close(fd);
 			ft_shname_or_file(SHNAME);
@@ -52,9 +52,6 @@ static void	ft_termcaps_init(t_config *config)
 
 static void	ft_tricase(int ac, char **av, t_config *config)
 {
-	char	*cmd;
-
-	cmd = NULL;
 	if (ac == 1)
 	{
 		if (isatty(0))
@@ -64,14 +61,14 @@ static void	ft_tricase(int ac, char **av, t_config *config)
 		}
 		else
 		{
-			while (get_next_line(0, &cmd) > 0 && ft_script_line(1))
-				ft_run_command(config, cmd);
+			while (get_next_line(0, &config->command) > 0 && ft_script_line(1))
+				ft_run_command(config);
 			get_next_line(-1, NULL);
 		}
 	}
 	else
 		ft_manage_files(ac, av, config);
-	ft_shell_exit(config, NULL);
+	ft_shell_exit(config);
 }
 
 

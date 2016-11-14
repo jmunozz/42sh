@@ -42,11 +42,11 @@ static t_list	*ft_op_handle(char *cmd, size_t *i)
 	{
 		if (!(next->next = (t_list *)ft_memalloc(sizeof(t_list)))
 				&& ft_error(SHNAME, "lexer", "malloc error", CR_ERROR))
-			return (ft_freelist(next));
+			return (ft_freelist(&next));
 		op = next->next;
 		op->data_size = 1;
 		if (!(op->data = (void*)ft_match_op(cmd, i)))
-			return (ft_freelist(next));
+			return (ft_freelist(&next));
 		if (!ft_strcmp(op->data, "<<"))
 			op->data_size = HEREDOC;
 	}
@@ -62,7 +62,7 @@ t_list			*ft_built_couple(char *cmd, size_t *i)
 		while (*i && ft_isdigit(cmd[*i - 1]))
 			(*i)--;
 	if (!(next = ft_op_handle(cmd, i)))
-		return (ft_freelist(next));
+		return (ft_freelist(&next));
 	return (next);
 }
 
@@ -81,7 +81,7 @@ t_list			*ft_lexer(char *cmd)
 		while (*cmd == ' ' || *cmd == '\t' || *cmd == '\n')
 			++cmd;
 		if (!(next = ft_built_couple(cmd, &i)))
-			return (ft_freelist(begin));
+			return (ft_freelist(&begin));
 		ft_list_push_back(&begin, next);
 	}
 	ft_lexer_sshell_off(cmd, i);

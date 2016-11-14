@@ -57,7 +57,7 @@ char			*ft_save_cmd(char *cmd);
 int				ft_node_descriptors(t_list *begin, t_list **rhead,
 				t_config *config, int **r_pipe);
 int				ft_build_pipe(t_list *begin, t_config *config, int **r_pipe);
-void			ft_parse(t_list *begin, t_config *config);
+void			ft_parse(t_config *config);
  t_list			*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe);
 int				ft_redirectpipe(char *file, int *pip, char *tmp);
 /*
@@ -67,7 +67,8 @@ void			ft_handle_multiplefd(char **others_fd);
 /*
 **wait.c
 */
-void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
+void			ft_wait_sentence(t_list *job, t_config *config);
+int				ft_build_sentence(t_list *begin, t_config *config);
 /*
 **heredoc.c
 */

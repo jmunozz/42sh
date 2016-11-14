@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-void	ft_shell_exit(t_config *config, char **argv)
+void	ft_shell_exit(t_config *config)
 {
-	if (argv)
-		ft_strtabfree(argv);
+//	if (argv)
+//		ft_strtabfree(argv);
 	ft_free_config(config);
 	exit(ft_status(0));
 }
@@ -41,8 +41,14 @@ void	ft_free_config(t_config *config)
 			ft_lstdel(&(config->bin), &ft_freebin);
 		if (config->hloc)
 			ft_purge_history(config);
+		else
+			ft_strtabfree(config->history);
 		if (config->hloc)
 			free(config->hloc);
+		ft_freelist(&config->chimera);
+		ft_freelist(&config->chimera_tail);
+		ft_freegiveone((void**)&config->command);
+		ft_freegiveone((void**)&config->fg_sentence);
 		get_next_line(-1, NULL);
 	}
 }
