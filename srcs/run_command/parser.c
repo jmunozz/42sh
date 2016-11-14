@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 09:18:53 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 09:19:07 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_list	*ft_cut_lst(t_list *begin, t_config *config)
@@ -8,7 +20,7 @@ static t_list	*ft_cut_lst(t_list *begin, t_config *config)
 	{
 		memo = begin;
 		begin = begin->next;
-		if (begin && begin->data_size 
+		if (begin && begin->data_size
 			&& (!ft_strcmp(";", (char*)(begin->data))
 			|| !ft_strcmp("&&", (char*)(begin->data))
 			|| !ft_strcmp("||", (char*)(begin->data))))
@@ -23,7 +35,7 @@ static t_list	*ft_cut_lst(t_list *begin, t_config *config)
 	return (begin);
 }
 
-int			ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
+int				ft_build_pipe(t_list *begin, t_config *config, int **r_pipe)
 {
 	t_list	*rhead;
 
@@ -74,7 +86,7 @@ void			ft_parse(t_config *config)
 		config->chimera = config->chimera_tail;
 		test = config->dot_sequence;
 	}
-	if ((config->shell_state == RUNNING_COMMAND 
+	if ((config->shell_state == RUNNING_COMMAND
 		|| config->shell_state == RUNNING_SSHELL)
 		&& (test == ';' || (test == '&' && !config->last_exit)
 		|| (test == '|' && config->last_exit)))

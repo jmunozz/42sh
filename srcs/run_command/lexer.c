@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 09:05:45 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 09:05:46 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int				ft_next_op(char *cmd, size_t i)
@@ -31,9 +43,9 @@ static t_list	*ft_op_handle(char *cmd, size_t *i)
 	t_list	*op;
 
 	if (!(next = ft_av_handle(cmd, *i)))
-		return NULL;
+		return (NULL);
 	else if (cmd[*i] == '(' && ft_test_emptysshell(cmd, *i + 1))
-		return NULL;
+		return (NULL);
 	else if (cmd[*i] == '(' && ++(*i))
 		return (ft_lexer_sshell_on(cmd, i, next));
 	else if (cmd[*i] == ')')
@@ -76,7 +88,8 @@ t_list			*ft_lexer(char *cmd)
 	i = 0;
 	while (*cmd == ' ' || *cmd == '\t' || *cmd == '\n')
 		++cmd;
-	while ((cmd = cmd + i) && !(i = 0) && *cmd && *cmd != ')')
+	while ((cmd = cmd + i)
+		&& !(i = 0) && *cmd && *cmd != ')')
 	{
 		while (*cmd == ' ' || *cmd == '\t' || *cmd == '\n')
 			++cmd;

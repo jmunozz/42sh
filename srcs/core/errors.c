@@ -6,22 +6,22 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:54 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 19:55:57 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/14 08:59:58 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_shname_or_file(char	*name)
+char		*ft_shname_or_file(char *name)
 {
-	static char		*errn = SHNAME;
+	static char	*errn = SHNAME;
 
 	if (name)
 		errn = name;
 	return (errn);
 }
 
-size_t	ft_script_line(int mode)
+size_t		ft_script_line(int mode)
 {
 	static size_t	script_line = 0;
 
@@ -41,7 +41,7 @@ static void	ft_last_exit_fail(void)
 		stream->config->last_exit = 3;
 }
 
-int		ft_error(char *name, char *other, char *mess, int mode)
+int			ft_error(char *name, char *other, char *mess, int mode)
 {
 	if (mode & FCR_ERROR)
 		ft_putchar_fd('\n', 2);
@@ -67,10 +67,10 @@ int		ft_error(char *name, char *other, char *mess, int mode)
 	if (mode & SERROR)
 		ft_status(1);
 	ft_last_exit_fail();
-	return true;
+	return (true);
 }
 
-int		ft_initerror(t_config *config)
+int			ft_initerror(t_config *config)
 {
 	ft_error(SHNAME, NULL, "init error", CR_ERROR);
 	ft_free_config(config);

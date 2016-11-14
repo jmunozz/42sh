@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   core.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 14:14:05 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 14:14:24 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CORE_H
 # define CORE_H
 
@@ -8,6 +20,7 @@
 # define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
 # define BACK_ERR "missing character after backslash"
 # define DPATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
 /*
 ** SHELL STATES
 */
@@ -17,6 +30,7 @@
 # define SIGINT_COMMAND 4
 # define RUNNING_SSHELL 5
 # define RUNNING_SON 6
+
 /*
 **Env builtin defines (params)
 */
@@ -25,11 +39,13 @@
 # define ENV_HELP "--help"
 # define ENV_UNSET "--unset"
 # define ENV_IGNORE "--ignore-environment"
+
 /*
 **jobs builtin defines
 */
 # define JOBS_FG 0
 # define JOBS_BG 1
+
 /*
 **Signal string errors defines (used for ft_printsignal)
 */

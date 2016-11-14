@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/27 12:13:28 by rbaran            #+#    #+#             */
-/*   Updated: 2016/11/08 14:05:37 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 13:14:14 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void	*ft_newpipe(int mode)
 	if (!(pip = (int *)ft_memalloc(sizeof(t_pipe)))
 			&& ft_error(SHNAME, "parser", "malloc error on pipe", CR_ERROR))
 		return (NULL);
-	if (mode != 2 && -1 == pipe(pip) && ft_error(SHNAME, "parser", "pipe error", CR_ERROR)
+	if (mode != 2 && -1 == pipe(pip)
+			&& ft_error(SHNAME, "parser", "pipe error", CR_ERROR)
 			&& ft_freegiveone((void**)pip))
 		return (NULL);
 	if (mode)
@@ -72,7 +73,7 @@ int			ft_redirectpipe(char *file, int *pip, char *tmp)
 	else if (!ft_strcmp(tmp, "<"))
 		flags = O_RDONLY;
 	if (!ft_access_file(file, flags)
-		|| ((fd = open(file, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) == -1
+		|| ((fd = open(file, flags, RDEFAULT)) == -1
 		&& (fd = open(file, flags)) == -1
 		&& ft_error(SHNAME, file, "open error", CR_ERROR)))
 		return (0);
@@ -102,12 +103,11 @@ static int	ft_agregate(t_list *begin, t_list **rhead, t_config *config,
 		*rhead = ft_partial_freelist(*rhead, 2);
 		return (ft_node_descriptors(begin, rhead, config, r_pipe));
 	}
-	else if (tmp[0] == '>'
-		&& !ft_redirectpipe((*rhead)->next ? ((char**)(*rhead)->next->data)[0] : NULL,
-			begin->next->data, tmp))
+	else if (tmp[0] == '>' && !ft_redirectpipe((*rhead)->next ?
+			((char**)(*rhead)->next->data)[0] : NULL, begin->next->data, tmp))
 		return (0);
-	else if (tmp[0] == '<' && !ft_redirectpipe((*rhead)->next ? ((char**)(*rhead)->next->data)[0] : NULL,
-		*r_pipe, tmp))
+	else if (tmp[0] == '<' && !ft_redirectpipe((*rhead)->next ?
+			((char**)(*rhead)->next->data)[0] : NULL, *r_pipe, tmp))
 		return (0);
 	*rhead = ft_partial_freelist(*rhead, 2);
 	return (ft_node_descriptors(begin, rhead, config, r_pipe));
@@ -120,13 +120,12 @@ int			ft_node_descriptors(t_list *begin, t_list **rhead, t_config *config,
 
 	if (begin->next == *rhead)
 		begin->next = NULL;
-	if (*rhead)
+	if (*rhead && (tmp = ((char*)(*rhead)->data)))
 	{
-		tmp = ((char*)(*rhead)->data);
-		if ((tmp[0] == '|' || tmp[0] == '>')
-				&& ((begin->next && !((int*)begin->next->data)[0]
-					&& -1 == pipe((int*)begin->next->data))
-				|| (!begin->next && !(begin->next = ft_newpipe(1)))))
+		if ((tmp[0] == '|' || tmp[0] == '>') && ((begin->next
+			&& !((int*)begin->next->data)[0]
+			&& -1 == pipe((int*)begin->next->data)) || (!begin->next
+			&& !(begin->next = ft_newpipe(1)))))
 			return (0);
 		if ((ft_isdigit(tmp[0]) || ft_strlen(tmp) > 2)
 				&& !begin->next && !(begin->next = ft_newpipe(2)))

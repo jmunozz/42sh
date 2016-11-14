@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_sequence.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 12:54:52 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 12:54:54 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int		*ft_close_pipe(int *new, int *old)
@@ -46,7 +58,8 @@ static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe,
 	ft_signal_reset();
 	if (begin->data_size == SSHELL && (config->shell_state = RUNNING_SSHELL))
 	{
-		if ((config->last_exit = ft_strtabifindstart(config->env, "SHLVL")) != -1)
+		if ((config->last_exit = ft_strtabifindstart(config->env,
+			"SHLVL")) != -1)
 			ft_setenv("SHLVL",
 				ft_st_itoa(ft_atoi(config->env[config->last_exit] + 6) - 1),
 			config);
@@ -79,7 +92,8 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 		return (NULL);
 	else if (!pid)
 		ft_pack_process(begin, config, r_pipe, path);
-	else if (!(mem = (pid_t*)ft_memalloc(sizeof(pid_t))) || !(*mem = pid)
+	else if (!(mem = (pid_t*)ft_memalloc(sizeof(pid_t)))
+		|| !(*mem = pid)
 		|| !(new = ft_lstnew((void *)mem, PROS)))
 		ft_error(SHNAME, "parser", "malloc error on process control", CR_ERROR);
 	return (new);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   history_backup.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 08:59:12 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 09:00:22 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	ft_safeputstr(int fd, char *str)
@@ -18,7 +30,7 @@ void		ft_purge_history(t_config *config)
 	int		fd;
 
 	if ((fd = open(config->hloc, O_CREAT | O_WRONLY
-					| O_TRUNC, S_IRUSR | S_IWUSR)) < 0)
+			| O_TRUNC, S_IRUSR | S_IWUSR)) < 0)
 		ft_error(SHNAME, NULL, SAVE_H_ERR, CR_ERROR | SERROR);
 	else
 	{
@@ -27,7 +39,7 @@ void		ft_purge_history(t_config *config)
 		{
 			ft_incr_history(&i);
 			if (!ft_safeputstr(fd, config->history[i])
-					|| i == config->hindex)
+				|| i == config->hindex)
 				break ;
 			if (config->history[i])
 				write(fd, "\n", 1);
@@ -48,7 +60,7 @@ static void	ft_fill_history(t_config *config, char *tmp)
 			ft_incr_history(&(config->hindex));
 		ft_freegiveone((void **)&(config->history[config->hindex]));
 		config->history[config->hindex] = (char*)ft_memmove(tmp, tmp + 1
-										,ft_strlen(tmp));
+			, ft_strlen(tmp));
 	}
 	else if (config->history[config->hindex])
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   jobs.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 08:45:29 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 08:51:31 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_list	*ft_extract_job(t_config *config, char *description)
@@ -15,31 +27,31 @@ static t_list	*ft_extract_job(t_config *config, char *description)
 		free(p);
 		return (m);
 	}
-	else
-		while ((m = p) && (p = p->next) && ++i)
+	while ((m = p)
+			&& (p = p->next) && ++i)
+	{
+		if (ft_cmp_jobs(p->data, description, i))
 		{
-			if (ft_cmp_jobs(p->data, description, i))
-			{
-				m->next = p->next;
-				m = (t_list*)p->data;
-				free(p);
-				return (m);
-			}
+			m->next = p->next;
+			m = (t_list*)p->data;
+			free(p);
+			return (m);
 		}
+	}
 	return (NULL);
 }
 
-static void	ft_continue(t_config *config, char *description, int mode)
+static void		ft_continue(t_config *config, char *description, int mode)
 {
 	t_list	*p;
 	t_list	*target;
 
 	if (!(config->jobs))
 		ft_error(mode == JOBS_FG ? "fg" : "bg", NULL, "no current jobs",
-		CR_ERROR);
+				CR_ERROR);
 	else if (!(target = ft_extract_job(config, description)))
 		ft_error(mode == JOBS_FG ? "fg" : "bg", description, "no such job",
-		CR_ERROR);
+				CR_ERROR);
 	else if (mode == JOBS_FG)
 	{
 		p = target;
@@ -50,7 +62,7 @@ static void	ft_continue(t_config *config, char *description, int mode)
 	}
 }
 
-void		ft_jobs(char **argv, t_config *config)
+void			ft_jobs(char **argv, t_config *config)
 {
 	size_t	i;
 
@@ -69,10 +81,9 @@ void		ft_jobs(char **argv, t_config *config)
 			ft_lstiter(config->jobs, ft_print_list);
 			ft_print_jobs(NULL, argv[i]);
 		}
-
 }
 
-void		ft_fgbg(char **argv, t_config *config, int mode)
+void			ft_fgbg(char **argv, t_config *config, int mode)
 {
 	size_t	i;
 

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:27 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/31 12:52:21 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/14 09:09:52 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int		ft_access_file(char *path, int flags)
 		return (1);
 	if ((O_WRONLY & flags) == O_WRONLY && -1 == access(path, W_OK))
 		return (1 ^ ft_error(SHNAME, "permission denied", path, CR_ERROR));
-dprintf(1, "hoy\n");
 	if ((O_RDONLY & flags) == O_RDONLY && -1 == access(path, R_OK))
 		return (1 ^ ft_error(SHNAME, "permission denied", path, CR_ERROR));
 	return (1);
@@ -35,8 +34,7 @@ int		ft_access_dir(char const *path)
 	struct stat	buf;
 
 	if (_POSIX_PATH_MAX < ft_strlen(path))
-		return (1 ^ ft_error(SHNAME, PATH_MAX_EXEED, (char *)path,
-			CR_ERROR | SERROR));
+		return (1 ^ ft_error(SHNAME, PATH_MAX_EXEED, (char *)path, 5));
 	endl = ft_strcpy(cpy, path);
 	while ((endl = ft_strchr(endl + 1, '/')))
 	{
@@ -61,7 +59,7 @@ int		ft_access_exec(char *path, char **argv, t_config *config)
 	struct stat	buf;
 
 	if (!ft_access_dir(path))
-		return false;
+		return (false);
 	if (-1 == access(path, F_OK))
 		return (1 ^ ft_error(SHNAME, "command not found", path, CR_ERROR));
 	else if (-1 == stat(path, &buf))
@@ -69,7 +67,7 @@ int		ft_access_exec(char *path, char **argv, t_config *config)
 	else if (config->shell_state != RUNNING_SON && S_ISDIR(buf.st_mode))
 	{
 		ft_cd(argv, config);
-		return false;
+		return (false);
 	}
 	else if (path[0] != '.' && path[0] != '/')
 		return (1 ^ ft_error(SHNAME, "command not found", path, CR_ERROR));
@@ -77,5 +75,5 @@ int		ft_access_exec(char *path, char **argv, t_config *config)
 		return (1 ^ ft_error(SHNAME, path, "not a regular file", CR_ERROR));
 	else if (-1 == access(path, X_OK))
 		return (1 ^ ft_error(SHNAME, path, "permission denied", CR_ERROR));
-	return true;
+	return (true);
 }

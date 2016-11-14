@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:44:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/03 17:27:06 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 08:55:46 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static void	ft_tricase(int ac, char **av, t_config *config)
 		ft_manage_files(ac, av, config);
 	ft_shell_exit(config);
 }
-
 
 static int	ft_history_loc_init(t_config *config, char *av)
 {

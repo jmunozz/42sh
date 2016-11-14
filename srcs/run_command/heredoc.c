@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 09:17:20 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 09:17:50 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -83,12 +94,13 @@ int			ft_herringbone(t_list *begin, t_config *config)
 		else if (begin->data_size == PIPE || begin->data_size == OP)
 		{
 			if (BDATA[0] == '|' && (!begin->next || !begin->next->data
-				|| (!begin->next->data_size && !((char**)begin->next->data)[0])))
-				return (1 ^ ft_error(SHNAME, "parse error near",
-							BDATA, CR_ERROR));
+				|| (!begin->next->data_size
+				&& !((char**)begin->next->data)[0])))
+				return (1 ^ ft_error(SHNAME, "parse error near", BDATA, 1));
 			cmd = begin->next;
 		}
-		else if (begin->data_size == SSHELL && !ft_herringbone(begin->data, config))
+		else if (begin->data_size == SSHELL
+			&& !ft_herringbone(begin->data, config))
 			return (0);
 		if (begin->data_size == HEREDOC)
 			ft_heredoc(begin, config);

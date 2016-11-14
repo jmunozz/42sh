@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/04 17:26:52 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 14:17:37 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		ft_print_list(t_list *elem)
 		FT_PUTSTRFD("\nop :\n", (char*)elem->data, "\n", 1);
 	else if (elem->data_size == JOB)
 		ft_print_jobs(elem->data, NULL);
-	else
+	else if (elem->data_size == PIPE)
 	{
 		ft_putstr("\npipe :\n");
 		ft_putnbr(((int*)elem->data)[0]);

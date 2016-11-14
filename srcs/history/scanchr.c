@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/13 12:20:30 by rbaran            #+#    #+#             */
-/*   Updated: 2016/11/02 17:51:06 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/14 08:57:45 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	ft_modifycommand(t_stream *stream)
 
 void		ft_sappend(t_stream *stream)
 {
-	char				*kill;
+	char	*kill;
 
 	if ((kill = stream->search))
 	{
@@ -43,7 +43,7 @@ void		ft_sappend(t_stream *stream)
 	}
 }
 
-void	ft_sdel(t_stream *stream)
+void		ft_sdel(t_stream *stream)
 {
 	if (stream->search && stream->search[0])
 	{

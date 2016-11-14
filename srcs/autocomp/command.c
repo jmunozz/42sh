@@ -24,7 +24,7 @@ void		ft_autocomp_underline(t_stream *stream, char mode)
 			ft_strlen(stream->command) : stream->config->prompt_len; // si pas de comande i = prompt
 		i = i % stream->col; // retranche ce qui est du à la présence de plusieurs lignes.
 		ft_repeat_termcaps(i, "nd", stream); // on se retrouve sur le dernier caractère de la commande
-		ft_gomatch(stream, pos_buf, ft_mvleft); //on remonte jusqu'au caractère enregistré.
+		ft_gomatch(stream, pos_buf); //on remonte jusqu'au caractère enregistré.
 	}
 }
 /*
@@ -49,7 +49,7 @@ void		ft_autocomp_delete(t_stream *stream)
 		stream->pos += (ft_strlen(stream->command) % stream->col);
 		ft_freegiveone((void**)&kill);
 	}
-	ft_gomatch(stream, COMP_POS_COMMAND, ft_mvleft);
+	ft_gomatch(stream, COMP_POS_COMMAND);
 }
 /*
 ** Version de append qui diffère en ce qu'elle fait appel à un buffer particulier COMP_BUF.

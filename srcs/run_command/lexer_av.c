@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_av.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 09:03:47 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 09:04:51 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	**sft_tabdup(char **t, char *m, char c, int nb)
@@ -10,7 +22,7 @@ static char	**sft_tabdup(char **t, char *m, char c, int nb)
 		if (!(t[i++] = ft_strdup(m)))
 		{
 			ft_strtabfree(t);
-			return NULL;
+			return (NULL);
 		}
 		else if (nb)
 		{
@@ -43,11 +55,11 @@ static char	**ft_strdodgesplit(char *s, char c)
 	}
 	nb += ((*(s - 1) && *(s - 1) != c) ? 1 : 0);
 	if (!(t = (char **)ft_memalloc(sizeof(char *) * (nb + 1))))
-		return NULL;
+		return (NULL);
 	return (sft_tabdup(t, m, c, nb));
 }
 
-int				ft_dodge_quote(char *cmd, size_t i)
+int			ft_dodge_quote(char *cmd, size_t i)
 {
 	char	c;
 
@@ -58,7 +70,7 @@ int				ft_dodge_quote(char *cmd, size_t i)
 	return (i + 1);
 }
 
-t_list			*ft_av_handle(char *cmd, size_t i)
+t_list		*ft_av_handle(char *cmd, size_t i)
 {
 	char	**t;
 	char	c[2];
@@ -69,10 +81,10 @@ t_list			*ft_av_handle(char *cmd, size_t i)
 	cmd[i] = 0;
 	if ((!cmd || !(t = ft_strdodgesplit(cmd, ' ')))
 		&& ft_error(SHNAME, "parse error near", c, CR_ERROR))
-		return NULL;
+		return (NULL);
 	cmd[i] = c[0];
 	if (!(new = (t_list *)ft_memalloc(sizeof(t_list))))
-		return NULL;
+		return (NULL);
 	new->data = (void*)t;
 	return (new);
 }

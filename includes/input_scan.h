@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_scan.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 14:14:44 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 14:14:45 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef INPUT_SCAN_H
 # define INPUT_SCAN_H
 
@@ -35,8 +47,8 @@ typedef struct	s_stream
 	char		*kill;
 	char		*search;
 	size_t		pos;
-	size_t		col; // largeur du terminal.
-	size_t		row; // hauteur du terminal.
+	size_t		col;
+	size_t		row;
 	size_t		autocomp_state;
 	t_config	*config;
 	t_comp		comp;
@@ -62,8 +74,7 @@ int				ft_putcharint(int	i);
 void			ft_tputs(t_stream *stream);
 void			ft_mvleft(t_stream *stream);
 void			ft_mvright(t_stream *stream);
-void			ft_gomatch(t_stream *stream, unsigned int go,
-							void (*mv)(t_stream *));
+void			ft_gomatch(t_stream *stream, unsigned int go);
 /*
 **arrowlr.c && arrowud.c
 */
@@ -124,7 +135,8 @@ void			ft_flush_command(t_stream *stream);
 void			ft_secure_prompt(t_stream *stream);
 
 /*
---checknewline.c
+**checknewline.c
 */
 void			ft_checknewline(t_stream *stream);
+
 #endif
