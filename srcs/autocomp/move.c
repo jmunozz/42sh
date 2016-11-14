@@ -70,8 +70,8 @@ void		ft_comp_select_current(size_t current, t_stream *stream, char mode)
 	{
 		bzero(COMP_BUF, 256);
 		ft_strcpy(COMP_BUF, &list->data[ft_strlen(COMP_BEGIN)]);
-		list->data_size = 1;
+		list->data_size |= 1; // met le dernier bit à 1.
 	}
 	else
-		list->data_size = 0;
+		list->data_size  ^= 1; // si le dernier bit est à 1, le met à 0.
 }
