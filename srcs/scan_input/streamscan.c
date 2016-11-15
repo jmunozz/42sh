@@ -19,8 +19,8 @@ static int	ft_init_term(t_config *config)
 		sizeof(t_termios)))
 		return (1 ^ ft_error(SHNAME, NULL, TERM_ERR, CR_ERROR));
 	config->termios.c_lflag &= ~(ICANON | ECHO);
-	config->termios.c_cc[VMIN] = 1;
-	config->termios.c_cc[VTIME] = 1;
+	config->termios.c_cc[VMIN] = 0;
+	config->termios.c_cc[VTIME] = 0;
 	return true;
 }
 
