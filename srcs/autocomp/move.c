@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/15 12:50:10 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/15 13:14:58 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void		ft_comp_select_current(size_t current, t_stream *stream, char mode)
 	if (mode == 'S')
 	{
 		bzero(COMP_BUF, 256);
-		ft_strcpy(COMP_BUF, (&((char*)list->data)[ft_strlen(COMP_BEGIN)]));
+		ft_strcpy(COMP_BUF, &((char*)list->data)[ft_strlen(COMP_BEGIN)]);
 		list->data_size = 1;
 	}
 	else
