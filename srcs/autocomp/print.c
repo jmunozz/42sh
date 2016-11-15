@@ -111,25 +111,28 @@ void		ft_autocomp_scroll(t_stream *stream)
  */
 void		ft_comp_print(t_stream *stream)
 {
-	//size_t i;
-
-	get_col_elem(stream); // obtient COMP_IN_COL.
-	ft_autocomp_underline(stream, 'D'); //Positionne le curseur en dessous de la ligne de commande.
-	if (ft_autocomp_is_oversize(stream))
-		if (COMP_STATE == 1)
-		{
-			ft_autocomp_print_grid(0, COMP_IN_COL, stream);//imprime les colonnes.
-			stream->tput = "do";
-			ft_tputs(stream);
-			ft_secure_prompt(stream);
-			ft_flush_command(stream);
-		}
-		else
-			ft_autocomp_scroll(stream);
+	if (COMP_PAD >= COMP_COL)
+		ft_underline_mess("Please resize term...", stream);
 	else
 	{
-		ft_autocomp_print_grid(0, COMP_IN_COL, stream); //imprime les colonnes.
-		ft_repeat_termcaps(COMP_IN_COL, "up", stream);
-		ft_autocomp_underline(stream, 'U'); // Positionne le curseur à sa place sur la commande.
+		get_col_elem(stream); // obtient COMP_IN_COL.
+		ft_autocomp_underline(stream, 'D'); //Positionne le curseur en dessous de la ligne de commande.
+		if (ft_autocomp_is_oversize(stream))
+			if (COMP_STATE == 1)
+			{
+				ft_autocomp_print_grid(0, COMP_IN_COL, stream);//imprime les colonnes.
+				stream->tput = "do";
+				ft_tputs(stream);
+				ft_secure_prompt(stream);
+				ft_flush_command(stream);
+			}
+			else
+				ft_autocomp_scroll(stream);
+		else
+		{
+			ft_autocomp_print_grid(0, COMP_IN_COL, stream); //imprime les colonnes.
+			ft_repeat_termcaps(COMP_IN_COL, "up", stream);
+			ft_autocomp_underline(stream, 'U'); // Positionne le curseur à sa place sur la commande.
+		}
 	}
 }

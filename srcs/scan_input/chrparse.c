@@ -40,8 +40,8 @@ void			ft_flush(t_stream *stream)
 
 	pos = stream->pos;
 	ft_flushend(stream);
-	if (COMP_STATE)
-		ft_comp_print(stream);
+	//if (COMP_STATE)
+		//ft_comp_print(stream);
 	while (stream->pos != pos)
 		ft_mvleft(stream);
 }

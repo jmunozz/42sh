@@ -73,7 +73,6 @@ static void		ft_state_zero(t_stream *stream)
 	int			mode;
 
 	len = 0;
-	reset_autocomp(stream);
 	if (stream->command && stream->command[0])
 	{
 		while (!ft_is_separator(stream->command[stream->pos])
@@ -83,8 +82,11 @@ static void		ft_state_zero(t_stream *stream)
 					stream->command,  &len), 0, len);
 		mode = get_mode(len, stream->command, stream);
 		build_list(COMP_BEGIN, mode, stream);
+		if (COMP_PAD > COMP_ROW)
+			return;
 		if (COMP_BEGIN_LIST)
 			COMP_STATE = 1;
+
 	}
 }
 /*
@@ -147,5 +149,6 @@ void		ft_autocomp(t_stream *stream)
 	}
 	else if (COMP_BEGIN_LIST)
 		ft_comp_print(stream);
+	printf("%zu", COMP_ROW);
 }
 

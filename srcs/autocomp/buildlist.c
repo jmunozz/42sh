@@ -109,5 +109,7 @@ void		build_list(char *str, int mode, t_stream *stream)
 	get_size_list(stream);
 	free(dir);
 	ft_freegiveone((void**)&comp);
+	if (COMP_PAD > COMP_ROW)
+		exit(1);
 }
 
