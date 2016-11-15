@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/03 11:56:07 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 13:42:26 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static int	ft_init_term(t_config *config)
 	config->termios.c_lflag &= ~(ICANON | ECHO);
 	config->termios.c_cc[VMIN] = 0;
 	config->termios.c_cc[VTIME] = 0;
-	return true;
+	return (true);
 }
 
-static void		ft_termios_handle(t_config *config, int mode)
+static void	ft_termios_handle(t_config *config, int mode)
 {
 	static char		state = 0;
 
@@ -83,8 +83,9 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 		&& stream->state != REPROMPT
 		&& ft_error(SHNAME, NULL, SCAN_ERR, FCR_ERROR) && stream->state == -1))
 		ft_ctrl_d(stream);
-	if (stream->command && stream->command[0]
-		&& stream->shindex == config->hindex && !config->heredoc)
+	if (stream->command && stream->command[0] && (!config->hindex
+		|| ft_strcmp(stream->command, config->history[config->hindex - 1]))
+		&& !config->heredoc && stream->state != REPROMPT)
 	{
 		ft_push_history(stream, config);
 		ft_incr_history(&(config->hindex));

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:06:09 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/18 15:13:56 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/11 14:12:54 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		ft_strtabifindstart(char **tab, char *needle)
 
 	i = 0;
 	len = ft_strlen(needle);
-	while (tab[i])
+	while (tab && tab[i])
 	{
 		if (!ft_strncmp(tab[i], needle, len))
 			return (i);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   winsize.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 13:44:56 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 13:46:12 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_stream		*ft_save_stream(t_stream *stream)
@@ -9,7 +21,7 @@ t_stream		*ft_save_stream(t_stream *stream)
 	return (saved);
 }
 
-void		ft_secure_prompt(t_stream *stream)
+void			ft_secure_prompt(t_stream *stream)
 {
 	ft_prompt(stream->config);
 	if (!((stream->pos + stream->config->prompt_len) % stream->col))
@@ -55,7 +67,7 @@ void			ft_flush_command(t_stream *stream)
 	{
 		stream->pos = 0;
 		ft_flushend(stream);
-		ft_gomatch(stream, pos, ft_mvleft);
+		ft_gomatch(stream, pos);
 	}
 }
 
@@ -70,4 +82,3 @@ void			ft_winsize(void)
 		ft_comp_print(stream);
 	ft_sigwinch(1);
 }
-

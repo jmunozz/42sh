@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:16 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/22 15:36:52 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 13:29:36 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 void	ft_goend(t_stream *stream)
 {
 	if (stream->command)
-		while (stream->command[stream->pos])//tant qu'on est pas au bout de stream->command...
-			ft_mvright(stream); //on bouge le curseur à droite.
+		while (stream->command[stream->pos])
+			ft_mvright(stream);
 }
+
+/*
+** JORDAN YOU HAVE TO WRITE IN ENGLISH BETWEEN FUNCTION !!
+*/
 
 void	ft_gohome(t_stream *stream)
 {
-	while (stream->pos) //tant qu'on est pas au début de la ligne de commande (stream->pos = 0)
-		ft_mvleft(stream);//on bouge le curseur à gauche.
+	while (stream->pos)
+		ft_mvleft(stream);
 }
 
 void	ft_ctrlup(t_stream *stream)

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/17 15:23:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/11 14:42:35 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 14:11:41 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include <errno.h>
-//# include "posix.h"
+# include "posix.h"
 # include <limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>

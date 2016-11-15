@@ -6,17 +6,22 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/21 17:04:55 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 13:32:26 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void			ft_gomatch(t_stream *stream, unsigned int go,
-							void (*mv)(t_stream *))
+void			ft_gomatch(t_stream *stream, unsigned int go)
 {
-	while (stream->pos != go) //Tant que la position du curseur est différente de go.
-		mv(stream); //On applique la fonction (mvright ou mvleft) passée en param.
+	void			(*mv)(t_stream*);
+
+	if (stream->pos > go)
+		mv = ft_mvleft;
+	else
+		mv = ft_mvright;
+	while (stream->pos != go)
+		mv(stream);
 }
 
 int				ft_putcharint(int i)
@@ -51,24 +56,23 @@ void			ft_mvleft(t_stream *stream)
 	unsigned int	i;
 
 	i = 0;
-	if (stream->pos) // on s'assure qu'on ne bute pas contre le prompt.
+	if (stream->pos)
 	{
-		//Si on est pas avant un \n ni sur le premier élement d'une ligne
 		if (stream->command[stream->pos - 1] != '\n'
 			&& (stream->config->prompt_len + stream->pos) % stream->col)
 		{
 			stream->tput = "le";
-			ft_tputs(stream); //on recule le curseur d'un pas a gauche.
+			ft_tputs(stream);
 		}
 		else
 		{
 			stream->tput = "nd";
 			while (++i <= stream->col)
-				ft_tputs(stream); //on va en bout de ligne
-			stream->tput = "up"; //on saute un ligne.
+				ft_tputs(stream);
+			stream->tput = "up";
 			ft_tputs(stream);
 		}
-		stream->pos--; //on actualise la position du curseur de commande.
+		stream->pos--;
 		if (i)
 			ft_checknewline(stream);
 	}
@@ -78,26 +82,23 @@ void			ft_mvright(t_stream *stream)
 {
 	unsigned int	i;
 
-	if (stream->command) //si quelque chose est affiché
+	if (stream->command)
 	{
-		//si on est pas sur la dernière ligne ni sur un caractère aller à la ligne
 		if (((stream->config->prompt_len + stream->pos) % stream->col)
 			!= stream->col - 1 && stream->command[stream->pos] != '\n')
 		{
 			stream->tput = "nd";
-			ft_tputs(stream); //on avance le curseur d'un pas à droite.
+			ft_tputs(stream);
 		}
 		else
 		{
 			i = 0;
 			stream->tput = "le";
 			while (++i <= stream->col - 1)
-				ft_tputs(stream); //on va en début de ligne.
-			stream->tput = "do"; //on saute une ligne
+				ft_tputs(stream);
+			stream->tput = "do";
 			ft_tputs(stream);
 		}
 		stream->pos++;
-		// Quelque soit l'évolution de la position physique du curseur à l'écran, on avance de 1 dans la commande.
-
 	}
 }

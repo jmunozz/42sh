@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_var_replace.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 09:02:24 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 09:02:45 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static char		*ft_isop(char c)
+static char	*ft_isop(char c)
 {
 	static char	*str = "><|&;`\\()[]{}'\"#=";
 
@@ -9,8 +21,8 @@ static char		*ft_isop(char c)
 
 static char	*ft_varsearch(char *cmd, size_t *i, t_config *config, char *m)
 {
-	char	c;
-	char	*e;
+	char		c;
+	char		*e;
 
 	while (cmd[*i] && !ft_isop(cmd[*i]))
 		++(*i);
@@ -25,8 +37,8 @@ static char	*ft_varsearch(char *cmd, size_t *i, t_config *config, char *m)
 
 char		*ft_envvarinsert(char *cmd, size_t *i, t_config *config)
 {
-	char	*m;
-	char	*e;
+	char		*m;
+	char		*e;
 
 	if (ft_isop(cmd[*i + 1]) && ++(*i))
 		return (cmd);

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/22 15:45:41 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 13:44:37 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void			ft_flush(t_stream *stream)
 		ft_mvleft(stream);
 }
 
-void		ft_append(t_stream *stream)
+void			ft_append(t_stream *stream)
 {
-	size_t				pos;
-	size_t				len;
-	char				*kill;
+	size_t		pos;
+	size_t		len;
+	char		*kill;
 
 	len = ft_strlen(stream->buf);
 	if ((kill = stream->command))
@@ -71,9 +71,13 @@ void		ft_append(t_stream *stream)
 	while (len--)
 		ft_mvright(stream);
 }
+
 /*
-** Renvoie l'index du tableau de fonction de chrparse.
+**               PARSE HEXA FOR KEY MAPPING
+** printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
+** printf("\nmatch = %lx\n", match[i]);
 */
+
 static int		ft_chrmatch(t_stream *stream)
 {
 	static ssize_t		match[] = {CLF, SUP, CHT, DEL,
@@ -94,9 +98,11 @@ static int		ft_chrmatch(t_stream *stream)
 		return (-1);
 	return (-2);
 }
+
 /*
 ** Lance la fonction appropriée en fonction de la touche pressée.
 */
+
 int				ft_chrparse(t_stream *stream)
 {
 	int					match;
@@ -106,9 +112,10 @@ int				ft_chrparse(t_stream *stream)
 			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend, &ft_syntax_color};
 	//ceci est un tableau de fonctions prenant toutes t_stream en parametre.
 
+
 	if (COMP_STATE == 2 && ((ssize_t*)(stream->buf))[0] == CLF)
 		ft_end_autocomp(stream);
-	else if(ft_is_same_autocomp(stream))
+	else if (ft_is_same_autocomp(stream))
 		(*ftab[1])(stream);
 	else
 	{

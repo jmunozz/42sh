@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:20:26 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/09 19:35:48 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 09:03:33 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char		*ft_path_handle(char **argv, t_config *config)
 	char	*path;
 
 	if (!ft_strcmp(argv[0], "pwd") || !ft_strcmp(argv[0], "echo")
-		||!ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
+		|| !ft_strcmp(argv[0], "env") || !ft_strcmp(argv[0], "printenv"))
 		return (argv[0]);
 	if ((path = ft_return_binpath(config, argv[0])))
 		;

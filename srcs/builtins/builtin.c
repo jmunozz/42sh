@@ -49,7 +49,7 @@ static int	ft_node_jobs(char **argv, t_config *config)
 int			ft_is_no_fork_builtin(char **argv, t_config *config)
 {
 	if (!ft_strcmp(argv[0], "exit"))
-		ft_shell_exit(config, argv);
+		ft_shell_exit(config);
 	else if (!ft_strcmp(argv[0], "exitfather"))
 		ft_kill_father(config);
 	else if (ft_node_jobs(argv, config))

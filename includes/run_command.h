@@ -1,7 +1,20 @@
-#ifndef RUN_COMMAND
-# define RUN_COMMAND
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   run_command.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 14:12:46 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 14:13:46 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef RUN_COMMAND_H
+# define RUN_COMMAND_H
 
 # include "minishell.h"
+
 /*
 ** POLYMORPHIC CHAINLIST
 */
@@ -12,12 +25,14 @@
 # define PROS 100
 # define SENT 101
 # define JOB 102
+
 /*
 ** MOST USED DEFFERENTIATION
 */
 # define BDATA ((char*)begin->data)
 # define SNDATA ((char*)src->next->data)
 # define BOTHER_FD ((t_pipe*)begin->next->data)->others_fd
+# define RDEFAULT (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
 typedef struct	s_pipe
 {
@@ -57,8 +72,8 @@ char			*ft_save_cmd(char *cmd);
 int				ft_node_descriptors(t_list *begin, t_list **rhead,
 				t_config *config, int **r_pipe);
 int				ft_build_pipe(t_list *begin, t_config *config, int **r_pipe);
-void			ft_parse(t_list *begin, t_config *config);
- t_list			*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe);
+void			ft_parse(t_config *config);
+t_list			*ft_run_sentence(t_list *begin, t_config *config, int *r_pipe);
 int				ft_redirectpipe(char *file, int *pip, char *tmp);
 /*
 **parser_multiple_fd.c
@@ -67,7 +82,8 @@ void			ft_handle_multiplefd(char **others_fd);
 /*
 **wait.c
 */
-void			ft_wait_sentence(t_list *job, char *sentence, t_config *config);
+void			ft_wait_sentence(t_list *job, t_config *config);
+int				ft_build_sentence(t_list *begin, t_config *config);
 /*
 **heredoc.c
 */

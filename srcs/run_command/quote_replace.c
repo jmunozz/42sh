@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote_replace.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 09:21:44 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 09:21:46 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static t_list	*ft_quote_replace(char	**t, t_list *next)
+static t_list	*ft_quote_replace(char **t, t_list *next)
 {
 	int			i;
 	size_t		j;
@@ -40,7 +52,7 @@ static t_list	*ft_quote_handle(t_list *next, t_config *config)
 		{
 			if ((t[i][j] == '~' || t[i][j] == '$')
 				&& !(t[i] = ft_envvarinsert(t[i], &j, config)))
-				return NULL;
+				return (NULL);
 			else if (t[i][j] == '\'')
 				j = ft_dodge_quote(t[i], j);
 			else if (t[i][j] == '\\')

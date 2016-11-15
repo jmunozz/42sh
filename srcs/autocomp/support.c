@@ -12,7 +12,7 @@ void		ft_end_autocomp(t_stream *stream)
 	ft_goend(stream);
 	stream->tput = "cd";
 	ft_tputs(stream);
-	ft_gomatch(stream, pos_buf, ft_mvleft);
+	ft_gomatch(stream, pos_buf);
 }
 /*
  ** Check si la touche pressée interrompt l'autocomp.

@@ -6,16 +6,14 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:44:02 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/31 13:15:38 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/14 08:52:14 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_shell_exit(t_config *config, char **argv)
+void	ft_shell_exit(t_config *config)
 {
-	if (argv)
-		ft_strtabfree(argv);
 	ft_free_config(config);
 	exit(ft_status(0));
 }
@@ -41,8 +39,14 @@ void	ft_free_config(t_config *config)
 			ft_lstdel(&(config->bin), &ft_freebin);
 		if (config->hloc)
 			ft_purge_history(config);
+		else
+			ft_strtabfree(config->history);
 		if (config->hloc)
 			free(config->hloc);
+		ft_freelist(&config->chimera);
+		ft_freelist(&config->chimera_tail);
+		ft_freegiveone((void**)&config->command);
+		ft_freegiveone((void**)&config->fg_sentence);
 		get_next_line(-1, NULL);
 	}
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   jobs.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 08:45:29 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 08:51:31 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_list	*ft_extract_job(t_config *config, char *description)
@@ -8,14 +20,15 @@ static t_list	*ft_extract_job(t_config *config, char *description)
 
 	p = config->jobs;
 	i = 1;
-	if (!description || ft_cmp_jobs(config->jobs->data, description, i))
+	if (!description || ft_cmp_jobs(p->data, description, i))
 	{
 		m = (t_list*)p->data;
-		config->jobs = config->jobs->next;
+		config->jobs = p->next;
 		free(p);
 		return (m);
 	}
-	while ((m = p) && (p = p->next) && ++i)
+	while ((m = p)
+			&& (p = p->next) && ++i)
 	{
 		if (ft_cmp_jobs(p->data, description, i))
 		{
@@ -28,42 +41,49 @@ static t_list	*ft_extract_job(t_config *config, char *description)
 	return (NULL);
 }
 
-static void	ft_continue(t_config *config, char *description, int mode)
+static void		ft_continue(t_config *config, char *description, int mode)
 {
 	t_list	*p;
 	t_list	*target;
 
-	if (!description && !(config->jobs))
-		ft_error("fg", NULL, "no current jobs", CR_ERROR);
+	if (!(config->jobs))
+		ft_error(mode == JOBS_FG ? "fg" : "bg", NULL, "no current jobs",
+				CR_ERROR);
 	else if (!(target = ft_extract_job(config, description)))
-		ft_error("fg", "no current job", description, CR_ERROR);
+		ft_error(mode == JOBS_FG ? "fg" : "bg", description, "no such job",
+				CR_ERROR);
 	else if (mode == JOBS_FG)
 	{
 		p = target;
 		while ((p = p->next))
 			kill(*((pid_t*)p->data), SIGCONT);
-		ft_wait_sentence(target, NULL, config);
+		ft_freegiveone((void**)&config->fg_sentence);
+		ft_wait_sentence(target, config);
 	}
 }
 
-void		ft_jobs(char **argv, t_config *config)
+void			ft_jobs(char **argv, t_config *config)
 {
 	size_t	i;
 
 	i = 1;
 	ft_print_jobs(NULL, argv[i]);
-	if (!argv[i])
-		ft_print_list(config->jobs);
+	if (!config->jobs)
+	{
+		ft_error("jobs", NULL, "no current job", CR_ERROR);
+		return ;
+	}
+	else if (!argv[i])
+		ft_lstiter(config->jobs, ft_print_list);
 	else
 		while (argv[i++])
 		{
-			ft_print_list(config->jobs);
+			ft_lstiter(config->jobs, ft_print_list);
 			ft_print_jobs(NULL, argv[i]);
 		}
-
 }
 
-void		ft_fgbg(char **argv, t_config *config, int mode)
+void			ft_fgbg(char **argv, t_config *config, int mode)
 {
 	size_t	i;
 
@@ -71,6 +91,6 @@ void		ft_fgbg(char **argv, t_config *config, int mode)
 	if (!argv[i])
 		ft_continue(config, NULL, mode);
 	else
-		while (argv[i++])
-			ft_continue(config, argv[i], mode);
+		while (argv[i])
+			ft_continue(config, argv[i++], mode);
 }
