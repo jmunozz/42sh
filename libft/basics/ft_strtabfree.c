@@ -16,8 +16,11 @@ void	ft_strtabfree(char **tab)
 {
 	size_t	i;
 
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
+	if (tab)
+	{
+		i = -1;
+		while (tab[++i])
+			free(tab[i]);
+		free(tab);
+	}
 }
