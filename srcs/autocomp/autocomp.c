@@ -121,6 +121,8 @@ static void		ft_state_two(t_stream *stream)
 		ft_comp_get_up(stream);
 	else if (((ssize_t *)(stream->buf))[0] == DOW)
 		ft_comp_get_down(stream);
+	else if (((ssize_t *)(stream->buf))[0] == SHCHT)
+		ft_comp_get_up(stream);
 	ft_autocomp_delete(stream);
 	ft_comp_select_current(current_tmp, stream, 'U');
 	ft_comp_select_current(COMP_CURRENT, stream, 'S');

@@ -86,10 +86,10 @@ static int		ft_chrmatch(t_stream *stream)
 	int					i;
 
 	i = 0;
-	//printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
+//	printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
 	while (match[i])
 	{
-	//printf("\nmatch = %lx\n", match[i]);
+//	printf("\nmatch = %lx\n", match[i]);
 		if (((ssize_t *)(stream->buf))[0] == match[i])
 			return (i);
 		i++;
