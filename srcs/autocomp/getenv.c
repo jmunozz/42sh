@@ -12,6 +12,13 @@
 
 #include "../../includes/autocomp.h"
 /*
+** Put syntax_color_off at ON.
+*/
+void		ft_syntax_color(t_stream *stream)
+{
+	stream->config->syntax_color_off ^= 1;
+}
+/*
 ** Récupère la ligne de l'env correspondante à *str.
 */
 int			ft_getenvline(char *str, char **e)

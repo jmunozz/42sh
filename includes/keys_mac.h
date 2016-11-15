@@ -31,5 +31,6 @@
 # define NUL 0x00 //\0
 # define ESC 0x1B //escape
 # define CTRLD 0x4 //CTRL D
+# define ALTS 0x92C3 // ALT s
 
 #endif

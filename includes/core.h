@@ -58,6 +58,7 @@ typedef struct	s_config
 	t_list		*jobs;
 	int			shell_state;
 	int			last_exit;
+	bool		syntax_color_off;
 }				t_config;
 /*
 **builtin.c && environ.c

@@ -5,32 +5,31 @@
  */
 void		ft_print_elem(t_list *list, t_stream *stream)
 {
-	if (S_ISDIR(list->data_size))
-		ft_putstr(ANSI_COLOR_CYAN);
-	else if (S_ISLNK(list->data_size))
-		ft_putstr(ANSI_COLOR_YELLOW);
-	else if (S_ISREG(list->data_size)
-			&& 00100 & list->data_size)
-		ft_putstr(ANSI_COLOR_GREEN);
-	else if (S_ISCHR(list->data_size))
-		ft_putstr(ANSI_COLOR_BLUE);
-	else if (S_ISBLK(list->data_size))
-		ft_putstr(ANSI_COLOR_RED);
-	else if (S_ISFIFO(list->data_size))
-		ft_putstr(ANSI_COLOR_MAGENTA);
-	else if (S_ISSOCK(list->data_size))
-		ft_putstr(ANSI_COLOR_MAGENTA);
-	if (!(list->data_size & 1))
-		ft_putstrpad(list->data, COMP_PAD, 'L');
-	else
+	if (stream->config->syntax_color_off)
 	{
-		stream->tput = "mr";
-		ft_tputs(stream);
-		ft_putstrpad(list->data, COMP_PAD, 'L');
-		stream->tput = "me";
-		ft_tputs(stream);
+		if (S_ISDIR(list->data_size))
+			ft_putstr(ANSI_COLOR_CYAN);
+		else if (S_ISLNK(list->data_size))
+			ft_putstr(ANSI_COLOR_YELLOW);
+		else if (S_ISREG(list->data_size)
+				&& 00100 & list->data_size)
+			ft_putstr(ANSI_COLOR_GREEN);
+		else if (S_ISCHR(list->data_size))
+			ft_putstr(ANSI_COLOR_BLUE);
+		else if (S_ISBLK(list->data_size))
+			ft_putstr(ANSI_COLOR_RED);
+		else if (S_ISFIFO(list->data_size))
+			ft_putstr(ANSI_COLOR_MAGENTA);
+		else if (S_ISSOCK(list->data_size))
+			ft_putstr(ANSI_COLOR_MAGENTA);
 	}
-	ft_putstr(ANSI_COLOR_RESET);
+	if ((list->data_size & 1))
+		ft_repeat_termcaps(1, "mr", stream);
+	ft_putstrpad(list->data, COMP_PAD, 'L');
+	if ((list->data_size & 1))
+		ft_repeat_termcaps(1, "me", stream);
+	if (stream->config->syntax_color_off)
+		ft_putstr(ANSI_COLOR_RESET);
 }
 /*
  ** Imprime une ligne élément par élément.
