@@ -151,6 +151,5 @@ void		ft_autocomp(t_stream *stream)
 	}
 	else if (COMP_BEGIN_LIST)
 		ft_comp_print(stream);
-	printf("%zu", COMP_ROW);
 }
 
