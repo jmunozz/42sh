@@ -3,29 +3,27 @@
 ** Construit la liste si elle n'existe pas. Ajoute un élément si la liste existe.
 ** Filtre les fichiers cachés et dans tous les cas "." et "..";
 */
-static void		do_list(t_stream *stream, struct dirent *file)
+static void		do_list(t_stream *stream, struct dirent *file, char *dir)
 {
-	size_t data_size;
+	size_t		data_size;
+	struct stat	buf;
+	char		*tmp;
 
+	tmp = ft_strslashjoin(dir, file->d_name);
 	data_size = 0;
-	if (file->d_name[0] == '.')
+	if (lstat(tmp, &buf) >= 0)
+		data_size = (buf.st_mode & ~1);
+	ft_freegiveone((void**)&tmp);
+	if ((file->d_name[0] == '.' && COMP_BEGIN[0] == '.' && ft_strcmp(file->d_name, ".")
+	&& ft_strcmp(file->d_name, "..")) || file->d_name[0] != '.')
 	{
-		if (COMP_BEGIN[0] == '.' && ft_strcmp(file->d_name, ".") && ft_strcmp(file->d_name, ".."))
 		{
 			if (!COMP_BEGIN_LIST)
-				COMP_BEGIN_LIST = ft_lstnew(ft_strdup(file->d_name), data_size);
+				COMP_BEGIN_LIST = ft_lstnew((S_ISDIR(data_size)) ? ft_strjoin(file->d_name, "/") : ft_strdup(file->d_name), data_size);
 			else
-				ft_list_push_back(&(COMP_BEGIN_LIST), ft_lstnew(ft_strdup(file->d_name), data_size));
+				ft_list_push_back(&(COMP_BEGIN_LIST), ft_lstnew((S_ISDIR(data_size)) ? ft_strjoin(file->d_name, "/") : ft_strdup(file->d_name), data_size));
 			get_pad(stream, file->d_name);
 		}
-	}
-	else
-	{
-		if (!COMP_BEGIN_LIST)
-			COMP_BEGIN_LIST = ft_lstnew(ft_strdup(file->d_name), data_size);
-		else
-			ft_list_push_back(&(COMP_BEGIN_LIST), ft_lstnew(ft_strdup(file->d_name), data_size));
-		get_pad(stream, file->d_name);
 	}
 }
 /*
@@ -100,9 +98,9 @@ void		build_list(char *str, int mode, t_stream *stream)
 		{
 			while ((file = readdir(directory)))
 				if (!comp || !*comp)
-					do_list(stream, file);
+					do_list(stream, file, dir[i]);
 				else if (!ft_strncmp(COMP_BEGIN, file->d_name, len_comp))
-					do_list(stream, file);
+					do_list(stream, file, dir[i]);
 			closedir(directory);
 		}
 		free(dir[i]);
@@ -111,5 +109,7 @@ void		build_list(char *str, int mode, t_stream *stream)
 	get_size_list(stream);
 	free(dir);
 	ft_freegiveone((void**)&comp);
+	if (COMP_PAD > COMP_ROW)
+		exit(1);
 }
 

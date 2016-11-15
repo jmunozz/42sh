@@ -1,25 +1,40 @@
 #include "autocomp.h"
 /*
-** Gère l'impression d'un élément avec le padding approprié. Si data_size = 1, imprime
-** l'élément en surbrillance.
-*/
+ ** Gère l'impression d'un élément avec le padding approprié. Si data_size = 1, imprime
+ ** l'élément en surbrillance.
+ */
 void		ft_print_elem(t_list *list, t_stream *stream)
 {
-	if (!list->data_size)
-		ft_putstrpad(list->data, COMP_PAD, 'L');
-	else
+	if (stream->config->syntax_color_off)
 	{
-		stream->tput = "mr";
-		ft_tputs(stream);
-		ft_putstrpad(list->data, COMP_PAD, 'L');
-		stream->tput = "me";
-		ft_tputs(stream);
+		if (S_ISDIR(list->data_size))
+			ft_putstr(ANSI_COLOR_CYAN);
+		else if (S_ISLNK(list->data_size))
+			ft_putstr(ANSI_COLOR_YELLOW);
+		else if (S_ISREG(list->data_size)
+				&& 00100 & list->data_size)
+			ft_putstr(ANSI_COLOR_GREEN);
+		else if (S_ISCHR(list->data_size))
+			ft_putstr(ANSI_COLOR_BLUE);
+		else if (S_ISBLK(list->data_size))
+			ft_putstr(ANSI_COLOR_RED);
+		else if (S_ISFIFO(list->data_size))
+			ft_putstr(ANSI_COLOR_MAGENTA);
+		else if (S_ISSOCK(list->data_size))
+			ft_putstr(ANSI_COLOR_MAGENTA);
 	}
+	if ((list->data_size & 1))
+		ft_repeat_termcaps(1, "mr", stream);
+	ft_putstrpad(list->data, COMP_PAD, 'L');
+	if ((list->data_size & 1))
+		ft_repeat_termcaps(1, "me", stream);
+	if (stream->config->syntax_color_off)
+		ft_putstr(ANSI_COLOR_RESET);
 }
 /*
-** Imprime une ligne élément par élément.
-** Imprime un élément puis l'élément n + COMP_IN_COL de manière récursive.
-*/
+ ** Imprime une ligne élément par élément.
+ ** Imprime un élément puis l'élément n + COMP_IN_COL de manière récursive.
+ */
 void		ft_autocomp_print_line(t_list *list, size_t elem, t_stream *stream)
 {
 	size_t	new_elem;
@@ -38,8 +53,8 @@ void		ft_autocomp_print_line(t_list *list, size_t elem, t_stream *stream)
 	}
 }
 /*
-** Imprime une ligne. Assure le retour à la ligne et la bonne incrémentation de la liste.
-*/
+ ** Imprime une ligne. Assure le retour à la ligne et la bonne incrémentation de la liste.
+ */
 void		ft_autocomp_print_grid(size_t start, size_t end, t_stream *stream)
 {
 	size_t	j;
@@ -64,8 +79,8 @@ void		ft_autocomp_print_grid(size_t start, size_t end, t_stream *stream)
 	}
 }
 /*
-** N'imprime que la partie de la liste imprimable et gère le scroll vertical.
-*/
+ ** N'imprime que la partie de la liste imprimable et gère le scroll vertical.
+ */
 void		ft_autocomp_scroll(t_stream *stream)
 {
 	static int		start = 0;
@@ -84,37 +99,40 @@ void		ft_autocomp_scroll(t_stream *stream)
 	else if (current >= end)
 	{
 		end = current + 1;
- 		start = end - COMP_DISPLAYABLE;
+		start = end - COMP_DISPLAYABLE;
 	}
 	ft_autocomp_print_grid(start, end, stream);
 	ft_repeat_termcaps((end - start + 1), "up", stream);
 	ft_autocomp_underline(stream, 'U');
 }
 /*
-** Fonction intermédiaire.
-** Si oversize, imprime le prompt en dessous. Sinon remonte le nombre de lignes imprimées.
-*/
+ ** Fonction intermédiaire.
+ ** Si oversize, imprime le prompt en dessous. Sinon remonte le nombre de lignes imprimées.
+ */
 void		ft_comp_print(t_stream *stream)
 {
-	//size_t i;
-
-	get_col_elem(stream); // obtient COMP_IN_COL.
-	ft_autocomp_underline(stream, 'D'); //Positionne le curseur en dessous de la ligne de commande.
-	if (ft_autocomp_is_oversize(stream))
-		if (COMP_STATE == 1)
-		{
-			ft_autocomp_print_grid(0, COMP_IN_COL, stream);//imprime les colonnes.
-			stream->tput = "do";
-			ft_tputs(stream);
-			ft_secure_prompt(stream);
-			ft_flush_command(stream);
-		}
-		else
-			ft_autocomp_scroll(stream);
+	if (COMP_PAD >= COMP_COL)
+		ft_underline_mess("Please resize term...", stream);
 	else
 	{
-		ft_autocomp_print_grid(0, COMP_IN_COL, stream); //imprime les colonnes.
-		ft_repeat_termcaps(COMP_IN_COL, "up", stream);
-		ft_autocomp_underline(stream, 'U'); // Positionne le curseur à sa place sur la commande.
+		get_col_elem(stream); // obtient COMP_IN_COL.
+		ft_autocomp_underline(stream, 'D'); //Positionne le curseur en dessous de la ligne de commande.
+		if (ft_autocomp_is_oversize(stream))
+			if (COMP_STATE == 1)
+			{
+				ft_autocomp_print_grid(0, COMP_IN_COL, stream);//imprime les colonnes.
+				stream->tput = "do";
+				ft_tputs(stream);
+				ft_secure_prompt(stream);
+				ft_flush_command(stream);
+			}
+			else
+				ft_autocomp_scroll(stream);
+		else
+		{
+			ft_autocomp_print_grid(0, COMP_IN_COL, stream); //imprime les colonnes.
+			ft_repeat_termcaps(COMP_IN_COL, "up", stream);
+			ft_autocomp_underline(stream, 'U'); // Positionne le curseur à sa place sur la commande.
+		}
 	}
 }

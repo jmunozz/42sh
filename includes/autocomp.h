@@ -36,6 +36,7 @@ char	**ft_getenvtab(char *str, char **e);
 void	get_size_list(t_stream *stream);
 void	get_pad(t_stream *stream, char *str);
 void	get_col_elem(t_stream *stream);
+void	ft_syntax_color(t_stream *stream);
 /*
 ** autocomp.c
 */

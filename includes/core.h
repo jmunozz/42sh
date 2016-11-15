@@ -82,6 +82,7 @@ typedef struct	s_config
 	t_list		*chimera_tail;
 	char		dot_sequence;
 	int			last_exit;
+	bool		syntax_color_off;
 }				t_config;
 typedef enum	e_sigerr
 {

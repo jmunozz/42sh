@@ -6,6 +6,7 @@ void		ft_end_autocomp(t_stream *stream)
 {
 	size_t pos_buf;
 
+	reset_autocomp(stream);
 	pos_buf = stream->pos;
 	COMP_STATE = 0;
 	ft_goend(stream);
@@ -19,7 +20,7 @@ void		ft_end_autocomp(t_stream *stream)
  */
 int		ft_is_same_autocomp(t_stream *stream)
 {
-	static ssize_t	match[] = {LEF, RIG, UPP, DOW, CHT};
+	static ssize_t	match[] = {LEF, RIG, UPP, DOW, CHT, SHCHT};
 	int				i;
 	int				is_same;
 

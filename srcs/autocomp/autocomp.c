@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:29 by tboos             #+#    #+#             */
-/*   Updated: 2016/10/17 16:46:05 by jmunoz           ###   ########.fr       */
+/*   Updated: 2016/11/14 19:14:57 by jmunoz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static void		ft_state_zero(t_stream *stream)
 	int			mode;
 
 	len = 0;
-	reset_autocomp(stream);
 	if (stream->command && stream->command[0])
 	{
 		while (!ft_is_separator(stream->command[stream->pos])
@@ -83,8 +82,11 @@ static void		ft_state_zero(t_stream *stream)
 					stream->command,  &len), 0, len);
 		mode = get_mode(len, stream->command, stream);
 		build_list(COMP_BEGIN, mode, stream);
+		if (COMP_PAD > COMP_ROW)
+			return;
 		if (COMP_BEGIN_LIST)
 			COMP_STATE = 1;
+
 	}
 }
 /*
@@ -119,6 +121,8 @@ static void		ft_state_two(t_stream *stream)
 		ft_comp_get_up(stream);
 	else if (((ssize_t *)(stream->buf))[0] == DOW)
 		ft_comp_get_down(stream);
+	else if (((ssize_t *)(stream->buf))[0] == SHCHT)
+		ft_comp_get_up(stream);
 	ft_autocomp_delete(stream);
 	ft_comp_select_current(current_tmp, stream, 'U');
 	ft_comp_select_current(COMP_CURRENT, stream, 'S');
@@ -143,7 +147,7 @@ void		ft_autocomp(t_stream *stream)
 	{
 		ft_comp_select_current(0, stream, 'S');
 		ft_autocomp_append(stream);
-		COMP_STATE = 0;
+		ft_end_autocomp(stream);
 	}
 	else if (COMP_BEGIN_LIST)
 		ft_comp_print(stream);
