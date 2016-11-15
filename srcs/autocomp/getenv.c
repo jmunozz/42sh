@@ -68,7 +68,7 @@ void		get_pad(t_stream *stream, char *str)
 {
 	size_t	size;
 
-	if ((size = ft_strlen(str)) > COMP_PAD)
+	if ((size = ft_strlen(str) + 1) > COMP_PAD)
 		COMP_PAD = size;
 }
 /*

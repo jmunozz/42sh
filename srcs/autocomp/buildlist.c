@@ -19,9 +19,9 @@ static void		do_list(t_stream *stream, struct dirent *file, char *dir)
 	{
 		{
 			if (!COMP_BEGIN_LIST)
-				COMP_BEGIN_LIST = ft_lstnew(ft_strdup(file->d_name), data_size);
+				COMP_BEGIN_LIST = ft_lstnew((S_ISDIR(data_size)) ? ft_strjoin(file->d_name, "/") : ft_strdup(file->d_name), data_size);
 			else
-				ft_list_push_back(&(COMP_BEGIN_LIST), ft_lstnew(ft_strdup(file->d_name), data_size));
+				ft_list_push_back(&(COMP_BEGIN_LIST), ft_lstnew((S_ISDIR(data_size)) ? ft_strjoin(file->d_name, "/") : ft_strdup(file->d_name), data_size));
 			get_pad(stream, file->d_name);
 		}
 	}
