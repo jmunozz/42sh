@@ -73,6 +73,6 @@ int			ft_error(char *name, char *other, char *mess, int mode)
 int			ft_initerror(t_config *config)
 {
 	ft_error(SHNAME, NULL, "init error", CR_ERROR);
-	ft_free_config(config);
+	ft_shell_exit(config);
 	return (1);
 }

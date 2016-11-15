@@ -80,7 +80,7 @@ void		ft_load_history(t_config *config)
 	char	*tmp;
 
 	if ((fd = open(config->hloc, O_RDONLY)) < 0)
-		ft_error(SHNAME, NULL, LOAD_H_ERR, CR_ERROR | SERROR);
+		return ;
 	else
 	{
 		while (get_next_line(fd, &tmp) > 0)

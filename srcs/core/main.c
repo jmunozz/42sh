@@ -26,14 +26,14 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 			return ;
 		ft_shname_or_file(av[i]);
 		ft_script_line(-1);
-		while ((get_next_line(fd, &config->command)) > 0
-				&& ft_script_line(1))
+		while ((get_next_line(fd, &config->command)) > 0 && ft_script_line(1))
 		{
 			test = config->command;
 			if ((test = ft_matchchr(&test)))
-				ft_error(SHNAME, test, NULL, CR_ERROR);
+				ft_error(SHNAME, "parse error near", ft_qerr(test), CR_ERROR);
 			else
 				ft_run_command(config);
+			ft_freegiveone((void**)&config->command);
 		}
 		get_next_line(-1, NULL);
 		close(fd);
@@ -59,25 +59,23 @@ static void	ft_tricase(int ac, char **av, t_config *config)
 {
 	char		*test;
 
-	if (ac == 1)
+	if (ac == 1 && isatty(0))
 	{
-		if (isatty(0))
+		ft_termcaps_init(config);
+		ft_minishell(config);
+	}
+	else if (ac == 1)
+	{
+		while (get_next_line(0, &config->command) > 0 && ft_script_line(1))
 		{
-			ft_termcaps_init(config);
-			ft_minishell(config);
+			test = config->command;
+			if ((test = ft_matchchr(&test)))
+				ft_error(SHNAME, "parse error near", ft_qerr(test), CR_ERROR);
+			else
+				ft_run_command(config);
+			ft_freegiveone((void**)&config->command);
 		}
-		else
-		{
-			while (get_next_line(0, &config->command) > 0 && ft_script_line(1))
-			{
-				test = config->command;
-				if ((test = ft_matchchr(&test)))
-					ft_error(SHNAME, test, NULL, CR_ERROR);
-				else
-					ft_run_command(config);
-			}
-			get_next_line(-1, NULL);
-		}
+		get_next_line(-1, NULL);
 	}
 	else
 		ft_manage_files(ac, av, config);
@@ -103,6 +101,7 @@ static int	ft_history_loc_init(t_config *config, char *av)
 int			main(int ac, char **av, char **env)
 {
 	t_config	config;
+	t_stream	stream;
 	int			i;
 
 	ft_bzero(&config, sizeof(t_config));
@@ -115,6 +114,9 @@ int			main(int ac, char **av, char **env)
 		ft_setenv("SHLVL", ft_st_itoa(ft_atoi(env[i] + 6) + 1), &config);
 	if (ft_history_loc_init(&config, av[0]))
 		return (1);
+	ft_load_history(&config);
+	ft_save_stream(&stream);
+	stream.config = &config;
 	ft_tricase(ac, av, &config);
 	return (0);
 }

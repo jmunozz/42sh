@@ -66,19 +66,16 @@ void		ft_run_command(t_config *config)
 
 void		ft_minishell(t_config *config)
 {
-	t_stream	stream;
-
-	if (ft_signal())
+	if (ft_signal() && ft_error(SHNAME, "unable to set signal", "I quit", 1))
 		ft_shell_exit(config);
-	ft_load_history(config);
-	ft_save_stream(&stream);
 	config->shell_state = SCANNING_COMMAND;
 	while (1)
-		if ((config->command = ft_streamscan(config, &stream, STDIN_FILENO)))
+		if ((config->command = ft_streamscan(config, ft_save_stream(NULL),
+			STDIN_FILENO)))
 		{
 			ft_run_command(config);
 			if (config->shell_state != RUNNING_COMMAND)
-				ft_gotonextline(&stream);
+				ft_gotonextline(ft_save_stream(NULL));
 			config->shell_state = SCANNING_COMMAND;
 		}
 }

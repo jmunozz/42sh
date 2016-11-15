@@ -114,6 +114,7 @@ size_t			ft_script_line(int mode);
 int				ft_error(char *name, char *other, char *mess, int mode);
 int				ft_initerror(t_config *config);
 void			ft_lexer_error(char *command);
+char			*ft_qerr(char *err);
 /*
 **hash.c && cmp.c
 */

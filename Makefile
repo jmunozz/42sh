@@ -30,6 +30,7 @@ core/free_pros.c \
 core/hash.c \
 core/main.c \
 core/minishell.c \
+core/qerror.c \
 core/signal.c \
 history/history.c \
 history/history_backup.c \
