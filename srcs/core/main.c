@@ -16,23 +16,28 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 {
 	int			fd;
 	int			i;
+	char		*test;
 
 	i = 0;
 	while (++i < ac)
 	{
-		if ((fd = open(av[i], O_RDONLY)) < 0)
-			ft_error(SHNAME, "can't open input file", av[i], CR_ERROR | SERROR);
-		else
-		{
-			ft_shname_or_file(av[i]);
-			ft_script_line(-1);
-			while ((get_next_line(fd, &config->command)) > 0
+		if ((fd = open(av[i], O_RDONLY)) < 0
+				&& ft_error(SHNAME, "can't open input file", av[i], 1 | SERROR))
+			return ;
+		ft_shname_or_file(av[i]);
+		ft_script_line(-1);
+		while ((get_next_line(fd, &config->command)) > 0
 				&& ft_script_line(1))
+		{
+			test = config->command;
+			if ((test = ft_matchchr(&test)))
+				ft_error(SHNAME, test, NULL, CR_ERROR);
+			else
 				ft_run_command(config);
-			get_next_line(-1, NULL);
-			close(fd);
-			ft_shname_or_file(SHNAME);
 		}
+		get_next_line(-1, NULL);
+		close(fd);
+		ft_shname_or_file(SHNAME);
 	}
 }
 
@@ -52,6 +57,8 @@ static void	ft_termcaps_init(t_config *config)
 
 static void	ft_tricase(int ac, char **av, t_config *config)
 {
+	char		*test;
+
 	if (ac == 1)
 	{
 		if (isatty(0))
@@ -62,7 +69,13 @@ static void	ft_tricase(int ac, char **av, t_config *config)
 		else
 		{
 			while (get_next_line(0, &config->command) > 0 && ft_script_line(1))
-				ft_run_command(config);
+			{
+				test = config->command;
+				if ((test = ft_matchchr(&test)))
+					ft_error(SHNAME, test, NULL, CR_ERROR);
+				else
+					ft_run_command(config);
+			}
 			get_next_line(-1, NULL);
 		}
 	}
@@ -81,7 +94,7 @@ static int	ft_history_loc_init(t_config *config, char *av)
 		return (ft_initerror(config));
 	config->hloc[0] = '\0';
 	if (!(config->hloc = ft_strslashjoin(c, "history.bck"))
-		&& ft_freegiveone((void**)&c))
+			&& ft_freegiveone((void**)&c))
 		return (ft_initerror(config));
 	ft_freegiveone((void**)&c);
 	return (0);
@@ -94,7 +107,7 @@ int			main(int ac, char **av, char **env)
 
 	ft_bzero(&config, sizeof(t_config));
 	if (!env || !env[0] || !(config.env = ft_strtabdup(env))
-		|| !ft_pathtohash(&config))
+			|| !ft_pathtohash(&config))
 		if (!ft_default_env(&config) || !ft_pathtohash(&config))
 			return (ft_initerror(&config));
 	ft_update_pwd(&config);

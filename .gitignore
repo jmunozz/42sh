@@ -3,5 +3,5 @@
 *.swp
 tmp*
 21sh
-*test*
+test*
 *.bck
