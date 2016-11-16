@@ -16,6 +16,7 @@
 # define CR_ERROR 1
 # define FCR_ERROR 2
 # define SERROR 4
+# define EEXIT 8
 # define PATH_MAX_ERR "path too long to get pwd"
 # define PATH_MAX_EXEED "path too long"
 # define SAVE_H_ERR "wasn't abble to save history"
@@ -26,5 +27,7 @@
 # define TERM_ERR "fail to set terminal, problems may occur"
 # define RESET_TERM_ERR "fail to reset terminal, so sorry I couldn't !"
 # define SCAN_ERR "error while scanning command"
+# define HEREDOC_ERR "heredoc delimiter is EOF instead of"
+# define PARSE_ERR "parse error near"
 
 #endif

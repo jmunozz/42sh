@@ -24,7 +24,7 @@ char			*ft_save_cmd(char *cmd)
 static t_list	*ft_fill_data_update_index(char *cmd, size_t *i, t_list *next)
 {
 	if (next->data && ((char**)next->data)[0]
-			&& ft_error(SHNAME, "parse error near", ((char**)next->data)[0], 1))
+			&& ft_error(SHNAME, PARSE_ERR, ((char**)next->data)[0], 1))
 		return (ft_freelist(&next));
 	ft_list_free_av(next->data, next->data_size);
 	next->data_size = SSHELL;
@@ -42,13 +42,13 @@ t_list			*ft_lexer_sshell_on(char *cmd, size_t *i, t_list *next)
 	if (!(next = ft_fill_data_update_index(cmd, i, next)))
 		return (NULL);
 	cmd += *i;
-	while ((*cmd == ' ' || *cmd == '\t' || *cmd == '\n') && ++(*i))
+	while (ft_isspace(*cmd) && ++(*i))
 		++cmd;
 	j = 0;
 	if (*cmd && *cmd != ')' && (test = ft_built_couple(cmd, &j)))
 	{
 		if (test->data && ((char**)test->data)[0]
-			&& ft_error(SHNAME, "parse error near", ((char**)test->data)[0], 1)
+			&& ft_error(SHNAME, PARSE_ERR, ((char**)test->data)[0], 1)
 			&& !ft_freelist(&test))
 			return (ft_freelist(&next));
 		ft_list_push_back(&next, test->next);

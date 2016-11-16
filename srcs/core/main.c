@@ -30,7 +30,7 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 		{
 			test = config->command;
 			if ((test = ft_matchchr(&test)))
-				ft_error(SHNAME, "parse error near", ft_qerr(test), CR_ERROR);
+				ft_error(SHNAME, PARSE_ERR, ft_qerr(test), 1 | SERROR | EEXIT);
 			else
 				ft_run_command(config);
 			ft_freegiveone((void**)&config->command);
@@ -59,25 +59,26 @@ static void	ft_tricase(int ac, char **av, t_config *config)
 {
 	char		*test;
 
+	ft_signal(SIGNAL_SCRIPT);
 	if (ac == 1 && isatty(0))
 	{
 		ft_termcaps_init(config);
 		ft_minishell(config);
 	}
-	else if (ac == 1)
+	else if (ac == 1 && (config->heredoc = 2))
 	{
 		while (get_next_line(0, &config->command) > 0 && ft_script_line(1))
 		{
 			test = config->command;
 			if ((test = ft_matchchr(&test)))
-				ft_error(SHNAME, "parse error near", ft_qerr(test), CR_ERROR);
+				ft_error(SHNAME, PARSE_ERR, ft_qerr(test), 1 | SERROR | EEXIT);
 			else
 				ft_run_command(config);
 			ft_freegiveone((void**)&config->command);
 		}
 		get_next_line(-1, NULL);
 	}
-	else
+	else if ((config->heredoc = 2))
 		ft_manage_files(ac, av, config);
 	ft_shell_exit(config);
 }

@@ -32,11 +32,15 @@ size_t		ft_script_line(int mode)
 	return (script_line);
 }
 
-static void	ft_last_exit_fail(void)
+static void	ft_last_exit_fail(int mode)
 {
 	t_stream	*stream;
 
+	if (mode & SERROR)
+		ft_status(1);
 	stream = ft_save_stream(NULL);
+	if (ft_script_line(0) && EEXIT & mode)
+		ft_shell_exit(stream->config);
 	if (stream && stream->config)
 		stream->config->last_exit = 3;
 }
@@ -64,9 +68,7 @@ int			ft_error(char *name, char *other, char *mess, int mode)
 		ft_putstr_fd(mess, 2);
 	if (mode & CR_ERROR)
 		ft_putchar_fd('\n', 2);
-	if (mode & SERROR)
-		ft_status(1);
-	ft_last_exit_fail();
+	ft_last_exit_fail(mode);
 	return (true);
 }
 

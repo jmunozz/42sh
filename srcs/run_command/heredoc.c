@@ -12,31 +12,46 @@
 
 #include "minishell.h"
 
-static void	ft_heredoc(t_list *begin, t_config *config)
+static void	ft_heredoc(t_list *begin, t_config *config, t_stream *stream)
 {
 	char		**kill;
 	char		*tmp;
 
-	config->shell_state = SCANNING_COMMAND;
-	config->heredoc = 1;
-	config->pwd_subrep = "heredoc> ";
-	config->prompt_len = 9;
 	tmp = ft_streamscan(config, ft_save_stream(NULL), 0);
-	while (!tmp || ft_strcmp(tmp, ((char**)begin->next->data)[0]))
+	while (stream->state != REPROMPT
+		&& (!tmp || ft_strcmp(tmp, ((char**)begin->next->data)[0])))
 	{
 		kill = (char**)begin->next->data;
 		if (!(begin->next->data = ft_strtabadd((char**)begin->next->data,
 			((tmp) ? tmp : ft_strnew(1)))))
 		{
 			ft_error(SHNAME, "heredoc", "malloc error", CR_ERROR);
-			return ;
+			config->shell_state = REPROMPT;
+			break ;
 		}
 		ft_freegiveone((void**)&kill);
 		tmp = ft_streamscan(config, ft_save_stream(NULL), 0);
 	}
-	config->shell_state = RUNNING_COMMAND;
+}
+
+static int	ft_stateprep_herdoc(t_list *begin, t_config *config)
+{
+	t_stream	*stream;
+
+	stream = ft_save_stream(NULL);
+	if (config->heredoc == 2 || !isatty(0))
+		return (ft_error(SHNAME, HEREDOC_ERR, BNDATA, 1 | SERROR));
+	config->heredoc = 1;
+	config->shell_state = SCANNING_COMMAND;
+	config->pwd_subrep = "heredoc> ";
+	config->prompt_len = 9;
+	ft_heredoc(begin, config, stream);
 	ft_update_pwd(config);
 	config->heredoc = 0;
+	if (stream->state == REPROMPT)
+		return (1);
+	config->shell_state = RUNNING_COMMAND;
+	return (0);
 }
 
 static int	ft_decant(t_list *cmd, t_list *src, int i)
@@ -46,9 +61,9 @@ static int	ft_decant(t_list *cmd, t_list *src, int i)
 	if (!i && (!src || !((char**)src->data)[0] || !((char**)src->data)[0][0]))
 	{
 		if (src && src->next)
-			ft_error(SHNAME, "parse error near", SNDATA, CR_ERROR);
+			ft_error(SHNAME, PARSE_ERR, SNDATA, CR_ERROR | EEXIT);
 		else
-			ft_error(SHNAME, "parse error near", "newline", CR_ERROR);
+			ft_error(SHNAME, PARSE_ERR, "newline", CR_ERROR | EEXIT);
 		return (0);
 	}
 	if (!src)
@@ -96,14 +111,15 @@ int			ft_herringbone(t_list *begin, t_config *config)
 			if (BDATA[0] == '|' && (!begin->next || !begin->next->data
 				|| (!begin->next->data_size
 				&& !((char**)begin->next->data)[0])))
-				return (1 ^ ft_error(SHNAME, "parse error near", BDATA, 1));
+				return (1 ^ ft_error(SHNAME, PARSE_ERR, BDATA, 1 | EEXIT));
 			cmd = begin->next;
 		}
 		else if (begin->data_size == SSHELL
 			&& !ft_herringbone(begin->data, config))
 			return (0);
-		if (begin->data_size == HEREDOC)
-			ft_heredoc(begin, config);
+		if (begin->data_size == HEREDOC
+			&& ft_stateprep_herdoc(begin, config))
+			return (0);
 		begin = begin->next;
 	}
 	return (1);

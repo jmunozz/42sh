@@ -24,6 +24,7 @@ vim
 unsetenv PATH
 ls
 /bin/ls
+ls -l (
 
  
 						   
@@ -33,5 +34,5 @@ setenv PATH=/usr/bin:/bin
 ls | cat -e
 ls -r | sort | cat -e
 base64 /dev/urandom | head -c 1000 | grep 42 | wc -l | sed -e 's/1/Yes/g' -e 's/0/No/g'
-
+cat -e << EOF
 exit

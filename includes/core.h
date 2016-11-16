@@ -47,9 +47,11 @@
 # define JOBS_BG 1
 
 /*
-**Signal string errors defines (used for ft_printsignal)
+** ft_signal modes
 */
-# define ERR_SEGV "Segmentation fault"
+# define SIGNAL_SET 0
+# define SIGNAL_RESET 1
+# define SIGNAL_SCRIPT 2
 
 typedef struct dirent	t_dirent;
 typedef struct termios	t_termios;
@@ -145,10 +147,8 @@ void			ft_print_list(t_list *elem);
 /*
 **signal.c
 */
-int				ft_signal(void);
+int				ft_signal(int mode);
 void			ft_signal_handle(int i);
-void			ft_signal_reset(void);
 void			ft_sigwinch(int mode);
-void			ft_printsignal(int signum, pid_t pid, t_list *process);
 
 #endif

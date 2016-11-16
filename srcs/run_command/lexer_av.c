@@ -64,10 +64,10 @@ int			ft_dodge_quote(char *cmd, size_t i)
 	char	c;
 
 	c = cmd[i];
-	while (cmd[++i] != c)
+	while (cmd[++i] != c && cmd[i])
 		if (cmd[i] == '\\')
 			++i;
-	return (i + 1);
+	return (cmd[i] ? i + 1 : i);
 }
 
 t_list		*ft_av_handle(char *cmd, size_t i)
@@ -80,7 +80,7 @@ t_list		*ft_av_handle(char *cmd, size_t i)
 	c[1] = 0;
 	cmd[i] = 0;
 	if ((!cmd || !(t = ft_strdodgesplit(cmd, ' ')))
-		&& ft_error(SHNAME, "parse error near", c, CR_ERROR))
+		&& ft_error(SHNAME, PARSE_ERR, c, CR_ERROR))
 		return (NULL);
 	cmd[i] = c[0];
 	if (!(new = (t_list *)ft_memalloc(sizeof(t_list))))

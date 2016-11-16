@@ -57,7 +57,7 @@ void		ft_run_command(t_config *config)
 			ft_freelist(&config->chimera);
 		else
 		{
-			ft_lstiter(config->chimera, ft_print_list);
+//			ft_lstiter(config->chimera, ft_print_list);
 			ft_parse(config);
 		}
 	}
@@ -66,7 +66,8 @@ void		ft_run_command(t_config *config)
 
 void		ft_minishell(t_config *config)
 {
-	if (ft_signal() && ft_error(SHNAME, "unable to set signal", "I quit", 1))
+	if (ft_signal(SIGNAL_SET)
+		&& ft_error(SHNAME, "unable to set signal", "I quit", 1 | SERROR))
 		ft_shell_exit(config);
 	config->shell_state = SCANNING_COMMAND;
 	while (1)

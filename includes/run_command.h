@@ -31,8 +31,14 @@
 */
 # define BDATA ((char*)begin->data)
 # define SNDATA ((char*)src->next->data)
+# define BNDATA ((char**)begin->next->data)[0]
 # define BOTHER_FD ((t_pipe*)begin->next->data)->others_fd
 # define RDEFAULT (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+
+/*
+**Signal string errors defines (used for ft_printsignal)
+*/
+# define ERR_SEGV "Segmentation fault"
 
 typedef struct	s_pipe
 {
@@ -84,6 +90,7 @@ void			ft_handle_multiplefd(char **others_fd);
 */
 void			ft_wait_sentence(t_list *job, t_config *config);
 int				ft_build_sentence(t_list *begin, t_config *config);
+//void			ft_printsignal(int signum, pid_t pid, t_list *process);
 /*
 **heredoc.c
 */

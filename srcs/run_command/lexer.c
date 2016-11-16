@@ -86,12 +86,12 @@ t_list			*ft_lexer(char *cmd)
 
 	begin = NULL;
 	i = 0;
-	while (*cmd == ' ' || *cmd == '\t' || *cmd == '\n')
+	while (ft_isspace(*cmd))
 		++cmd;
 	while ((cmd = cmd + i)
 		&& !(i = 0) && *cmd && *cmd != ')')
 	{
-		while (*cmd == ' ' || *cmd == '\t' || *cmd == '\n')
+		while (ft_isspace(*cmd))
 			++cmd;
 		if (!(next = ft_built_couple(cmd, &i)))
 			return (ft_freelist(&begin));

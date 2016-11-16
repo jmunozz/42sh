@@ -55,7 +55,7 @@ static void		ft_pack_process(t_list *begin, t_config *config, int *r_pipe,
 
 	config->shell_state = RUNNING_SON;
 	ft_pipe_process(r_pipe, begin->next);
-	ft_signal_reset();
+	ft_signal(SIGNAL_RESET);
 	if (begin->data_size == SSHELL && (config->shell_state = RUNNING_SSHELL))
 	{
 		if ((config->last_exit = ft_strtabifindstart(config->env,
@@ -84,7 +84,8 @@ static t_list	*ft_fork_process(t_list *begin, t_config *config, int *r_pipe)
 	char	*path;
 
 	new = NULL;
-	if (!begin->data_size && (ft_is_no_fork_builtin(begin->data, config)
+	if (!begin->data_size && ((!begin->data || !((char*)begin->data)[0])
+		|| ft_is_no_fork_builtin(begin->data, config)
 		|| !(path = ft_path_handle(begin->data, config))))
 		return (NULL);
 	else if ((pid = fork()) == -1

@@ -25,7 +25,7 @@ static char		*ft_reduc(size_t *i, size_t j, char *buf, char *cmd)
 	if (buf)
 		ft_error(SHNAME, "lexer error, operator too long", buf, CR_ERROR);
 	else
-		ft_error(SHNAME, "parse error near", cmd + *i, CR_ERROR);
+		ft_error(SHNAME, PARSE_ERR, cmd + *i, CR_ERROR);
 	return (NULL);
 }
 
