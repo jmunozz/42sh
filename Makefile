@@ -33,8 +33,8 @@ core/main.c \
 core/minishell.c \
 core/qerror.c \
 core/signal.c \
-history/history_backup.c \
 history/history.c \
+history/history_backup.c \
 history/history_search_down.c \
 history/history_search_up.c \
 history/scanchr.c \
@@ -44,8 +44,8 @@ run_command/env_var_replace.c \
 run_command/exec.c \
 run_command/files.c \
 run_command/heredoc.c \
-run_command/lexer_av.c \
 run_command/lexer.c \
+run_command/lexer_av.c \
 run_command/lexer_match_op.c \
 run_command/lexer_sshell.c \
 run_command/parser.c \

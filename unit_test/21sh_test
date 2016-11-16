@@ -20,11 +20,9 @@ env
 unsetenv PATH
 setenv PATH=/usr/bin:/bin
 ls
-vim
 unsetenv PATH
 ls
 /bin/ls
-ls -l (
 
  
 						   
