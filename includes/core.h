@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:14:05 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 14:14:24 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/16 13:26:51 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@
 # define ENV_HELP "--help"
 # define ENV_UNSET "--unset"
 # define ENV_IGNORE "--ignore-environment"
+
+/*
+**Echo builtin defines (params)
+*/
+# define ECHO_N 0x01
 
 /*
 **jobs builtin defines
@@ -102,6 +107,7 @@ void			ft_env(char **argv, t_config *config);
 void			ft_setenv(char *name, char *value, t_config *config);
 void			ft_readysetenv(char **argv, t_config *config);
 void			ft_unsetenv(char **argv, t_config *config);
+void			ft_echo(char **argv);
 /*
 **jobs.c && jobs_utils.c
 */

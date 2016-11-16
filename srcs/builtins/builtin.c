@@ -6,25 +6,11 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:16:34 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/09 21:28:19 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/15 14:23:15 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	ft_echo(char **argv)
-{
-	int	i;
-
-	i = 1;
-	while (argv[i])
-	{
-		ft_putstr(argv[i]);
-		if (argv[++i])
-			ft_putchar(' ');
-	}
-	ft_putchar('\n');
-}
 
 static void	ft_pwd(char **argv, t_config *config)
 {
