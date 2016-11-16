@@ -70,8 +70,8 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 {
 	ft_bzero(stream, sizeof(t_stream));
 	ft_freegiveone((void **)(&(config->history[config->hindex])));
-	stream->fd = fd;
 	stream->config = config;
+	stream->fd = fd;
 	ft_termios_handle(config, 1);
 	ft_winsize();
 	ft_scan(stream);

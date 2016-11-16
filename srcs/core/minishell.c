@@ -66,13 +66,19 @@ void		ft_run_command(t_config *config)
 
 void		ft_minishell(t_config *config)
 {
-	if (ft_signal(SIGNAL_SET)
-		&& ft_error(SHNAME, "unable to set signal", "I quit", 1 | SERROR))
+	int		fd;
+
+	fd = 1;
+	if ((ft_signal(SIGNAL_SET
+		&& ft_error(SHNAME, "unable to set signal", "I quit", 1 | SERROR)))
+		|| (!isatty(1)
+		&& ft_error(SHNAME, "unable to scan command from a filedescriptor",
+		"I quit", 1 | SERROR)))
 		ft_shell_exit(config);
 	config->shell_state = SCANNING_COMMAND;
 	while (1)
 		if ((config->command = ft_streamscan(config, ft_save_stream(NULL),
-			STDIN_FILENO)))
+			fd)))
 		{
 			ft_run_command(config);
 			if (config->shell_state != RUNNING_COMMAND)
