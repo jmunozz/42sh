@@ -51,7 +51,7 @@
 # define NUL 0x00
 # define ESC 0x1b
 # define CTRLD 0x4
-# define ALTS 0x92C3 //ALT s
-# define SHCHT 0x5A5B1B //SHIFT \t
+# define ALTS 0x0013
+# define SHCHT 0x5a5b1b
 
 #endif
