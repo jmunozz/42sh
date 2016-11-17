@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 08:37:57 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 08:37:59 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	ft_pwd_error(t_config *config)
@@ -34,14 +46,25 @@ void		ft_update_pwd(t_config *config)
 	}
 }
 
-static void	ft_path_follow(char *path, char **argv, t_config *config, int i)
+static void	ft_path_follow(char *path, t_config *config)
 {
+	struct stat	buf;
+
 	if (path[1] && !ft_access_dir(path))
 		;
+	else if (-1 == access(path, F_OK))
+		ft_error(SHNAME, "no directory or file named", path, CR_ERROR);
+	else if (-1 == stat(path, &buf))
+		ft_error(SHNAME, "access denied", path, CR_ERROR);
+	else if (!S_ISDIR(buf.st_mode))
+		ft_error(SHNAME, "not a directory", path, CR_ERROR);
+	else if (-1 == access(path, X_OK))
+		ft_error(SHNAME, "permission denied", path, CR_ERROR);
 	else if (!chdir(path))
-		ft_update_pwd(config);
+		;
 	else
-		ft_error(SHNAME, "no such file", argv[i] ? argv[i] : path, CR_ERROR);
+		ft_error(SHNAME, "failed moving to directory", path, CR_ERROR);
+	ft_update_pwd(config);
 	free(path);
 }
 
@@ -52,8 +75,8 @@ void		ft_cd(char **argv, t_config *config)
 
 	path = NULL;
 	if ((i = (ft_strcmp(argv[0], "cd") ? 0 : 1)) && ft_strtablen(argv) - i > 1
-		&& (i += 3))
-		ft_error(SHNAME, "cd", "too many arguments", CR_ERROR);
+		&& ft_error(SHNAME, "cd", "too many arguments", CR_ERROR))
+		return ;
 	else if (!argv[i] && (path = ft_strtabfind(config->env, "HOME=")))
 		path = ft_strdup(path + 5);
 	else if (argv[i] && argv[i][0] == '/')
@@ -69,7 +92,7 @@ void		ft_cd(char **argv, t_config *config)
 	else if (argv[i] && (path = config->pwd))
 		path = ft_strslashjoin(path, argv[i]);
 	if (path)
-		ft_path_follow(path, argv, config, i);
-	else if (i < 3)
+		ft_path_follow(path, config);
+	else
 		ft_error(SHNAME, "cd", "something is missing in env", CR_ERROR);
 }

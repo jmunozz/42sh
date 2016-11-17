@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:51:46 by tboos             #+#    #+#             */
-/*   Updated: 2016/10/14 18:06:39 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/14 14:12:05 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 # define END 0x465B1B //end
 # define HOM 0x485B1B //home
 # define NUL 0x00 //\0
-# define ESC 0x1b //escape
+# define ESC 0x1B //escape
+# define CTRLD 0x4 //CTRL D
+# define ALTS 0x92C3 //ALT s
+# define SHCHT 0x5A5B1B //SHIFT \t
 
 #endif

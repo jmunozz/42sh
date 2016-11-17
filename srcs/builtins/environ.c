@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:21:35 by tboos             #+#    #+#             */
-/*   Updated: 2016/09/11 21:35:14 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/14 08:51:32 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		ft_default_env(t_config *config)
 
 	ft_free_config(config);
 	if (!(config->env = (char **)ft_memalloc(sizeof(char*))))
-		return false;
+		return (false);
 	ft_setenv("PATH", DPATH, config);
 	if ((passwd = getpwuid(getuid())))
 	{
@@ -26,51 +26,36 @@ int		ft_default_env(t_config *config)
 		ft_setenv("HOME", passwd->pw_dir, config);
 	}
 	ft_setenv("SHLVL", "1", config);
-	return true;
+	return (true);
 }
 
-void	ft_setenv(char *name, char *value, t_config *config)
+void	ft_setenv(char *n, char *val, t_config *config)
 {
 	int		i;
 	char	**f;
 	char	*memo;
 
 	f = config->env;
-	if ((i = ft_strtabifindstart(f, name)) >= 0
+	if (((i = ft_strtabifindstart(f, n)) >= 0
 		&& (memo = f[i])
-		&& ((value && value [0] && !(f[i] = ft_strchrjoin(name, '=', value)))
-		|| (!value && !(f[i] = ft_strjoin(name, "="))))
-		&& (f[i] = memo))
-		ft_error(SHNAME, "error while setenv for", name, CR_ERROR);
-	else if (i >= 0 && !ft_strcmp(name, "PWD"))
+		&& ((val && val[0] && !(f[i] = ft_strchrjoin(n, '=', val)))
+		|| (!val && !(f[i] = ft_strjoin(n, "="))))
+		&& (f[i] = memo)))
+		ft_error(SHNAME, "error while setenv for", n, CR_ERROR);
+	else if (i >= 0 && !ft_strcmp(n, "PWD"))
 		ft_setenv("OLDPWD", memo + 4, config);
-	else if (i < 0 && ((value && value[0]
-		&& !(memo = ft_strchrjoin(name, '=', value)))
-		|| (!value && !(memo = ft_strjoin(name , "=")))))
-		ft_error(SHNAME, "malloc error during setenv for", name, CR_ERROR);
+	else if (i < 0 && ((val && val[0] && !(memo = ft_strchrjoin(n, '=', val)))
+		|| (!val && !(memo = ft_strjoin(n, "=")))))
+		ft_error(SHNAME, "malloc error during setenv for", n, CR_ERROR);
 	else if (i < 0 && !(config->env = ft_strtabadd(config->env, memo))
 		&& ft_freegiveone((void **)&memo) && (config->env = f))
-		ft_error(SHNAME, "malloc error during setenv for", name, CR_ERROR);
+		ft_error(SHNAME, "malloc error during setenv for", n, CR_ERROR);
 	else if (f && config->env && f != config->env)
 		free(f);
-	if (!ft_strcmp("PATH", name))
+	if (config->shell_state != RUNNING_SON && n && !ft_strcmp("PATH", n))
 		ft_pathtohash(config);
-	ft_freegiveone((void**)&(memo));
-}
-
-void	ft_env(char **argv, t_config *config)
-{
-	char	*envbin;
-
-	if (!argv[1])
-	{
-		ft_putstrtab((config->env), '\n');
-		ft_putchar('\n');
-	}
-	else if (!(envbin = ft_return_binpath(config, "env")))
-		ft_error(SHNAME, NULL, "unnable to find advanced env", CR_ERROR);
-	else
-		ft_access_exec(envbin, argv, config);
+	if (i >= 0)
+		ft_freegiveone((void**)&(memo));
 }
 
 void	ft_readysetenv(char **argv, t_config *config)
@@ -99,7 +84,8 @@ void	ft_unsetenv(char **argv, t_config *config)
 	while (argv[++i])
 	{
 		ft_strncmptabdel(config->env, argv[i]);
-		if (!ft_strncmp("PATH", argv[i], 4) && strlen(argv[i]) == 4)
+		if (config->shell_state != RUNNING_SON
+			&& !ft_strncmp("PATH", argv[i], 4) && strlen(argv[i]) == 4)
 			ft_pathtohash(config);
 	}
 }

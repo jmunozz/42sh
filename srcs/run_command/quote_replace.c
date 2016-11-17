@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote_replace.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 09:21:44 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/16 13:39:16 by rbaran           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static t_list	**ft_quote_replace(char	**t, t_list **next)
+static t_list	*ft_quote_replace(char **t, t_list *next)
 {
 	int			i;
 	size_t		j;
@@ -12,24 +24,31 @@ static t_list	**ft_quote_replace(char	**t, t_list **next)
 		while (t[i][++j])
 		{
 			if (t[i][j] == '\'' || t[i][j] == '\"')
+				j = ft_dodge_quote(t[i], j);
+			else if (t[i][j] == '\\')
+				ft_memmove(t[i] + j, t[i] + j + 1, ft_strlen(t[i] + j));
+		}
+		j = -1;
+		while (t[i][++j])
+			if (t[i][j] == '\'' || t[i][j] == '\"')
 			{
 				ft_memmove(t[i] + j, t[i] + j + 1, ft_strlen(t[i] + j));
 				--j;
 			}
-			else if (t[i][j] == '\\')
-				ft_memmove(t[i] + j, t[i] + j + 1, ft_strlen(t[i] + j));
-		}
+		
 	}
 	return (next);
 }
 
-t_list			**ft_quote_handle(t_list **next, t_config *config)
+static t_list	*ft_quote_handle(t_list *next, t_config *config)
 {
 	char		**t;
 	int			i;
 	size_t		j;
 
-	t = (char **)(*next)->data;
+	if (!next || !next->data)
+		return (next);
+	t = (char **)next->data;
 	i = -1;
 	while (t[++i])
 	{
@@ -38,7 +57,7 @@ t_list			**ft_quote_handle(t_list **next, t_config *config)
 		{
 			if ((t[i][j] == '~' || t[i][j] == '$')
 				&& !(t[i] = ft_envvarinsert(t[i], &j, config)))
-				return NULL;
+				return (NULL);
 			else if (t[i][j] == '\'')
 				j = ft_dodge_quote(t[i], j);
 			else if (t[i][j] == '\\')
@@ -48,4 +67,17 @@ t_list			**ft_quote_handle(t_list **next, t_config *config)
 		}
 	}
 	return (ft_quote_replace(t, next));
+}
+
+int				ft_quote(t_list *begin, t_config *config)
+{
+	while (begin)
+	{
+		if (!begin->data_size && !ft_quote_handle(begin, config))
+			return (0);
+		else if (begin->data_size == SSHELL && !ft_quote(begin->data, config))
+			return (0);
+		begin = begin->next;
+	}
+	return (1);
 }

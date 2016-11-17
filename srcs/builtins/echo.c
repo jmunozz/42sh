@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   autocomp.c                                         :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/11 14:29:29 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/07 11:50:10 by maxpetit         ###   ########.fr       */
+/*   Created: 2016/11/15 13:33:52 by rbaran            #+#    #+#             */
+/*   Updated: 2016/11/17 18:40:16 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+<<<<<<< HEAD:srcs/scan_input/autocomp.c
 static int ft_check_marge(char c)
 {
 	if (c == '<' || c == '>' || c == '&' || c == '|' || c == ';'|| c == ' ')
@@ -54,4 +55,31 @@ void	ft_autocomp(t_stream *stream)
 	else
 		ft_underline_mess("NO", stream);
 	ft_strdel(&glob.path);
+=======
+static int	ft_parseparams(char **argv, int *param)
+{
+	int	i;
+
+	i = 0;
+	while (argv[++i] && argv[i][0] == '-' && argv[i][1] == 'n')
+		*param |= ECHO_N;
+	return (i);
+}
+
+void	ft_echo(char **argv)
+{
+	int	i;
+	int	param;
+
+	param = 0;
+	i = ft_parseparams(argv, &param);
+	while (argv[i])
+	{
+		ft_putstr(argv[i]);
+		if (argv[++i])
+			ft_putchar(' ');
+	}
+	if (!(param & ECHO_N))
+		ft_putchar('\n');
+>>>>>>> tboos/master:srcs/builtins/echo.c
 }

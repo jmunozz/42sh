@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   underline_mess.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 13:18:09 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/17 18:37:43 by maxpetit         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_putmess(t_stream *stream, char *mess)
@@ -19,7 +31,6 @@ void	ft_putmess(t_stream *stream, char *mess)
 	stream->tput = "up";
 	while (i--)
 		ft_tputs(stream);
-
 }
 
 int		ft_underline_mess(char *mess, t_stream *stream)
@@ -46,6 +57,6 @@ int		ft_underline_mess(char *mess, t_stream *stream)
 	stream->tput = "nd";
 	while (i--)
 		ft_tputs(stream);
-//	ft_gomatch(stream, pos_buf, ft_mvleft);
+	ft_gomatch(stream, pos_buf);
 	return (0);
 }

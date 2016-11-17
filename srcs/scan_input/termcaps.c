@@ -6,15 +6,20 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/02 15:44:35 by maxpetit         ###   ########.fr       */
+/*   Updated: 2016/11/17 18:38:10 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void			ft_gomatch(t_stream *stream, unsigned int go,
-							void (*mv)(t_stream *))
+void			ft_gomatch(t_stream *stream, unsigned int go)
 {
+	void			(*mv)(t_stream*);
+
+	if (stream->pos > go)
+		mv = ft_mvleft;
+	else
+		mv = ft_mvright;
 	while (stream->pos != go)
 		mv(stream);
 }
@@ -45,6 +50,12 @@ void			ft_tputs(t_stream *stream)
 	else
 		ft_putstr_fd(TDL, stream->fd);
 }
+
+/*
+**If cursor isn't one EOF or on the last column, moves the cursors left one
+**column. Otherwise moves cursor one the last column and moves vertically up one
+**line.
+*/
 
 void			ft_mvleft(t_stream *stream)
 {

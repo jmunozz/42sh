@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/02 16:52:53 by maxpetit         ###   ########.fr       */
+/*   Updated: 2016/11/17 18:38:44 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ void			ft_flush(t_stream *stream)
 
 	pos = stream->pos;
 	ft_flushend(stream);
+	//if (COMP_STATE)
+		//ft_comp_print(stream);
 	while (stream->pos != pos)
 		ft_mvleft(stream);
 }
 
-static void		ft_append(t_stream *stream)
+void			ft_append(t_stream *stream)
 {
-	size_t				pos;
-	size_t				len;
-	char				*kill;
+	size_t		pos;
+	size_t		len;
+	char		*kill;
 
 	len = ft_strlen(stream->buf);
 	if ((kill = stream->command))
@@ -70,18 +72,24 @@ static void		ft_append(t_stream *stream)
 		ft_mvright(stream);
 }
 
+/*
+**               PARSE HEXA FOR KEY MAPPING
+** printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
+** printf("\nmatch = %lx\n", match[i]);
+*/
+
 static int		ft_chrmatch(t_stream *stream)
 {
 	static ssize_t		match[] = {CLF, SUP, CHT, DEL,
 		LEF, RIG, UPP, DOW,
-		CLEF, CRIG, CUPP, CDOW, END, HOM, CRS, ESC, NUL};
+		CLEF, CRIG, CUPP, CDOW, END, HOM, CRS, ESC, ALTS, NUL};
 	int					i;
 
 	i = 0;
-//printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
+//	printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
 	while (match[i])
 	{
-//printf("\nmatch = %lx\n", match[i]);
+//	printf("\nmatch = %lx\n", match[i]);
 		if (((ssize_t *)(stream->buf))[0] == match[i])
 			return (i);
 		i++;
@@ -91,19 +99,32 @@ static int		ft_chrmatch(t_stream *stream)
 	return (-2);
 }
 
+/*
+** Run the appropriate function for a key touched.
+*/
+
 int				ft_chrparse(t_stream *stream)
 {
 	int					match;
 	static void			(*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp,
 			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
 			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
-			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend};
+			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend, &ft_syntax_color};
+	//ceci est un tableau de fonctions prenant toutes t_stream en parametre.
 
-	if (!(match = ft_chrmatch(stream)))
-		return (0);
-	if (match == -1)
-		stream->search ? ft_sappend(stream) : ft_append(stream);
-	else if (match > 0)
-		(*ftab[match - 1])(stream);
+
+	if (COMP_STATE == 2 && ((ssize_t*)(stream->buf))[0] == CLF)
+		ft_end_autocomp(stream);
+	else if (ft_is_same_autocomp(stream))
+		(*ftab[1])(stream);
+	else
+	{
+		if (!(match = ft_chrmatch(stream)))
+			return (0);
+		if (match == -1)
+			stream->search ? ft_sappend(stream) : ft_append(stream);
+		else if (match > 0)
+			(*ftab[match - 1])(stream);
+	}
 	return (1);
 }

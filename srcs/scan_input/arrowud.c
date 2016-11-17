@@ -6,11 +6,15 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:16 by tboos             #+#    #+#             */
-/*   Updated: 2016/10/28 15:20:29 by maxpetit         ###   ########.fr       */
+/*   Updated: 2016/11/17 18:39:05 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**Moves cursor on the last colum.
+*/
 
 void	ft_goend(t_stream *stream)
 {
@@ -18,6 +22,10 @@ void	ft_goend(t_stream *stream)
 		while (stream->command[stream->pos])
 			ft_mvright(stream);
 }
+
+/*
+**Moves cursor on the first column after the prompt.
+*/
 
 void	ft_gohome(t_stream *stream)
 {

@@ -6,11 +6,12 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/28 16:29:53 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/29 16:24:05 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/03 12:30:10 by rbaran           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 int		ft_strtablen(char **t)
 {
@@ -56,13 +57,24 @@ char	**ft_strtabadd(char **dest, char *new)
 	char	**res;
 
 	i = 0;
+	res = NULL;
 	if (!dest && !(res = (char **)ft_memalloc(sizeof(char *) * 2)))
 		return (NULL);
-	else if ((i = ft_strtablen(dest)) < 0
-		|| !(res = (char **)ft_memalloc(sizeof(char *) * (i + 2))))
+	else if (!res && ((i = ft_strtablen(dest)) < 0
+		|| !(res = (char **)ft_memalloc(sizeof(char *) * (i + 2)))))
 		return (NULL);
 	res[i] = new;
 	while (--i >= 0)
 		res[i] = dest[i];
 	return (res);
+}
+
+char	**ft_strtabadd_free(char **dest, char *new)
+{
+	char	**kill;
+
+	kill = dest;
+	dest = ft_strtabadd(dest, new);
+	ft_freegiveone((void**)&kill);
+	return (dest);
 }

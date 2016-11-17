@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history_search_down.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/11 20:59:10 by rbaran            #+#    #+#             */
-/*   Updated: 2016/09/19 16:12:25 by rbaran           ###   ########.fr       */
+/*   Created: 2016/11/14 08:56:48 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 08:57:24 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	ft_down_search(t_stream *stream)
 		ft_incr_history(&(stream->shindex));
 }
 
-void	ft_down(t_stream *stream)
+void		ft_down(t_stream *stream)
 {
 	if (stream->search)
 		ft_searchengine(stream);
@@ -38,10 +38,14 @@ void	ft_down(t_stream *stream)
 		ft_freegiveone((void **)&(stream->command));
 		if (stream->config->history[stream->shindex]
 			&& (stream->command = stream->config->history[stream->shindex])
-			&& !(stream->command = ft_strdup(stream->command)))
-			stream->state = -2;
+			&& !(stream->command = ft_strdup(stream->command))
+			&& (stream->state = -2))
+			return ;
 		else
+		{
 			stream->pos = 0;
-		ft_winsize();
+			ft_goend(stream);
+		}
 	}
+	ft_winsize();
 }

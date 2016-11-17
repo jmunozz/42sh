@@ -88,7 +88,7 @@ int					get_next_line(int const fd, char **line)
 	char			*tmp;
 
 	test = -1;
-	if (fd < 0 || !line || read(fd, *line, 0) < 0
+	if (fd < 0 || !line || read(fd, NULL, 0) < 0
 		|| (test = ft_findread(&begin, begin, fd, FIND)) <= 0)
 		return ((fd < 0 ? ft_gnl_reset(&begin) : test));
 	*line = ft_memalloc(1);

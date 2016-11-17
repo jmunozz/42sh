@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_scan.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/14 14:14:44 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/14 14:14:45 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef INPUT_SCAN_H
 # define INPUT_SCAN_H
 
@@ -7,6 +19,21 @@
 # define TND "\x1b[C"
 # define TDL "\x1b[K"
 # define TCD "\x1b[J"
+# define REPROMPT -10
+
+typedef struct	s_comp
+{
+	size_t		command_pos;
+	size_t		in_col;
+	size_t		nb_col;
+	size_t		pad;
+	size_t		size_list;
+	size_t		current;
+	size_t		displayable;
+	t_list		*begin_list;
+	char		*begin;
+	char		buf[256];
+}				t_comp;
 
 typedef struct	s_stream
 {
@@ -21,7 +48,11 @@ typedef struct	s_stream
 	char		*search;
 	size_t		pos;
 	size_t		col;
+	size_t		row;
+	size_t		autocomp_state;
 	t_config	*config;
+	t_comp		comp;
+
 }				t_stream;
 
 typedef struct	s_globing
@@ -55,8 +86,7 @@ int				ft_putcharint(int	i);
 void			ft_tputs(t_stream *stream);
 void			ft_mvleft(t_stream *stream);
 void			ft_mvright(t_stream *stream);
-void			ft_gomatch(t_stream *stream, unsigned int go,
-							void (*mv)(t_stream *));
+void			ft_gomatch(t_stream *stream, unsigned int go);
 /*
 **arrowlr.c && arrowud.c
 */
@@ -78,6 +108,7 @@ void			ft_del(t_stream *stream);
 /*
 **chrparse.c
 */
+void			ft_append(t_stream *stream);
 void			ft_flushend(t_stream *stream);
 void			ft_flush(t_stream *stream);
 int				ft_chrparse(t_stream *stream);
@@ -122,9 +153,12 @@ void			ft_flushsearch(t_stream *stream);
 t_stream		*ft_save_stream(t_stream *stream);
 void			ft_winsize(void);
 void			ft_prompt_reset(t_stream *stream);
+void			ft_flush_command(t_stream *stream);
+void			ft_secure_prompt(t_stream *stream);
 
 /*
---checknewline.c
+**checknewline.c
 */
 void			ft_checknewline(t_stream *stream);
+
 #endif
