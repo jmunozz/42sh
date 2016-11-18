@@ -22,7 +22,7 @@ static int		ft_is_separator(char c)
 		return (1);
 	if (c == '|')
 		return (1);
-	if (c == ' ')
+	if (ft_isspace(c))
 		return (1);
 	return (0);
 }
@@ -55,22 +55,23 @@ static int		get_mode(int len, char *str, t_stream *stream)
  ** représente le début de la chaîne à comparer. COMP_BEGIN est modifié dans
  ** build_list.c dans le cas où on chercher à compléter un chemin.
  */
-static char		*get_begin(int i, char *str, int *len)
+static char		*get_begin(int i, char *str, size_t *len)
 {
 	while (i >= 0 && !ft_is_separator(str[i]))
 	{
 		i -= 1;
 		*len += 1;
 	}
-	return (&(str[++i]));
+	return (str + i + 1);
 }
 /*
 ** Détermine le comportement dans l'état 0. Création de la liste.
 */
 static void		ft_state_zero(t_stream *stream)
 {
-	int			len;
+	size_t		len;
 	int			mode;
+	char		*b;
 
 	len = 0;
 	if (stream->command && stream->command[0])
@@ -78,8 +79,8 @@ static void		ft_state_zero(t_stream *stream)
 		while (!ft_is_separator(stream->command[stream->pos])
 				&& stream->command[stream->pos])
 			ft_mvright(stream);
-		COMP_BEGIN = ft_strsub(get_begin(stream->pos - 1,
-					stream->command,  &len), 0, len);
+		b = get_begin(stream->pos - 1, stream->command, &len);
+		COMP_BEGIN = ft_strsub(b, 0, len);
 		mode = get_mode(len, stream->command, stream);
 		build_list(COMP_BEGIN, mode, stream);
 		if (COMP_PAD > COMP_ROW)

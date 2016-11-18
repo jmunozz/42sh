@@ -19,10 +19,7 @@
 ** POLYMORPHIC CHAINLIST
 */
 # define OP 1
-/*
-** DEJA DEFINI DANS SIGNAUX
-** # define PIPE 13
-*/
+# define PIPE 13
 # define HEREDOC 3
 # define SSHELL 4
 # define PROS 100

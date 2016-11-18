@@ -32,9 +32,9 @@
 # include "../libft/includes/libft.h"
 # include "core.h"
 # include "input_scan.h"
+# include "autocomp.h"
 # include "run_command.h"
 # include "ft_error.h"
-# include "autocomp.h"
 # ifdef LINUX
 #  include "keys_linux.h"
 # else
