@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/09 14:30:52 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/25 06:30:24 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:28:04 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ int					get_next_line(int const fd, char **line)
 		return ((fd < 0 ? ft_gnl_reset(&begin) : test));
 	*line = ft_memalloc(1);
 	while (!(test = ft_strcut(DATA, '\n', RET))
-		&& (tmp = *line) && (*line = ft_strjoin(*line, DATA))
+		&& (tmp = *line)
+		&& (*line = ft_strjoin(*line, DATA))
 		&& (RET = ft_findread(&begin, begin, fd, READ))
 		&& ft_freegiveone((void **)&tmp))
 		if (!(*line))
