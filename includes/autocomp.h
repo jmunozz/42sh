@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:47:29 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 13:47:31 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 13:15:56 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@
 # define COMP_BUF			stream->comp.buf
 
 /*
+** auto_utils.c
+*/
+int		ft_is_separator(char c);
+char	*get_begin(int i, char *str, size_t *len);
+/*
 ** getenv.c
 */
 int		ft_getenvline(char *str, char **e);
@@ -36,7 +41,6 @@ char	**ft_getenvtab(char *str, char **e);
 void	get_size_list(t_stream *stream);
 void	get_pad(t_stream *stream, char *str);
 void	get_col_elem(t_stream *stream);
-void	ft_syntax_color(t_stream *stream);
 /*
 ** autocomp.c
 */

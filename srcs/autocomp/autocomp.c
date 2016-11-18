@@ -6,32 +6,18 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:29 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 19:14:57 by jmunoz           ###   ########.fr       */
+/*   Updated: 2016/11/18 13:18:43 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/autocomp.h"
+#include "minishell.h"
 
-static int		ft_is_separator(char c)
-{
-	if (c == ';')
-		return (1);
-	if (c == '"')
-		return (1);
-	if (c == '&')
-		return (1);
-	if (c == '|')
-		return (1);
-	if (ft_isspace(c))
-		return (1);
-	return (0);
-}
 /*
- ** Obtient le mode dans lequel va se lancer l'autocomp.
- ** 0 = rien n'est écrit il faut chercher dans le dossier courant.
- ** 1 = rien n'est écrit il faut chercher dans les binaires.
- ** 2 = le début est écrit, il faut chercher dans le dossier ou compléter le PATH.
- ** 3 = le début est écrit il faut chercher dans les binanires.
+ ** Get new autocomp mode.
+ ** 0 = Nothing's print, have to look in curent repository.
+ ** 1 = Nothing's print, have to look in binary list.
+ ** 2 = already print, haveve to go forward or update path.
+ ** 3 = already print, still have to compare in binary.
  */
 static int		get_mode(int len, char *str, t_stream *stream)
 {
@@ -49,20 +35,6 @@ static int		get_mode(int len, char *str, t_stream *stream)
 	if (!len)
 		return (!co ? 1 : 0);
 	return (!co ? 3 : 2);
-}
-/*
- ** Permet de définir COMP_BEGIN (moyennant intervention de ft_strsub) qui
- ** représente le début de la chaîne à comparer. COMP_BEGIN est modifié dans
- ** build_list.c dans le cas où on chercher à compléter un chemin.
- */
-static char		*get_begin(int i, char *str, size_t *len)
-{
-	while (i >= 0 && !ft_is_separator(str[i]))
-	{
-		i -= 1;
-		*len += 1;
-	}
-	return (str + i + 1);
 }
 /*
 ** Détermine le comportement dans l'état 0. Création de la liste.

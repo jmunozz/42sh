@@ -6,18 +6,11 @@
 /*   By: jmunoz <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/06 16:16:50 by jmunoz            #+#    #+#             */
-/*   Updated: 2016/10/07 16:19:19 by jmunoz           ###   ########.fr       */
+/*   Updated: 2016/11/18 13:11:01 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/autocomp.h"
-/*
-** Put syntax_color_off at ON.
-*/
-void		ft_syntax_color(t_stream *stream)
-{
-	stream->config->syntax_color_off ^= 1;
-}
+#include "minishell.h"
 /*
 ** Récupère la ligne de l'env correspondante à *str.
 */
