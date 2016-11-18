@@ -90,7 +90,7 @@ static int		ft_chrmatch(t_stream *stream)
 			return (i);
 		i++;
 	}
-	if (ft_isprint(stream->buf[0]))
+	if (ft_isprint(stream->buf[0]) || ft_isspace(stream->buf[0]))
 		return (-1);
 	return (-2);
 }

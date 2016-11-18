@@ -50,6 +50,7 @@ typedef struct	s_stream
 	size_t		pos;
 	size_t		col;
 	size_t		row;
+	size_t		cur_col;
 	size_t		autocomp_state;
 	t_config	*config;
 	t_comp		comp;
@@ -143,5 +144,10 @@ void			ft_checknewline(t_stream *stream);
 **syntax_color.c
 */
 void			ft_syntax_color(t_stream *stream);
+
+/*
+** cursor.c
+*/
+size_t			ft_get_cur_col(char *cmd, size_t pos,  t_stream *stream);
 
 #endif

@@ -60,6 +60,7 @@ scan_input/arrowlr.c \
 scan_input/arrowud.c \
 scan_input/checknewline.c \
 scan_input/chrparse.c \
+scan_input/cursor.c \
 scan_input/deletion.c \
 scan_input/prompt.c \
 scan_input/quotecheck.c \
