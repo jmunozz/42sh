@@ -6,13 +6,14 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:14:44 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 14:14:45 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 10:12:55 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INPUT_SCAN_H
 # define INPUT_SCAN_H
 
+# define SFD stream->fd
 # define TUP "\x1b[A"
 # define TDO "\x1b[B"
 # define TLE "\x1b[D"

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 12:56:00 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 13:07:16 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 10:25:40 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*ft_get_signalerr(int signum, char *err)
 	else if (signum == SIGTERM)
 		err = ERR_TERM;
 	else if (signum == SIGSTKFLT)
-		err = ERR_TERM;
+		err = ERR_STKFLT;
 	else if (signum == SIGXCPU)
 		err = ERR_XCPU;
 	else if (signum == SIGXFSZ)

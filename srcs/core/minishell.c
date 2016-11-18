@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 14:17:37 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 11:40:37 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,13 @@ void		ft_minishell(t_config *config)
 	fd = 1;
 	if ((ft_signal(SIGNAL_SET
 		&& ft_error(SHNAME, "unable to set signal", "I quit", 1 | SERROR)))
-		|| (!isatty(1)
-		&& ft_error(SHNAME, "unable to scan command from a filedescriptor",
+		|| (!isatty(1) && !(fd = 0) && !isatty(0)
+		&& ft_error(SHNAME, "unable write and read from the same fd",
 		"I quit", 1 | SERROR)))
 		ft_shell_exit(config);
 	config->shell_state = SCANNING_COMMAND;
 	while (1)
-		if ((config->command = ft_streamscan(config, ft_save_stream(NULL),
-			fd)))
+		if ((config->command = ft_streamscan(config, ft_save_stream(NULL), fd)))
 		{
 			ft_run_command(config);
 			if (config->shell_state != RUNNING_COMMAND)

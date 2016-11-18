@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 13:32:26 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 10:20:59 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ void			ft_gomatch(t_stream *stream, unsigned int go)
 int				ft_putcharint(int i)
 {
 	char			c;
+	t_stream		*stream;
 
+	stream = ft_save_stream(NULL);
 	c = i;
-	ft_putchar(c);
+	ft_putchar_fd(c, SFD);
 	return (c);
 }
 
@@ -38,17 +40,17 @@ void			ft_tputs(t_stream *stream)
 	if (stream->config->term_state)
 		tputs(tgetstr(stream->tput, NULL), stream->fd, &ft_putcharint);
 	else if (stream->tput[0] == 'u')
-		ft_putstr_fd(TUP, stream->fd);
+		ft_putstr_fd(TUP, SFD);
 	else if (stream->tput[0] == 'l')
-		ft_putstr_fd(TLE, stream->fd);
+		ft_putstr_fd(TLE, SFD);
 	else if (stream->tput[0] == 'n')
-		ft_putstr_fd(TND, stream->fd);
+		ft_putstr_fd(TND, SFD);
 	else if (stream->tput[0] == 'c')
-		ft_putstr_fd(TCD, stream->fd);
+		ft_putstr_fd(TCD, SFD);
 	else if (stream->tput[0] == 'd' && stream->tput[1] == 'o')
-		ft_putstr_fd(TDO, stream->fd);
+		ft_putstr_fd(TDO, SFD);
 	else
-		ft_putstr_fd(TDL, stream->fd);
+		ft_putstr_fd(TDL, SFD);
 }
 
 void			ft_mvleft(t_stream *stream)

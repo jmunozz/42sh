@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:44:56 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 13:46:12 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 10:23:19 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void			ft_secure_prompt(t_stream *stream)
 	ft_prompt(stream->config);
 	if (!((stream->pos + stream->config->prompt_len) % stream->col))
 	{
-		ft_putstr(" ");
+		ft_putstr_fd(" ", SFD);
 		stream->tput = "le";
 		ft_tputs(stream);
 	}
@@ -38,7 +38,7 @@ void			ft_prompt_reset(t_stream *stream)
 	size_t			col;
 	size_t			lin;
 
-	ioctl(stream->fd, TIOCGWINSZ, &w);
+	ioctl(SFD, TIOCGWINSZ, &w);
 	col = w.ws_col;
 	stream->row = w.ws_row;
 	if (stream->col)
