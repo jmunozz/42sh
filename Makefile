@@ -65,6 +65,7 @@ scan_input/streamscan.c \
 scan_input/termcaps.c \
 scan_input/underline_mess.c \
 scan_input/winsize.c \
+scan_input/cursor.c \
 
 ifeq ($(OS), Linux)
 	FLAGS += -D LINUX

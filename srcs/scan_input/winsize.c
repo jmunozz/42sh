@@ -55,6 +55,7 @@ void			ft_prompt_reset(t_stream *stream)
 		ft_tputs(stream);
 	}
 	stream->col = col;
+	stream->cur_col = stream->config->prompt_len % stream->col;
 	ft_secure_prompt(stream);
 }
 

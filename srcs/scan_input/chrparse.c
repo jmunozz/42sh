@@ -40,8 +40,6 @@ void			ft_flush(t_stream *stream)
 
 	pos = stream->pos;
 	ft_flushend(stream);
-	//if (COMP_STATE)
-		//ft_comp_print(stream);
 	while (stream->pos != pos)
 		ft_mvleft(stream);
 }
@@ -94,7 +92,7 @@ static int		ft_chrmatch(t_stream *stream)
 			return (i);
 		i++;
 	}
-	if (ft_isprint(stream->buf[0]))
+	if (ft_isprint(stream->buf[0]) || ft_isspace(stream->buf[0]))
 		return (-1);
 	return (-2);
 }

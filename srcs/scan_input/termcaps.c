@@ -58,19 +58,16 @@ void			ft_mvleft(t_stream *stream)
 	i = 0;
 	if (stream->pos)
 	{
-		if (stream->command[stream->pos - 1] != '\n'
-			&& (stream->config->prompt_len + stream->pos) % stream->col)
-		{
-			stream->tput = "le";
-			ft_tputs(stream);
-		}
+	if (stream->command[stream->pos - 1] != '\n'
+	&& (stream->cur_col = (stream->config->prompt_len + stream->pos) % stream->col))
+	//if (stream->command[stream->pos - 1] != '\n' && (stream->cur_col = ft_get_cur_col(stream->command, stream->pos, stream)))
+			ft_repeat_termcaps(1, "le", stream);
 		else
 		{
 			stream->tput = "nd";
 			while (++i <= stream->col)
 				ft_tputs(stream);
-			stream->tput = "up";
-			ft_tputs(stream);
+			ft_repeat_termcaps(1, "up", stream);
 		}
 		stream->pos--;
 		if (i)
@@ -86,10 +83,7 @@ void			ft_mvright(t_stream *stream)
 	{
 		if (((stream->config->prompt_len + stream->pos) % stream->col)
 			!= stream->col - 1 && stream->command[stream->pos] != '\n')
-		{
-			stream->tput = "nd";
-			ft_tputs(stream);
-		}
+			ft_repeat_termcaps(1, "nd", stream);
 		else
 		{
 			i = 0;
