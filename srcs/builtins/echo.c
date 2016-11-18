@@ -6,7 +6,7 @@
 /*   By: rbaran <rbaran@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 13:33:52 by rbaran            #+#    #+#             */
-/*   Updated: 2016/11/16 13:50:26 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/18 14:13:30 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	ft_parseparams(char **argv, int *param)
 	return (i);
 }
 
-void	ft_echo(char **argv)
+void		ft_echo(char **argv)
 {
 	int	i;
 	int	param;

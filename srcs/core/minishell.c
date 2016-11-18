@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 12:25:43 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:14:27 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ void		ft_print_list(t_list *elem)
 	}
 }
 
+/*
+** To print list before parsing :
+** ft_lstiter(config->chimera, ft_print_list);
+*/
+
 void		ft_run_command(t_config *config)
 {
 	config->shell_state = RUNNING_COMMAND;
@@ -57,7 +62,6 @@ void		ft_run_command(t_config *config)
 			ft_freelist(&config->chimera);
 		else
 		{
-//			ft_lstiter(config->chimera, ft_print_list);
 			ft_parse(config);
 		}
 	}

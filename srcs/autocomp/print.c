@@ -6,15 +6,17 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/18 12:26:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 12:37:38 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 13:57:45 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomp.h"
+
 /*
 ** print elem in appropriate padding.  If data_size = 1,
 ** Print element in video inverted
 */
+
 void		ft_print_elem(t_list *list, t_stream *stream)
 {
 	if (!stream->config->syntax_color_off)
@@ -43,9 +45,11 @@ void		ft_print_elem(t_list *list, t_stream *stream)
 	if (!stream->config->syntax_color_off)
 		ft_putstr_fd(ANSI_COLOR_RESET, SFD);
 }
+
 /*
 ** Print a line each elem one after another
 */
+
 void		ft_autocomp_print_line(t_list *list, size_t elem, t_stream *stream)
 {
 	size_t	new_elem;
@@ -63,9 +67,11 @@ void		ft_autocomp_print_line(t_list *list, size_t elem, t_stream *stream)
 		ft_autocomp_print_line(list, new_elem, stream);
 	}
 }
+
 /*
 ** Print a line and make sure to return carriage before continuing.
 */
+
 void		ft_autocomp_print_grid(size_t start, size_t end, t_stream *stream)
 {
 	size_t	j;
@@ -89,9 +95,11 @@ void		ft_autocomp_print_grid(size_t start, size_t end, t_stream *stream)
 		start++;
 	}
 }
+
 /*
- ** Print only printable part and handle vertical scrolling.
- */
+** Print only printable part and handle vertical scrolling.
+*/
+
 void		ft_autocomp_scroll(t_stream *stream)
 {
 	static int		start = 0;
@@ -116,10 +124,12 @@ void		ft_autocomp_scroll(t_stream *stream)
 	ft_repeat_termcaps((end - start + 1), "up", stream);
 	ft_autocomp_underline(stream, 'U');
 }
+
 /*
- ** If oversize, return carriage for prompt.
- ** Else, come back to previous position.
- */
+** If oversize, return carriage for prompt.
+** Else, come back to previous position.
+*/
+
 void		ft_comp_print(t_stream *stream)
 {
 	if (COMP_PAD >= COMP_COL)

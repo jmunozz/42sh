@@ -1,8 +1,22 @@
-#include "../includes/autocomp.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   support.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/18 13:44:31 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/18 14:05:44 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
 /*
- ** Permet d'effacer la liste. Remet COMP_STATE à 0.
- */
-void		ft_end_autocomp(t_stream *stream)
+** Delete list. Set COMP_STATE back to 0.
+*/
+
+void	ft_end_autocomp(t_stream *stream)
 {
 	size_t pos_buf;
 
@@ -14,10 +28,12 @@ void		ft_end_autocomp(t_stream *stream)
 	ft_tputs(stream);
 	ft_gomatch(stream, pos_buf);
 }
+
 /*
- ** Check si la touche pressée interrompt l'autocomp.
- ** Si pas d'interruption retourne 1 sinon 0.
- */
+** Parse key to know if have to exit.
+** True if status is left unchanged.
+*/
+
 int		ft_is_same_autocomp(t_stream *stream)
 {
 	static ssize_t	match[] = {LEF, RIG, UPP, DOW, CHT, SHCHT};
@@ -33,26 +49,30 @@ int		ft_is_same_autocomp(t_stream *stream)
 				is_same = (i == 4) ? 2 : 1;
 		if (!is_same)
 			ft_end_autocomp(stream);
-		else if ((COMP_STATE == 1 || COMP_STATE == 0)  && is_same != 2)
+		else if ((COMP_STATE == 1 || COMP_STATE == 0) && is_same != 2)
 			ft_end_autocomp(stream);
 		else
 			return (1);
 	}
 	return (0);
 }
+
 /*
- ** Réinitialise la liste. Libère tous les éléments de la liste et COMP_BEGIN.
- ** Met tous les éléments statiques de la structure à 0.
- */
+** Free list for exit.
+** Reinitialize struct autocomp.
+*/
+
 void	reset_autocomp(t_stream *stream)
 {
 	ft_lstdel(&(COMP_BEGIN_LIST), ft_list_free_data);
 	ft_freegiveone((void**)&(COMP_BEGIN));
 	bzero(&(stream->comp), sizeof(t_comp));
 }
+
 /*
- ** Execute time fois le termcaps "term".
- */
+** Execute termcaps "term" n time.
+*/
+
 void	ft_repeat_termcaps(size_t time, char *term, t_stream *stream)
 {
 	size_t i;
@@ -62,17 +82,21 @@ void	ft_repeat_termcaps(size_t time, char *term, t_stream *stream)
 	while (i--)
 		ft_tputs(stream);
 }
+
 /*
- ** Check si l'impression de la liste dépasse la taille de l'écran.
- */
+** Compare list size with terminal size.
+*/
+
 int		ft_autocomp_is_oversize(t_stream *stream)
 {
 	size_t	command_size;
+	size_t	clen;
 
-	command_size = (stream->config->prompt_len + ft_strlen(stream->command)) % COMP_COL;
+	clen = ft_strlen(stream->command);
+	command_size = (stream->config->prompt_len + clen) % COMP_COL;
 	command_size = (command_size) ?
-		(stream->config->prompt_len + ft_strlen(stream->command)) / COMP_COL + 1 :
-		(stream->config->prompt_len + ft_strlen(stream->command)) / COMP_COL;
+	(stream->config->prompt_len + clen) / COMP_COL + 1 :
+	(stream->config->prompt_len + clen) / COMP_COL;
 	if (COMP_IN_COL > (COMP_DISPLAYABLE = COMP_ROW - command_size))
 		return (1);
 	return (0);

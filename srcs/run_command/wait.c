@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 12:56:00 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 10:25:40 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:16:10 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	ft_handle_pid_return(t_list **process, t_config *config,
 		config->last_exit = WEXITSTATUS(stat_loc);
 	}
 	else if (WIFSIGNALED(stat_loc))
-	{	
+	{
 		if (ft_abord_signal(WTERMSIG(stat_loc), pid, process)
 			&& (config->last_exit = 4))
 		{

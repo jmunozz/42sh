@@ -6,22 +6,26 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/15 13:14:58 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/18 14:00:33 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/autocomp.h"
+#include "minishell.h"
+
 /*
-** Fixe le nouveau COMP_CURRENT pour flèche gauche.
+** Set COMP_CURRENT for left arrow.
 */
+
 void		ft_comp_get_left(t_stream *stream)
 {
 	if (COMP_CURRENT >= COMP_IN_COL)
 		COMP_CURRENT -= COMP_IN_COL;
 }
+
 /*
-** Fixe le nouveau COMP_CURRENT pour flèche droite.
+** Set COMP_CURRENT for right arrow.
 */
+
 void		ft_comp_get_right(t_stream *stream)
 {
 	size_t	min;
@@ -34,9 +38,11 @@ void		ft_comp_get_right(t_stream *stream)
 	else
 		COMP_CURRENT += COMP_IN_COL;
 }
+
 /*
-** Fixe le nouveau COMP_CURRENT pour flèche du haut.
+** Set COMP_CURRENT for up arrow.
 */
+
 void		ft_comp_get_up(t_stream *stream)
 {
 	if (COMP_CURRENT == 0)
@@ -44,9 +50,11 @@ void		ft_comp_get_up(t_stream *stream)
 	else
 		COMP_CURRENT -= 1;
 }
+
 /*
-** Fixe le nouveau COMP_CURRENT pour flèche du bas.
+** Set COMP_CURRENT for down arrow.
 */
+
 void		ft_comp_get_down(t_stream *stream)
 {
 	if (COMP_CURRENT == COMP_SIZE_LIST - 1)
@@ -54,9 +62,11 @@ void		ft_comp_get_down(t_stream *stream)
 	else
 		COMP_CURRENT += 1;
 }
+
 /*
-** Sélectionne ou désélectionne l'élément numéroté.
+** Select or deselect an elem.
 */
+
 void		ft_comp_select_current(size_t current, t_stream *stream, char mode)
 {
 	t_list	*list;
@@ -70,8 +80,8 @@ void		ft_comp_select_current(size_t current, t_stream *stream, char mode)
 	{
 		bzero(COMP_BUF, 256);
 		ft_strcpy(COMP_BUF, &(((char *)list->data)[ft_strlen(COMP_BEGIN)]));
-		list->data_size |= 1; // met le dernier bit à 1.
+		list->data_size |= 1;
 	}
 	else
-		list->data_size  ^= 1; // si le dernier bit est à 1, le met à 0.
+		list->data_size ^= 1;
 }

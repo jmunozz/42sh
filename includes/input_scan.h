@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:14:44 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 13:17:25 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:22:49 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,6 @@ void			ft_checknewline(t_stream *stream);
 /*
 **syntax_color.c
 */
-void	ft_syntax_color(t_stream *stream);
+void			ft_syntax_color(t_stream *stream);
 
 #endif

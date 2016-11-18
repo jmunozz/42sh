@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 11:59:47 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:20:08 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void			ft_flush(t_stream *stream)
 
 	pos = stream->pos;
 	ft_flushend(stream);
-	//if (COMP_STATE)
-		//ft_comp_print(stream);
 	while (stream->pos != pos)
 		ft_mvleft(stream);
 }
@@ -86,10 +84,8 @@ static int		ft_chrmatch(t_stream *stream)
 	int					i;
 
 	i = 0;
-//	printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
 	while (match[i])
 	{
-//	printf("\nmatch = %lx\n", match[i]);
 		if (((ssize_t *)(stream->buf))[0] == match[i])
 			return (i);
 		i++;
@@ -99,19 +95,14 @@ static int		ft_chrmatch(t_stream *stream)
 	return (-2);
 }
 
-/*
-** Lance la fonction appropriée en fonction de la touche pressée.
-*/
-
 int				ft_chrparse(t_stream *stream)
 {
 	int					match;
 	static void			(*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp,
 			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
 			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
-			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend, &ft_syntax_color};
-	//ceci est un tableau de fonctions prenant toutes t_stream en parametre.
-
+			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend,
+			&ft_syntax_color};
 
 	if (COMP_STATE == 2 && ((ssize_t*)(stream->buf))[0] == CLF)
 		ft_end_autocomp(stream);

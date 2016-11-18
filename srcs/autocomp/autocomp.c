@@ -6,19 +6,20 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:29 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 13:18:43 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:12:01 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
- ** Get new autocomp mode.
- ** 0 = Nothing's print, have to look in curent repository.
- ** 1 = Nothing's print, have to look in binary list.
- ** 2 = already print, haveve to go forward or update path.
- ** 3 = already print, still have to compare in binary.
- */
+** Get new autocomp mode.
+** 0 = Nothing's print, have to look in curent repository.
+** 1 = Nothing's print, have to look in binary list.
+** 2 = already print, haveve to go forward or update path.
+** 3 = already print, still have to compare in binary.
+*/
+
 static int		get_mode(int len, char *str, t_stream *stream)
 {
 	int		i;
@@ -36,9 +37,11 @@ static int		get_mode(int len, char *str, t_stream *stream)
 		return (!co ? 1 : 0);
 	return (!co ? 3 : 2);
 }
+
 /*
-** Détermine le comportement dans l'état 0. Création de la liste.
+** In state zero, list is created
 */
+
 static void		ft_state_zero(t_stream *stream)
 {
 	size_t		len;
@@ -56,16 +59,16 @@ static void		ft_state_zero(t_stream *stream)
 		mode = get_mode(len, stream->command, stream);
 		build_list(COMP_BEGIN, mode, stream);
 		if (COMP_PAD > COMP_ROW)
-			return;
+			return ;
 		if (COMP_BEGIN_LIST)
 			COMP_STATE = 1;
-
 	}
 }
+
 /*
-** Détermine le comportement dans l'état 1 :
-** Surbrillance de l'élément 0; Modification en conséquence de la commande.
+** In state 1 elem 0 is video inverted and command is completed with this elem.
 */
+
 static void		ft_state_one(t_stream *stream)
 {
 	COMP_CURRENT = 0;
@@ -74,11 +77,11 @@ static void		ft_state_one(t_stream *stream)
 	COMP_POS_COMMAND = stream->pos;
 	ft_autocomp_append(stream);
 }
+
 /*
- ** Détermine le comportement dans l'état 2:
- ** Désélection de l'élément précédent. Surbrillance de l'élément en fonction de la flèche pressée;
- ** Modification en conséquence de la commande.
- */
+** In state 2 the selected element is swap and the command updated.
+*/
+
 static void		ft_state_two(t_stream *stream)
 {
 	size_t current_tmp;
@@ -101,15 +104,15 @@ static void		ft_state_two(t_stream *stream)
 	ft_comp_select_current(COMP_CURRENT, stream, 'S');
 	ft_autocomp_append(stream);
 }
-/*
- ** Fonction principale d'exécution de l'autocomp.
- ** Lance les différents comportements en fonction de COMP_STATE.
- ** Si COMP_SIZE_LIST = 1, modifie directement la ligne de commande.
- ** Sinon imprime la liste en colonnes.
- */
-void		ft_autocomp(t_stream *stream)
-{
 
+/*
+** Main fonction for autocompletion.
+** If COMP_SIZE_LIST = 1, the command line is updated.
+** Else collumn are printed
+*/
+
+void			ft_autocomp(t_stream *stream)
+{
 	if (COMP_STATE == 1)
 		ft_state_one(stream);
 	else if (COMP_STATE == 2)
@@ -125,4 +128,3 @@ void		ft_autocomp(t_stream *stream)
 	else if (COMP_BEGIN_LIST)
 		ft_comp_print(stream);
 }
-

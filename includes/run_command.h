@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:12:46 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 14:13:46 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:22:22 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ void			ft_handle_multiplefd(char **others_fd);
 */
 void			ft_wait_sentence(t_list *job, t_config *config);
 int				ft_build_sentence(t_list *begin, t_config *config);
-//void			ft_printsignal(int signum, pid_t pid, t_list *process);
 /*
 **heredoc.c
 */
 int				ft_quote(t_list *begin, t_config *config);
 int				ft_herringbone(t_list *begin, t_config *config);
+
 #endif

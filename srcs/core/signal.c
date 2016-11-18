@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 08:55:20 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 08:55:23 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:14:39 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	ft_scriptgnal_handle(int i)
 {
 	t_stream	*stream;
 
-dprintf(1, "on quitte proprement");
+	dprintf(1, "on quitte proprement");
 	(void)i;
 	stream = ft_save_stream(NULL);
 	ft_shell_exit(stream->config);
@@ -78,8 +78,8 @@ int			ft_signal(int mode)
 	else if (mode == SIGNAL_SCRIPT)
 	{
 		if (SIG_ERR == signal(SIGINT, &ft_scriptgnal_handle)
-			&& ft_error(SHNAME,
-			"unable to set signal to stop without leeks", NULL, 1))
+				&& ft_error(SHNAME,
+					"unable to set signal to stop without leeks", NULL, 1))
 			ft_status(1);
 	}
 	return (0);
