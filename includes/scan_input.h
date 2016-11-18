@@ -6,12 +6,12 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:14:44 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 14:22:49 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 15:25:13 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INPUT_SCAN_H
-# define INPUT_SCAN_H
+#ifndef SCAN_INPUT_H
+# define SCAN_INPUT_H
 
 # define SFD stream->fd
 # define TUP "\x1b[A"
