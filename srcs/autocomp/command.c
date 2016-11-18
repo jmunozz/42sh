@@ -45,7 +45,7 @@ void		ft_autocomp_delete(t_stream *stream)
 			return;
 		ft_strncpy(stream->command, kill, COMP_POS_COMMAND);
 		ft_strcpy(stream->command + COMP_POS_COMMAND, kill + COMP_POS_COMMAND + len);
-		ft_putstr(stream->command);
+		ft_putstr_fd(stream->command, SFD);
 		stream->pos += (ft_strlen(stream->command) % stream->col);
 		ft_freegiveone((void**)&kill);
 	}

@@ -6,7 +6,7 @@
 /*   By: rbaran <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/13 16:23:59 by rbaran            #+#    #+#             */
-/*   Updated: 2016/11/14 13:27:02 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 12:01:38 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	ft_flushsearch(t_stream *stream)
 		if ((index = ft_strstri(stream->command, stream->search)) != -1)
 		{
 			size = ft_strlen(stream->search);
-			write(1, stream->command, index);
-			ft_putstr("\033[4m");
-			ft_putstr(stream->search);
-			ft_putstr("\033[00m");
-			ft_putstr(stream->command + index + size);
+			write(SFD, stream->command, index);
+			ft_putstr_fd("\033[4m", SFD);
+			ft_putstr_fd(stream->search, SFD);
+			ft_putstr_fd("\033[00m", SFD);
+			ft_putstr_fd(stream->command + index + size, SFD);
 		}
 		else
-			ft_putstr(stream->command);
+			ft_putstr_fd(stream->command, SFD);
 		stream->pos = ft_strlen(stream->command);
 	}
 }
