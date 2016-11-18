@@ -40,6 +40,7 @@ history/history_search_up.c \
 history/scanchr.c \
 history/searchengine.c \
 history/sprompt.c \
+run_command/build_sentence.c \
 run_command/env_var_replace.c \
 run_command/exec.c \
 run_command/files.c \

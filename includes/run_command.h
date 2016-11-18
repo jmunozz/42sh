@@ -19,7 +19,10 @@
 ** POLYMORPHIC CHAINLIST
 */
 # define OP 1
-# define PIPE 2
+/*
+** DEJA DEFINI DANS SIGNAUX
+** # define PIPE 13
+*/
 # define HEREDOC 3
 # define SSHELL 4
 # define PROS 100
@@ -34,11 +37,6 @@
 # define BNDATA ((char**)begin->next->data)[0]
 # define BOTHER_FD ((t_pipe*)begin->next->data)->others_fd
 # define RDEFAULT (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
-
-/*
-**Signal string errors defines (used for ft_printsignal)
-*/
-# define ERR_SEGV "Segmentation fault"
 
 typedef struct	s_pipe
 {
