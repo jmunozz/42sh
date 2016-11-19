@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:47 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/17 17:51:20 by maxpetit         ###   ########.fr       */
+/*   Updated: 2016/11/18 14:14:27 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ void		ft_print_list(t_list *elem)
 	}
 }
 
+/*
+** To print list before parsing :
+** ft_lstiter(config->chimera, ft_print_list);
+*/
+
 void		ft_run_command(t_config *config)
 {
 	config->shell_state = RUNNING_COMMAND;
@@ -57,14 +62,14 @@ void		ft_run_command(t_config *config)
 			ft_freelist(&config->chimera);
 		else
 		{
-//			ft_lstiter(config->chimera, ft_print_list);
 			ft_parse(config);
 		}
 	}
 	ft_freegiveone((void**)&config->command);
 }
 
-/*If an interuption signal is caught, frees config structure and exits.
+/*
+**If an interuption signal is caught, frees config structure and exits.
 **Memorizes adress of stream in a static variable.
 */
 
@@ -75,14 +80,13 @@ void		ft_minishell(t_config *config)
 	fd = 1;
 	if ((ft_signal(SIGNAL_SET
 		&& ft_error(SHNAME, "unable to set signal", "I quit", 1 | SERROR)))
-		|| (!isatty(1)
-		&& ft_error(SHNAME, "unable to scan command from a filedescriptor",
+		|| (!isatty(1) && !(fd = 0) && !isatty(0)
+		&& ft_error(SHNAME, "unable write and read from the same fd",
 		"I quit", 1 | SERROR)))
 		ft_shell_exit(config);
 	config->shell_state = SCANNING_COMMAND;
 	while (1)
-		if ((config->command = ft_streamscan(config, ft_save_stream(NULL),
-			fd)))
+		if ((config->command = ft_streamscan(config, ft_save_stream(NULL), fd)))
 		{
 			ft_run_command(config);
 			if (config->shell_state != RUNNING_COMMAND)

@@ -1,30 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   auto_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/18 16:37:59 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 10:15:19 by tboos            ###   ########.fr       */
+/*   Created: 2016/11/18 13:14:57 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/18 13:56:07 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		ft_prompt(t_config *config)
+int		ft_is_separator(char c)
 {
-	t_stream	*stream;
+	if (c == ';')
+		return (1);
+	if (c == '"')
+		return (1);
+	if (c == '&')
+		return (1);
+	if (c == '|')
+		return (1);
+	if (ft_isspace(c))
+		return (1);
+	return (0);
+}
 
-	stream = ft_save_stream(NULL);
-	if (!config->heredoc)
+/*
+** Define COMP_BEGIN with strsub. It represent the needle to look for.
+*/
+
+char	*get_begin(int i, char *str, size_t *len)
+{
+	while (i >= 0 && !ft_is_separator(str[i]))
 	{
-		if (!config->last_exit)
-			ft_putstr_fd("\x1b[34m-> \x1b[1;32m", SFD);
-		else
-			ft_putstr_fd("\x1b[31m-> \x1b[1;32m", SFD);
+		i -= 1;
+		*len += 1;
 	}
-	ft_putstr_fd(config->pwd_subrep, SFD);
-	if (!config->heredoc)
-		ft_putstr_fd(" : \x1b[0m", SFD);
+	return (str + i + 1);
 }

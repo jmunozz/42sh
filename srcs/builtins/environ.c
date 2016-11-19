@@ -85,7 +85,7 @@ void	ft_unsetenv(char **argv, t_config *config)
 	{
 		ft_strncmptabdel(config->env, argv[i]);
 		if (config->shell_state != RUNNING_SON
-			&& !ft_strncmp("PATH", argv[i], 4) && strlen(argv[i]) == 4)
+			&& !ft_strncmp("PATH", argv[i], 4) && ft_strlen(argv[i]) == 4)
 			ft_pathtohash(config);
 	}
 }

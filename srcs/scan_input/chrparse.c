@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/17 18:38:44 by maxpetit         ###   ########.fr       */
+/*   Updated: 2016/11/18 14:20:08 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void			ft_flushend(t_stream *stream)
 	else if (stream->command && stream->command[0])
 	{
 		size = ft_strlen(stream->command + stream->pos);
-		ft_putstr(stream->command + stream->pos);
+		ft_putstr_fd(stream->command + stream->pos, SFD);
 		stream->pos += size;
 	}
 	if (!((stream->pos + stream->config->prompt_len) % stream->col))
 	{
-		ft_putstr(" ");
+		ft_putstr_fd(" ", SFD);
 		stream->tput = "le";
 		ft_tputs(stream);
 	}
@@ -40,8 +40,6 @@ void			ft_flush(t_stream *stream)
 
 	pos = stream->pos;
 	ft_flushend(stream);
-	//if (COMP_STATE)
-		//ft_comp_print(stream);
 	while (stream->pos != pos)
 		ft_mvleft(stream);
 }
@@ -86,15 +84,13 @@ static int		ft_chrmatch(t_stream *stream)
 	int					i;
 
 	i = 0;
-//	printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
 	while (match[i])
 	{
-//	printf("\nmatch = %lx\n", match[i]);
 		if (((ssize_t *)(stream->buf))[0] == match[i])
 			return (i);
 		i++;
 	}
-	if (ft_isprint(stream->buf[0]))
+	if (ft_isprint(stream->buf[0]) || ft_isspace(stream->buf[0]))
 		return (-1);
 	return (-2);
 }
@@ -109,9 +105,8 @@ int				ft_chrparse(t_stream *stream)
 	static void			(*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp,
 			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
 			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
-			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend, &ft_syntax_color};
-	//ceci est un tableau de fonctions prenant toutes t_stream en parametre.
-
+			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend,
+			&ft_syntax_color};
 
 	if (COMP_STATE == 2 && ((ssize_t*)(stream->buf))[0] == CLF)
 		ft_end_autocomp(stream);

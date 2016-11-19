@@ -1,8 +1,22 @@
-#include "../../includes/autocomp.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/18 13:34:56 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/18 14:01:02 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
 /*
- ** Mode = 'D' -> positionne le curseur sur le début de la ligne en dessous de la commande.
- ** Mode = 'U' -> remet le curseur à sa position initiale.
- */
+** Mode = 'D' -> Set cursor on next line.
+** Mode = 'U' -> Set cursor back to initial position.
+*/
+
 void		ft_autocomp_underline(t_stream *stream, char mode)
 {
 	size_t				i;
@@ -11,25 +25,27 @@ void		ft_autocomp_underline(t_stream *stream, char mode)
 	if (mode == 'D')
 	{
 		pos_buf = stream->pos;
-		ft_goend(stream); //on va au bout de la ligne de commande.
-		stream->tput = "do"; //on saute une ligne.
+		ft_goend(stream);
+		stream->tput = "do";
 		ft_tputs(stream);
-		ft_repeat_termcaps(stream->col, "le", stream); //retourne au début de la ligne.
-		stream->tput = "cd"; //clear line cursor and all lines below.
+		ft_repeat_termcaps(stream->col, "le", stream);
+		stream->tput = "cd";
 		ft_tputs(stream);
 	}
 	else
 	{
 		i = (stream->command) ? stream->config->prompt_len +
-			ft_strlen(stream->command) : stream->config->prompt_len; // si pas de comande i = prompt
-		i = i % stream->col; // retranche ce qui est du à la présence de plusieurs lignes.
-		ft_repeat_termcaps(i, "nd", stream); // on se retrouve sur le dernier caractère de la commande
-		ft_gomatch(stream, pos_buf); //on remonte jusqu'au caractère enregistré.
+			ft_strlen(stream->command) : stream->config->prompt_len;
+		i = i % stream->col;
+		ft_repeat_termcaps(i, "nd", stream);
+		ft_gomatch(stream, pos_buf);
 	}
 }
+
 /*
-** Remet la ligne de commande à l'état qui précédait l'appel à ft_autocomp_append.
+** Put command back to initial state before autocomp call.
 */
+
 void		ft_autocomp_delete(t_stream *stream)
 {
 	char	*kill;
@@ -42,18 +58,21 @@ void		ft_autocomp_delete(t_stream *stream)
 	if ((kill = stream->command))
 	{
 		if (!(stream->command = ft_strnew(ft_strlen(stream->command) - len)))
-			return;
+			return ;
 		ft_strncpy(stream->command, kill, COMP_POS_COMMAND);
-		ft_strcpy(stream->command + COMP_POS_COMMAND, kill + COMP_POS_COMMAND + len);
-		ft_putstr(stream->command);
+		ft_strcpy(stream->command + COMP_POS_COMMAND,
+				kill + COMP_POS_COMMAND + len);
+		ft_putstr_fd(stream->command, SFD);
 		stream->pos += (ft_strlen(stream->command) % stream->col);
 		ft_freegiveone((void**)&kill);
 	}
 	ft_gomatch(stream, COMP_POS_COMMAND);
 }
+
 /*
-** Version de append qui diffère en ce qu'elle fait appel à un buffer particulier COMP_BUF.
+** Modified version of append calling specific buffer name COMP_BUF.
 */
+
 void		ft_autocomp_append(t_stream *stream)
 {
 	size_t				pos;

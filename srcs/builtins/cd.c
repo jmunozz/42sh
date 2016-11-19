@@ -30,7 +30,7 @@ void		ft_update_pwd(t_config *config)
 	else
 	{
 		if (!(pwd = ft_strtabfindstart(config->env, "PWD="))
-			|| strcmp(buf, pwd + 4))
+			|| ft_strcmp(buf, pwd + 4))
 			ft_setenv("PWD", buf, config);
 		if (!(pwd = ft_strdup(buf)))
 			ft_pwd_error(config);

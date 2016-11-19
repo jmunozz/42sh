@@ -6,13 +6,14 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:14:44 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 14:14:45 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 15:25:13 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INPUT_SCAN_H
-# define INPUT_SCAN_H
+#ifndef SCAN_INPUT_H
+# define SCAN_INPUT_H
 
+# define SFD stream->fd
 # define TUP "\x1b[A"
 # define TDO "\x1b[B"
 # define TLE "\x1b[D"
@@ -49,6 +50,7 @@ typedef struct	s_stream
 	size_t		pos;
 	size_t		col;
 	size_t		row;
+	size_t		cur_col;
 	size_t		autocomp_state;
 	t_config	*config;
 	t_comp		comp;
@@ -160,5 +162,14 @@ void			ft_secure_prompt(t_stream *stream);
 **checknewline.c
 */
 void			ft_checknewline(t_stream *stream);
+/*
+**syntax_color.c
+*/
+void			ft_syntax_color(t_stream *stream);
+
+/*
+** cursor.c
+*/
+size_t			ft_get_cur_col(char *cmd, size_t pos,  t_stream *stream);
 
 #endif
