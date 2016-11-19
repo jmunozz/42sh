@@ -66,7 +66,7 @@ void	reset_autocomp(t_stream *stream)
 {
 	ft_lstdel(&(COMP_BEGIN_LIST), ft_list_free_data);
 	ft_freegiveone((void**)&(COMP_BEGIN));
-	bzero(&(stream->comp), sizeof(t_comp));
+	ft_bzero(&(stream->comp), sizeof(t_comp));
 }
 
 /*

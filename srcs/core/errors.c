@@ -51,13 +51,13 @@ int			ft_error(char *name, char *other, char *mess, int mode)
 		ft_putchar_fd('\n', 2);
 	if (name)
 	{
-		if (strcmp(name, SHNAME))
+		if (ft_strcmp(name, SHNAME))
 			ft_putstr_fd(name, 2);
 		else
 			ft_putstr_fd(ft_shname_or_file(NULL), 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (ft_script_line(0) && !strcmp(SHNAME, name))
+	if (ft_script_line(0) && !ft_strcmp(SHNAME, name))
 		FT_PUTSTRFD("ligne ", ft_st_itoa((int)ft_script_line(0)), ": ", 2);
 	if (other)
 	{

@@ -78,7 +78,7 @@ void		ft_comp_select_current(size_t current, t_stream *stream, char mode)
 		list = list->next;
 	if (mode == 'S')
 	{
-		bzero(COMP_BUF, 256);
+		ft_bzero(COMP_BUF, 256);
 		ft_strcpy(COMP_BUF, &(((char *)list->data)[ft_strlen(COMP_BEGIN)]));
 		list->data_size |= 1;
 	}
