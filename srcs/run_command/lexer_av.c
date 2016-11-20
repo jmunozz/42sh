@@ -57,7 +57,8 @@ static char	**ft_strdodgesplit(char *s)
 	while (*s)
 	{
 		i = 0;
-		if (ft_isspace(*s) && *(s - 1) && !ft_isspace(*(s - 1)) && !(*s = 0) && ++s)
+		if (ft_isspace(*s) && *(s - 1) && !ft_isspace(*(s - 1))
+			&& !(*s = 0) && ++s)
 			nb++;
 		else if ((*s == '\'' || *s == '\"') && (i = ft_dodge_quote(s, i)))
 			s += i;

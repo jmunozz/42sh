@@ -108,8 +108,8 @@ void		ft_wait_sentence(t_list *job, t_config *config)
 {
 	t_list	*new;
 
-	if (!(config->fg_sentence)
-			|| (!(new = ft_lstnew((void*)config->fg_sentence, SENT))
+	if ((config->fg_sentence)
+			&& (!(new = ft_lstnew((void*)config->fg_sentence, SENT))
 				&& ft_freegiveone((void **)&config->fg_sentence)))
 		ft_error(SHNAME, "parser", "malloc error on process control", CR_ERROR);
 	else if (config->fg_sentence && !(config->fg_sentence = NULL))
