@@ -16,7 +16,7 @@
 **Fills t with any words meets in m.
 */
 
-static char	**sft_tabdup(char **t, char *m, char c, int nb)
+static char	**sft_tabdup(char **t, char *m, int nb)
 {
 	int		i;
 
@@ -31,7 +31,7 @@ static char	**sft_tabdup(char **t, char *m, char c, int nb)
 		else if (nb)
 		{
 			m += ft_strlen(m) + 1;
-			while (*m == c)
+			while (ft_isspace(*m))
 				m++;
 		}
 	}
@@ -43,7 +43,7 @@ static char	**sft_tabdup(char **t, char *m, char c, int nb)
 **words and return malloced table of av.
 */
 
-static char	**ft_strdodgesplit(char *s, char c)
+static char	**ft_strdodgesplit(char *s)
 {
 	char	**t;
 	char	*m;
@@ -52,20 +52,22 @@ static char	**ft_strdodgesplit(char *s, char c)
 
 	m = s;
 	nb = 0;
+	while (*s && ft_isspace(*s))
+		++s;
 	while (*s)
 	{
 		i = 0;
-		if (*s == c && *(s - 1) && *(s - 1) != c && !(*s = 0) && ++s)
+		if (ft_isspace(*s) && *(s - 1) && !ft_isspace(*(s - 1)) && !(*s = 0) && ++s)
 			nb++;
 		else if ((*s == '\'' || *s == '\"') && (i = ft_dodge_quote(s, i)))
 			s += i;
 		else
 			++s;
 	}
-	nb += ((*(s - 1) && *(s - 1) != c) ? 1 : 0);
+	nb += *(s - 1) ? 1 : 0;
 	if (!(t = (char **)ft_memalloc(sizeof(char *) * (nb + 1))))
 		return (NULL);
-	return (sft_tabdup(t, m, c, nb));
+	return (sft_tabdup(t, m, nb));
 }
 
 /*
@@ -93,7 +95,7 @@ t_list		*ft_av_handle(char *cmd, size_t i)
 	c[0] = cmd[i];
 	c[1] = 0;
 	cmd[i] = 0;
-	if ((!cmd || !(t = ft_strdodgesplit(cmd, ' ')))
+	if ((!cmd || !(t = ft_strdodgesplit(cmd)))
 		&& ft_error(SHNAME, PARSE_ERR, c, CR_ERROR))
 		return (NULL);
 	cmd[i] = c[0];
