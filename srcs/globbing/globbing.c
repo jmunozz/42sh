@@ -1,10 +1,21 @@
 #include "../../includes/minishell.h"
-
-int		is_valid(int i, int j, char *glob, char *file);
-void	ft_print_list(t_list *begin);
-int		ft_isalphaa(char c);
-
-int		ft_strlencc(char *str, char c)
+/*
+char	*ft_strnchr(const char *s, int c, size_t size)
+{
+	int i;
+	if (size)
+	{
+		i = 0;
+		while (s[i] && s[i] != (char)c && i < size - 1)
+			i++;
+		if (s[i] == (char)c)
+			return ((char*)&s[i]);
+	}
+	return (NULL);
+}
+*/
+// Besoin de cette version pour que is_valid fonctionne.
+int		ft_strlenc(char *str, char c)
 {
 	int i;
 
@@ -17,159 +28,143 @@ int		ft_strlencc(char *str, char c)
 			return (i);
 		i++;
 	}
-	return (i);
+	return (-1);
 }
 
 
-char	ft_is_wildcard(char	*buff)
+
+int		ft_isalphaa(int c)
 {
-	if (!ft_strcmp(buff, "**"))
-		return (2);
-	if (ft_strchr(buff, '*') || (ft_strchr(buff, '[') && ft_strchr(buff, ']')) ||
-			ft_strchr(buff, '?'))
-		return (1);
-	return (0);
+		if ((c < 'A' || ('Z' < c && c < 'a') || 'z' < c) && c != '.')
+					return (0);
+			return (1);
 }
 
-
-char	*ft_set_recu_path(char *path, char *file, int index)
+int	is_alphabefore(int j, char *file)
 {
-	char	*recu_path;
-	int		size;
-
-	size = ft_strlen(path) + ft_strlen(file) + 1;
-	recu_path = ft_strnew(size);
-	ft_strncpy(recu_path, path, index);
-	ft_strcat(recu_path, file);
-	recu_path[index + ft_strlen(file)] = '/';
-	ft_strcat(recu_path, &path[index]);
-	return (recu_path);
-
-}
-
-char	*ft_set_new_path(char *path, char *file, int index, int size)
-{
-	char	*new_path;
-
-	new_path = ft_strnew(ft_strlen(path) + ft_strlen(file) - size + 1);
-	ft_strncpy(new_path, path, index);
-	ft_strcat(new_path, file);
-	ft_strcat(new_path, &path[index + size]);
-	return(new_path);
-}
-
-void	ft_get_glob(DIR *dir, char *path, char *glob, t_list **begin)
-{
-	char			buff[256];
-	struct dirent	*file;
-	int				end;
-	int				ret;
-
-	printf("A l'ouverture le buff vaut %s et glob %s\n", path, glob);
-	end = ft_strlen(ft_strcpy(buff, path));
-	if (!*glob)
-		ft_list_push_back(begin, ft_lstnew(ft_strdup(buff), 0));
-	if (!dir)
-		return;
-	if (*glob == '/')
+	while (--j >= 0 && !ft_isalphaa(file[j]))
 	{
-		printf("Ajout du /\n");
-		ft_get_glob(dir, ft_strcat(buff, "/"), ++glob, begin);
+		if (file[j] == '*')
+			return (0);
 	}
-	else
+	return (1);
+}
+
+int		brackets(int *i, char *glob, char c)
+{
+	int			min;
+	int			max;
+	int			match;
+
+	match = 0;
+	if (!ft_strchr(&glob[*i], ']'))
+		return (0);
+	while (glob[*i] != ']' && !match)
 	{
-		while ((file = readdir(dir)))
+		if (glob[*i + 1] && glob[*i + 2] && glob[*i + 1] == '-' && glob[*i + 2] != ']')
 		{
-			printf("Le fichier %s a été lu pour glob: %s\n", file->d_name, glob);
-			if (!ft_strcmp(file->d_name, ".") && !ft_strncmp(glob, "**/", 3))
-			{
-				printf("Envoi de la fonction récursive sur %s avec glob %s\n", buff, glob + ft_strlencc(glob, '/'));
-				if (!*buff)
-					if (glob[3])
-						ft_get_glob(opendir("."), buff, (glob + 1 + ft_strlencc(glob, '/')), begin);
-					else
-						ft_get_glob(opendir("."), buff, glob, begin);
-				else
-					if (glob[3])
-						ft_get_glob(opendir(buff), buff, (glob + 1 + ft_strlencc(glob, '/')), begin);
-					else
-						ft_get_glob(opendir(buff), buff, glob, begin);
-				ft_bzero(&buff[end], 255 - end);
-			}
-
-			if (is_valid(0, 0, glob, file->d_name) && ((ft_strcmp(file->d_name, ".")
-							&& ft_strcmp(file->d_name, "..") && (*(file->d_name) != '.' ||
-								(*(file->d_name) == '.' && is_valid(0, 0, ".*", glob))))
-						|| (is_valid(0, 0, ".", glob) && !ft_strcmp(file->d_name, "."))
-						||(is_valid(0, 0, "..", glob) && !ft_strcmp(file->d_name, ".."))))
-			{
-				ft_strcat(buff, file->d_name);
-				if (ft_strncmp(glob, "**/", 3))
-				{
-					printf("Valide, fction relancée sur buff: %s glob: %s\n", buff, glob + ft_strlencc(glob, '/'));
-					ft_get_glob(opendir(buff), buff, (glob + ft_strlencc(glob, '/')), begin);
-				}
-				else
-				{
-					printf("Lancement de la fonction récursive\n");
-					ft_get_glob(opendir(buff), ft_strcat(buff, "/"), glob, begin);
-				}
-				ft_bzero(&buff[end], (255 - end));
-			}
-			printf("ret: %d\n", ret);
+			min = (int)glob[*i] - 1;
+			max = (int)glob[*i + 2];
+			while (++min <= max && !match)
+				if ((int)c == min)
+					match = 1;
+			(*i) += 2;
 		}
+		else if (glob[*i] == c)
+			match = 1;
+		(*i)++;
+	}
+	while (glob[*i] != ']')
+		(*i)++;
+	return (match);
+}
+
+int  is_valid(int i, int j, char *glob, char *file)
+{
+	int test;
+
+	if (file[j] == '\0' || file[j] == '/')
+	{
+		while (glob[i] && glob[i] != '/')
+		{
+			if (glob[i] != '*')
+				return (0);
+			i++;
+		}
+		return (1);
+	}
+	if (i && (glob[i] == '\0' || glob[i] == '/') &&  glob[i - 1] == '*')
+		return (1);
+	else if (glob[i] == '\0' || glob[i] == '/')
+		return ((file[j] == '\0') ? 1 : 0);
+	else if (glob[i] == '?')
+		return(is_valid(++i, ++j, glob, file));
+	else if (i && ft_isalphaa(glob[i]) && !is_alphabefore(i, glob))
+	{
+		printf("on est la");
+		while ((test = ft_strlenc(&file[j], glob[i])) != -1)
+		{
+			printf("on est rela");
+			j += test;
+			if (is_valid(i + 1, ++j, glob, file))
+				return (2);
+		}
+		return (0);
+	}
+	else if (glob[i] == '[')
+	{
+		if (brackets(&i, glob, file[j]))
+			return(is_valid(++i, ++j, glob, file));
+		return (0);
+	}
+	else if (ft_isalphaa(glob[i]))
+	{
+		if (glob[i] == file[j])
+			return(is_valid(++i, ++j, glob, file));
+		return (0);
+	}
+	else if (glob[i] == '*')
+		return (is_valid(++i, j, glob, file));
+	else
+		return (0);
+}
+
+void	ft_print_list(t_list *begin)
+{
+	printf("--Impression de la liste--\n");
+	while (begin)
+	{
+		printf("%s - %zu\n", begin->data, begin->data_size);
+		begin = begin->next;
 	}
 }
 
+/*
 int		main(int ac, char **av)
 {
-	DIR		*stream;
-	int		size;
-	t_list	*begin;
-	char	buff[256];
-
-	ft_bzero(buff, 256);
-	begin = NULL;
+	char		test1[] = "coco";
+	char		test2[] = "cocu";
+	char		test3[] = "cacao";
+	char		test4[] = "..";
+	t_list		*list;
+	t_list		*begin;
+	//ft_list_push_back(&begin, ft_lstnew(test1, 0));
+	//ft_list_push_back(&begin, ft_lstnew(test2, 0));
+	//ft_list_push_back(&begin, ft_lstnew(test3, 0));
+	ft_list_push_back(&begin, ft_lstnew(test4, 0));
+	//ft_print_list(begin);
 	if (ac > 1)
 	{
-		if (!(size = ft_strlenc(av[1], '/')) && !(stream = opendir("/")))
+		list = begin;
+		printf("Execution fonction globbing...\n");
+		while (list)
 		{
-			printf("L'ouverture de la racine a échoué\n");
-			return (0);
+			printf("Liste traitee = %s\n", list->data);
+			list->data_size = (size_t)is_valid(0, 0, av[1], list->data);
+			list = list->next;
 		}
-		else if (!stream)
-		{
-			if (!(stream = opendir(".")))
-			{
-				printf("L'ouvertude du dossier courant  a échoué\n");
-				return (0);
-			}
-		}
-		ft_get_glob(stream, buff, av[1],  &begin);
 		ft_print_list(begin);
 	}
 	return (0);
 }
-
-/*
-   int	main(void)
-   {
-   char test[] = "coco";
-   char	glob[] = "*.";
-   if ((is_valid(0, 0, glob, test)))
-   printf("OK\n");
-   return (0);
-   }
-   */
-/*
-//test de ft_set_recu_path
-int		main(int ac, char **av)
-{
-char	*path;
-if (ac > 3)
-{
-path = ft_set_recu_path(av[1], av[2], atoi(av[3]));
-printf("%s\n", path);
-}
-return (0);
-}*/
+*/
