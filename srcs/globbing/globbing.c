@@ -1,5 +1,5 @@
 #include "../../includes/minishell.h"
-
+/*
 char	*ft_strnchr(const char *s, int c, size_t size)
 {
 	int i;
@@ -14,7 +14,8 @@ char	*ft_strnchr(const char *s, int c, size_t size)
 	}
 	return (NULL);
 }
-
+*/
+// Besoin de cette version pour que is_valid fonctionne.
 int		ft_strlenc(char *str, char c)
 {
 	int i;
@@ -31,9 +32,18 @@ int		ft_strlenc(char *str, char c)
 	return (-1);
 }
 
+
+
+int		ft_isalphaa(int c)
+{
+		if ((c < 'A' || ('Z' < c && c < 'a') || 'z' < c) && c != '.')
+					return (0);
+			return (1);
+}
+
 int	is_alphabefore(int j, char *file)
 {
-	while (--j >= 0 && !ft_isalpha(file[j]))
+	while (--j >= 0 && !ft_isalphaa(file[j]))
 	{
 		if (file[j] == '*')
 			return (0);
@@ -74,10 +84,9 @@ int  is_valid(int i, int j, char *glob, char *file)
 {
 	int test;
 
-	if (file[j] == '\0')
+	if (file[j] == '\0' || file[j] == '/')
 	{
-		printf("fin file\n");
-		while (glob[i])
+		while (glob[i] && glob[i] != '/')
 		{
 			if (glob[i] != '*')
 				return (0);
@@ -85,23 +94,18 @@ int  is_valid(int i, int j, char *glob, char *file)
 		}
 		return (1);
 	}
-	if (i && glob[i] == '\0' &&  glob[i - 1] == '*')
-	{
-		printf("fin glob\n");
+	if (i && (glob[i] == '\0' || glob[i] == '/') &&  glob[i - 1] == '*')
 		return (1);
-	}
-	else if (glob[i] == '\0')
-	{
-		printf("fin glob 2\n");
+	else if (glob[i] == '\0' || glob[i] == '/')
 		return ((file[j] == '\0') ? 1 : 0);
-	}
 	else if (glob[i] == '?')
 		return(is_valid(++i, ++j, glob, file));
-	else if (i && ft_isalpha(glob[i]) && !is_alphabefore(i, glob))
+	else if (i && ft_isalphaa(glob[i]) && !is_alphabefore(i, glob))
 	{
+		printf("on est la");
 		while ((test = ft_strlenc(&file[j], glob[i])) != -1)
 		{
-			printf("%s -- test %d\n", &file[j], test);
+			printf("on est rela");
 			j += test;
 			if (is_valid(i + 1, ++j, glob, file))
 				return (2);
@@ -114,19 +118,14 @@ int  is_valid(int i, int j, char *glob, char *file)
 			return(is_valid(++i, ++j, glob, file));
 		return (0);
 	}
-	else if (ft_isalpha(glob[i]))
+	else if (ft_isalphaa(glob[i]))
 	{
-
-		printf("isalpha\n");
 		if (glob[i] == file[j])
 			return(is_valid(++i, ++j, glob, file));
 		return (0);
 	}
 	else if (glob[i] == '*')
-	{
-		printf("*\n");
 		return (is_valid(++i, j, glob, file));
-	}
 	else
 		return (0);
 }
@@ -136,19 +135,18 @@ void	ft_print_list(t_list *begin)
 	printf("--Impression de la liste--\n");
 	while (begin)
 	{
-		if (begin->data_size > 0)
-			printf("%s - %zu\n", begin->data, begin->data_size);
+		printf("%s - %zu\n", begin->data, begin->data_size);
 		begin = begin->next;
 	}
 }
 
-
+/*
 int		main(int ac, char **av)
 {
 	char		test1[] = "coco";
 	char		test2[] = "cocu";
 	char		test3[] = "cacao";
-	char		test4[] = "cococo";
+	char		test4[] = "..";
 	t_list		*list;
 	t_list		*begin;
 
@@ -169,9 +167,7 @@ int		main(int ac, char **av)
 		}
 		ft_print_list(begin);
 	}
-	/*printf("%d\n", brackets(&i, av[2], av[3][0]));
-	printf("new i = %d\n", i);
-	printf("%c\n", av[2][i]);*/
 	return (0);
 }
+*/
 
