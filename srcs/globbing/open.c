@@ -83,25 +83,30 @@ void	ft_get_glob(DIR *dir, char *path, char *glob, t_list **begin)
 			printf("Le fichier %s a été lu pour glob: %s\n", file->d_name, glob);
 			if (!ft_strcmp(file->d_name, ".") && !ft_strncmp(glob, "**/", 3))
 			{
-				printf("Envoi de la fonction récursive sur %s avec glob %s\n", buff, glob + ft_strlencc(glob, '/'));
+				if (glob[3])
+					ft_get_glob(opendir((!*buff) ? "." : buff), buff,
+					(glob + ft_strlencc(glob, '/') + 1), begin);
+				else
+					ft_get_glob(opendir((!*buff) ? "." : buff), buff,
+					(glob + 1), begin);
+				/*printf("Envoi de la fonction récursive sur %s avec glob %s\n", buff, glob + ft_strlencc(glob, '/'));
 				if (!*buff)
 					if (glob[3])
 						ft_get_glob(opendir("."), buff, (glob + 1 + ft_strlencc(glob, '/')), begin);
 					else
-						ft_get_glob(opendir("."), buff, glob, begin);
+						ft_get_glob(opendir("."), buff, glob + 1, begin);
 				else
 					if (glob[3])
 						ft_get_glob(opendir(buff), buff, (glob + 1 + ft_strlencc(glob, '/')), begin);
 					else
-						ft_get_glob(opendir(buff), buff, glob, begin);
-				ft_bzero(&buff[end], 255 - end);
+					ft_get_glob(opendir(buff), buff, glob + 1, begin);*/
 			}
 
 			if (is_valid(0, 0, glob, file->d_name) && ((ft_strcmp(file->d_name, ".")
-							&& ft_strcmp(file->d_name, "..") && (*(file->d_name) != '.' ||
-								(*(file->d_name) == '.' && is_valid(0, 0, ".*", glob))))
-						|| (is_valid(0, 0, ".", glob) && !ft_strcmp(file->d_name, "."))
-						||(is_valid(0, 0, "..", glob) && !ft_strcmp(file->d_name, ".."))))
+			&& ft_strcmp(file->d_name, "..") && (*(file->d_name) != '.' ||
+			(*(file->d_name) == '.' && is_valid(0, 0, ".*", glob))))
+			|| (is_valid(0, 0, ".", glob) && !ft_strcmp(file->d_name, "."))
+			||(is_valid(0, 0, "..", glob) && !ft_strcmp(file->d_name, ".."))))
 			{
 				ft_strcat(buff, file->d_name);
 				if (ft_strncmp(glob, "**/", 3))
