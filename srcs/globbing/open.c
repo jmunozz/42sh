@@ -20,110 +20,40 @@ int		ft_strlencc(char *str, char c)
 	return (i);
 }
 
-
-char	ft_is_wildcard(char	*buff)
+void	ft_glob(DIR *dir, char *path, char *glob, t_list **begin)
 {
-	if (!ft_strcmp(buff, "**"))
-		return (2);
-	if (ft_strchr(buff, '*') || (ft_strchr(buff, '[') && ft_strchr(buff, ']')) ||
-			ft_strchr(buff, '?'))
-		return (1);
-	return (0);
-}
-
-
-char	*ft_set_recu_path(char *path, char *file, int index)
-{
-	char	*recu_path;
-	int		size;
-
-	size = ft_strlen(path) + ft_strlen(file) + 1;
-	recu_path = ft_strnew(size);
-	ft_strncpy(recu_path, path, index);
-	ft_strcat(recu_path, file);
-	recu_path[index + ft_strlen(file)] = '/';
-	ft_strcat(recu_path, &path[index]);
-	return (recu_path);
-
-}
-
-char	*ft_set_new_path(char *path, char *file, int index, int size)
-{
-	char	*new_path;
-
-	new_path = ft_strnew(ft_strlen(path) + ft_strlen(file) - size + 1);
-	ft_strncpy(new_path, path, index);
-	ft_strcat(new_path, file);
-	ft_strcat(new_path, &path[index + size]);
-	return(new_path);
-}
-
-void	ft_get_glob(DIR *dir, char *path, char *glob, t_list **begin)
-{
-	char			buff[256];
+	char			buf[256];
 	struct dirent	*file;
 	int				end;
-	int				ret;
 
-	printf("A l'ouverture le buff vaut %s et glob %s\n", path, glob);
-	end = ft_strlen(ft_strcpy(buff, path));
+	end = ft_strlen(ft_strcpy(buf, path));
 	if (!*glob)
-		ft_list_push_back(begin, ft_lstnew(ft_strdup(buff), 0));
-	if (!dir)
-		return;
-	if (*glob == '/')
-	{
-		printf("Ajout du /\n");
-		ft_get_glob(dir, ft_strcat(buff, "/"), ++glob, begin);
-	}
-	else
-	{
+		ft_list_push_back(begin, ft_lstnew(ft_strdup(buf), 0));
+	if (dir && *glob == '/')
+		ft_glob(dir, ft_strcat(buf, "/"), ++glob, begin);
+	else if (dir)
 		while ((file = readdir(dir)))
 		{
-			printf("Le fichier %s a été lu pour glob: %s\n", file->d_name, glob);
 			if (!ft_strcmp(file->d_name, ".") && !ft_strncmp(glob, "**/", 3))
 			{
 				if (glob[3])
-					ft_get_glob(opendir((!*buff) ? "." : buff), buff,
-					(glob + ft_strlencc(glob, '/') + 1), begin);
+					ft_glob(opendir((!*buf) ? "." : buf), buf, (glob + ft_strlencc(glob, '/') + 1), begin);
 				else
-					ft_get_glob(opendir((!*buff) ? "." : buff), buff,
-					(glob + 1), begin);
-				/*printf("Envoi de la fonction récursive sur %s avec glob %s\n", buff, glob + ft_strlencc(glob, '/'));
-				if (!*buff)
-					if (glob[3])
-						ft_get_glob(opendir("."), buff, (glob + 1 + ft_strlencc(glob, '/')), begin);
-					else
-						ft_get_glob(opendir("."), buff, glob + 1, begin);
-				else
-					if (glob[3])
-						ft_get_glob(opendir(buff), buff, (glob + 1 + ft_strlencc(glob, '/')), begin);
-					else
-					ft_get_glob(opendir(buff), buff, glob + 1, begin);*/
+					ft_glob(opendir((!*buf) ? "." : buf), buf, (glob + 1), begin);
 			}
-
 			if (is_valid(0, 0, glob, file->d_name) && ((ft_strcmp(file->d_name, ".")
 			&& ft_strcmp(file->d_name, "..") && (*(file->d_name) != '.' ||
 			(*(file->d_name) == '.' && is_valid(0, 0, ".*", glob))))
 			|| (is_valid(0, 0, ".", glob) && !ft_strcmp(file->d_name, "."))
 			||(is_valid(0, 0, "..", glob) && !ft_strcmp(file->d_name, ".."))))
 			{
-				ft_strcat(buff, file->d_name);
-				if (ft_strncmp(glob, "**/", 3))
-				{
-					printf("Valide, fction relancée sur buff: %s glob: %s\n", buff, glob + ft_strlencc(glob, '/'));
-					ft_get_glob(opendir(buff), buff, (glob + ft_strlencc(glob, '/')), begin);
-				}
+				if (ft_strcat(buf, file->d_name) && ft_strncmp(glob, "**/", 3))
+					ft_glob(opendir(buf), buf, (glob + ft_strlencc(glob, '/')), begin);
 				else
-				{
-					printf("Lancement de la fonction récursive\n");
-					ft_get_glob(opendir(buff), ft_strcat(buff, "/"), glob, begin);
-				}
-				ft_bzero(&buff[end], (255 - end));
+					ft_glob(opendir(buf), ft_strcat(buf, "/"), glob, begin);
+				ft_bzero(&buf[end], (255 - end));
 			}
-			printf("ret: %d\n", ret);
 		}
-	}
 }
 
 int		main(int ac, char **av)
@@ -131,9 +61,9 @@ int		main(int ac, char **av)
 	DIR		*stream;
 	int		size;
 	t_list	*begin;
-	char	buff[256];
+	char	buf[256];
 
-	ft_bzero(buff, 256);
+	ft_bzero(buf, 256);
 	begin = NULL;
 	if (ac > 1)
 	{
@@ -150,31 +80,8 @@ int		main(int ac, char **av)
 				return (0);
 			}
 		}
-		ft_get_glob(stream, buff, av[1],  &begin);
+		ft_glob(stream, buf, av[1],  &begin);
 		ft_print_list(begin);
 	}
 	return (0);
 }
-
-/*
-   int	main(void)
-   {
-   char test[] = "coco";
-   char	glob[] = "*.";
-   if ((is_valid(0, 0, glob, test)))
-   printf("OK\n");
-   return (0);
-   }
-   */
-/*
-//test de ft_set_recu_path
-int		main(int ac, char **av)
-{
-char	*path;
-if (ac > 3)
-{
-path = ft_set_recu_path(av[1], av[2], atoi(av[3]));
-printf("%s\n", path);
-}
-return (0);
-}*/
