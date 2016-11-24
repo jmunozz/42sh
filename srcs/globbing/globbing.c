@@ -101,10 +101,8 @@ int  is_valid(int i, int j, char *glob, char *file)
 		return(is_valid(++i, ++j, glob, file));
 	else if (i && ft_isalphaa(glob[i]) && !is_alphabefore(i, glob))
 	{
-		printf("on est la");
 		while ((test = ft_strlenc(&file[j], glob[i])) != -1)
 		{
-			printf("on est rela");
 			j += test;
 			if (is_valid(i + 1, ++j, glob, file))
 				return (2);
