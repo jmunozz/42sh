@@ -1,131 +1,87 @@
-#include "../../includes/minishell.h"
- /*
- char	*ft_strnchr(const char *s, int c, size_t size)
- {
- 	int i;
- 	if (size)
-	{
-		i = 0;
-		while (s[i] && s[i] != (char)c && i < size 1)
-			i++;
-		if (s[i] == (char)c)
-			return ((char*)&s[i]);
-	}
-	return (NULL);
-}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   globbing.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmunoz <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/25 21:09:33 by jmunoz            #+#    #+#             */
+/*   Updated: 2016/11/25 21:18:57 by jmunoz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/globbing.h"
+
+/*
+** Save once and  return list with valid files pathnames.
 */
-// Besoin de cette version pour que is_valid fonctionne.
-int		ft_strlenc(char *str, char c)
-{
-	int i;
 
-	i = 0;
-	if (!str || !str[i])
-		return (-1);
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
+static t_list	**ft_save_list(t_list **begin)
+{
+	static t_list **save = NULL;
+
+	if (!save)
+		save = begin;
+	return (save);
 }
 
-int		ft_isalphaa(int c)
+/*
+** For one directory, check if each file fill the glob, append it to the saved
+** path if ok. Discard "." and ".." and hidden files if not explicitely
+** mentionned in glob. Call ft_glob with next path section in glob.
+*/
+
+static void		ft_check_file(char *file, char *glob, char *buf, int end)
 {
-		if ((c < 'A' || ('Z' < c && c < 'a') || 'z' < c) && c != '.')
-					return (0);
-			return (1);
+	if (!ft_strcmp(file, ".") && !ft_strncmp(glob, "**/", 3))
+	{
+		if (glob[3])
+			ft_glob(opendir((!*buf) ? "." : buf), buf,
+			(glob + ft_strlenc(glob, '/') + 1));
+		else
+			ft_glob(opendir((!*buf) ? "." : buf), buf, (glob + 1));
+	}
+	if (ft_match(glob, file) && ((ft_strcmp(file, ".") && ft_strcmp(file, "..")
+	&& (*(file) != '.' || ft_match(".*", glob))) || (ft_match(".", glob) &&
+	!ft_strcmp(file, ".")) || (ft_match("..", glob) && !ft_strcmp(file, ".."))))
+	{
+		if (ft_strcat(buf, file) && ft_strncmp(glob, "**/", 3))
+			ft_glob(opendir(buf), buf, (glob + ft_strlenc(glob, '/')));
+		else
+			ft_glob(opendir(buf), ft_strcat(buf, "/"), glob);
+		ft_bzero(&buf[end], (255 - end));
+	}
 }
 
-int	is_alphabefore(int j, char *file)
+/*
+** Recursive function. If glob comes at a end, add the pathname to the list.
+** if *glob is /, append it to the pathname and restart function. If it comes to
+** a valid path section in glob, check the files that might be valid.
+*/
+
+void			ft_glob(DIR *dir, char *path, char *glob)
 {
-	while (--j >= 0 && !ft_isalphaa(file[j]))
-	{
-		if (file[j] == '*')
-			return (0);
-	}
-	return (1);
+	char			buf[256];
+	struct dirent	*file;
+	int				end;
+	t_list			**begin;
+
+	begin = ft_save_list(NULL);
+	end = ft_strlen(ft_strcpy(buf, path));
+	if (!*glob)
+		ft_list_push_back(begin, ft_lstnew(ft_strdup(buf), 0));
+	if (dir && *glob == '/')
+		ft_glob(dir, ft_strcat(buf, "/"), ++glob);
+	else if (dir)
+		while ((file = readdir(dir)))
+			ft_check_file(file->d_name, glob, buf, end);
 }
 
-int		brackets(int *i, char *glob, char c)
-{
-	int			min;
-	int			max;
-	int			match;
+/*
+** debug.
+*/
 
-	match = 0;
-	if (!ft_strchr(&glob[*i], ']'))
-		return (0);
-	while (glob[*i] != ']' && !match)
-	{
-		if (glob[*i + 1] && glob[*i + 2] && glob[*i + 1] == '-' && glob[*i + 2] != ']')
-		{
-			min = (int)glob[*i] - 1;
-			max = (int)glob[*i + 2];
-			while (++min <= max && !match)
-				if ((int)c == min)
-					match = 1;
-			(*i) += 2;
-		}
-		else if (glob[*i] == c)
-			match = 1;
-		(*i)++;
-	}
-	while (glob[*i] != ']')
-		(*i)++;
-	return (match);
-}
-
-int  is_valid(int i, int j, char *glob, char *file)
-{
-	int test;
-
-	if (file[j] == '\0' || file[j] == '/')
-	{
-		while (glob[i] && glob[i] != '/')
-		{
-			if (glob[i] != '*')
-				return (0);
-			i++;
-		}
-		return (1);
-	}
-	if (i && (glob[i] == '\0' || glob[i] == '/') &&  glob[i - 1] == '*')
-		return (1);
-	else if (glob[i] == '\0' || glob[i] == '/')
-		return ((file[j] == '\0') ? 1 : 0);
-	else if (glob[i] == '?')
-		return(is_valid(++i, ++j, glob, file));
-	else if (i && ft_isalphaa(glob[i]) && !is_alphabefore(i, glob))
-	{
-		while ((test = ft_strlenc(&file[j], glob[i])) != -1)
-		{
-			j += test;
-			if (is_valid(i + 1, ++j, glob, file))
-				return (2);
-		}
-		return (0);
-	}
-	else if (glob[i] == '[')
-	{
-		if (brackets(&i, glob, file[j]))
-			return(is_valid(++i, ++j, glob, file));
-		return (0);
-	}
-	else if (ft_isalphaa(glob[i]))
-	{
-		if (glob[i] == file[j])
-			return(is_valid(++i, ++j, glob, file));
-		return (0);
-	}
-	else if (glob[i] == '*')
-		return (is_valid(++i, j, glob, file));
-	else
-		return (0);
-}
-
-void	ft_print_list(t_list *begin)
+void			ft_print_list(t_list *begin)
 {
 	printf("--Impression de la liste--\n");
 	while (begin)
@@ -133,4 +89,39 @@ void	ft_print_list(t_list *begin)
 		printf("%s %zu\n", begin->data, begin->data_size);
 		begin = begin->next;
 	}
+}
+
+/*
+** Main a retravailler avant integration dans le 42sh.
+*/
+
+int				main(int ac, char **av)
+{
+	DIR		*stream;
+	int		size;
+	t_list	*begin;
+	char	buf[256];
+
+	ft_bzero(buf, 256);
+	begin = NULL;
+	ft_save_list(&begin);
+	if (ac > 1)
+	{
+		if (!(size = ft_strlenc(av[1], '/')) && !(stream = opendir("/")))
+		{
+			printf("L'ouverture de la racine a échoué\n");
+			return (0);
+		}
+		else if (!stream)
+		{
+			if (!(stream = opendir(".")))
+			{
+				printf("L'ouvertude du dossier courant  a échoué\n");
+				return (0);
+			}
+		}
+		ft_glob(stream, buf, av[1]);
+		ft_print_list(begin);
+	}
+	return (0);
 }
