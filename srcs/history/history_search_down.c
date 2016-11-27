@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 08:56:48 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 08:57:24 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 13:50:49 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	ft_down_search(t_stream *stream)
 
 void		ft_down(t_stream *stream)
 {
+	ft_gohome(stream);
 	if (stream->search)
 		ft_searchengine(stream);
 	if (stream->shindex != stream->config->hindex)

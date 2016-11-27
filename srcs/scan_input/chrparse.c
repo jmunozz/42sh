@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 14:20:08 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 13:44:24 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,10 @@ void			ft_flushend(t_stream *stream)
 		ft_putstr_fd(stream->command + stream->pos, SFD);
 		stream->pos += size;
 	}
-	if (!((stream->pos + stream->config->prompt_len) % stream->col))
-	{
-		ft_putstr_fd(" ", SFD);
-		stream->tput = "le";
-		ft_tputs(stream);
-	}
-	else
-		ft_erase(stream);
+	if (stream->pos && stream->command[stream->pos - 1] != '\n'
+			&& ft_checknewline(stream, stream->pos - 1) >= 0)
+		ft_repeat_termcaps(1, "do", stream);
+	ft_erase(stream);
 }
 
 void			ft_flush(t_stream *stream)

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:44:56 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/27 13:21:50 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 13:35:23 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,8 @@ t_stream		*ft_save_stream(t_stream *stream)
 void			ft_secure_prompt(t_stream *stream)
 {
 	ft_prompt(stream->config);
-	if (!((stream->pos + stream->config->prompt_len) % stream->col))
-	{
-		ft_putstr_fd(" ", SFD);
-		stream->tput = "le";
-		ft_tputs(stream);
-	}
+	if (!((stream->config->prompt_len) % stream->col))
+		ft_repeat_termcaps(1, "do", stream);
 }
 
 /*
@@ -49,13 +45,9 @@ void			ft_prompt_reset(t_stream *stream)
 	if (stream->col)
 	{
 		ft_gohome(stream);
-		lin = stream->config->prompt_len / stream->col;
-		stream->tput = "up";
-		while (lin--)
-			ft_tputs(stream);
-		stream->tput = "le";
-		while ((stream->col)--)
-			ft_tputs(stream);
+		lin = stream->config->prompt_len / (stream->col > col ? stream->col : col);
+		ft_repeat_termcaps(lin, "up", stream);
+		ft_repeat_termcaps(col, "le", stream);
 		stream->tput = "cd";
 		ft_tputs(stream);
 	}
