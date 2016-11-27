@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:14:44 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 15:25:13 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 12:38:27 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void			ft_secure_prompt(t_stream *stream);
 /*
 **checknewline.c
 */
-void			ft_checknewline(t_stream *stream);
+int				ft_checknewline(t_stream *stream, size_t p);
 /*
 **syntax_color.c
 */

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:27:28 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 10:20:59 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 12:37:02 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,46 +61,30 @@ void			ft_tputs(t_stream *stream)
 
 void			ft_mvleft(t_stream *stream)
 {
-	unsigned int	i;
+	int	i;
 
-	i = 0;
 	if (stream->pos)
 	{
-	if (stream->command[stream->pos - 1] != '\n'
-	&& (stream->cur_col = (stream->config->prompt_len + stream->pos) % stream->col))
-	//if (stream->command[stream->pos - 1] != '\n' && (stream->cur_col = ft_get_cur_col(stream->command, stream->pos, stream)))
+		i = 0;
+		if (0 > (i = ft_checknewline(stream, stream->pos - 1)))
 			ft_repeat_termcaps(1, "le", stream);
 		else
 		{
-			stream->tput = "nd";
-			while (++i <= stream->col)
-				ft_tputs(stream);
 			ft_repeat_termcaps(1, "up", stream);
+			ft_repeat_termcaps(i, "nd", stream);
 		}
-		stream->pos--;
-		if (i)
-			ft_checknewline(stream);
+		--stream->pos;
 	}
 }
 
 void			ft_mvright(t_stream *stream)
 {
-	unsigned int	i;
-
-	if (stream->command)
+	if (stream->command && stream->command[0])
 	{
-		if (((stream->config->prompt_len + stream->pos) % stream->col)
-			!= stream->col - 1 && stream->command[stream->pos] != '\n')
+		if (0 > ft_checknewline(stream, stream->pos))
 			ft_repeat_termcaps(1, "nd", stream);
 		else
-		{
-			i = 0;
-			stream->tput = "le";
-			while (++i <= stream->col - 1)
-				ft_tputs(stream);
-			stream->tput = "do";
-			ft_tputs(stream);
-		}
+			ft_repeat_termcaps(1, "do", stream);
 		stream->pos++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:44:56 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/18 10:23:19 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 13:21:50 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,13 @@ void			ft_flush_command(t_stream *stream)
 void			ft_winsize(void)
 {
 	t_stream		*stream;
+	size_t			pos;
 
 	stream = ft_save_stream(NULL);
+	pos = stream->pos;
 	ft_prompt_reset(stream);
 	ft_flush_command(stream);
+	ft_gomatch(stream, pos);
 	if (COMP_STATE)
 		ft_comp_print(stream);
 	ft_sigwinch(1);
