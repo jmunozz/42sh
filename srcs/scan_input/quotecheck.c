@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:28:55 by tboos             #+#    #+#             */
-/*   Updated: 2016/10/17 16:22:42 by maxpetit         ###   ########.fr       */
+/*   Updated: 2016/11/28 09:12:07 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ int			ft_quotecheck(t_stream *stream)
 
 	test = stream->command;
 	if ((test = ft_matchchr(&test)))
+	{
+		ft_append(stream);
 		return (ft_underline_mess(test, stream));
+	}
 	return (1);
 }
