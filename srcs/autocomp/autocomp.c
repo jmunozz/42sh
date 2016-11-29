@@ -56,6 +56,8 @@ static void		ft_state_zero(t_stream *stream)
 			ft_mvright(stream);
 		b = get_begin(stream->pos - 1, stream->command, &len);
 		COMP_BEGIN = ft_strsub(b, 0, len);
+		if (ft_rep(stream, b))
+			return ;
 		mode = get_mode(len, stream->command, stream);
 		build_list(COMP_BEGIN, mode, stream);
 		if (COMP_PAD > COMP_ROW)

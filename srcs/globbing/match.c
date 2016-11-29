@@ -67,4 +67,3 @@ int				ft_match(char *glob, char *comp)
 		return (ft_match(glob + 1, comp + 1));
 	return (0);
 }
-l

@@ -17,6 +17,9 @@ autocomp/getenv.c \
 autocomp/move.c \
 autocomp/print.c \
 autocomp/support.c \
+autocomp/rep.c \
+globbing/globbing.c \
+globbing/match.c \
 builtins/builtin.c \
 builtins/cd.c \
 builtins/echo.c \

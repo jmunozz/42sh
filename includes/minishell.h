@@ -33,6 +33,7 @@
 # include "core.h"
 # include "scan_input.h"
 # include "autocomp.h"
+# include "globbing.h"
 # include "run_command.h"
 # include "error.h"
 # ifdef LINUX
