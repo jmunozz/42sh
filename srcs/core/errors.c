@@ -6,11 +6,15 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:43:54 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 08:59:58 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/17 17:31:43 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**Returns name of file if an error occured.
+*/
 
 char		*ft_shname_or_file(char *name)
 {
@@ -20,6 +24,10 @@ char		*ft_shname_or_file(char *name)
 		errn = name;
 	return (errn);
 }
+
+/*
+**Returns line if an error occured.
+*/
 
 size_t		ft_script_line(int mode)
 {
@@ -51,13 +59,13 @@ int			ft_error(char *name, char *other, char *mess, int mode)
 		ft_putchar_fd('\n', 2);
 	if (name)
 	{
-		if (strcmp(name, SHNAME))
+		if (ft_strcmp(name, SHNAME))
 			ft_putstr_fd(name, 2);
 		else
 			ft_putstr_fd(ft_shname_or_file(NULL), 2);
 		ft_putstr_fd(": ", 2);
 	}
-	if (ft_script_line(0) && !strcmp(SHNAME, name))
+	if (ft_script_line(0) && !ft_strcmp(SHNAME, name))
 		FT_PUTSTRFD("ligne ", ft_st_itoa((int)ft_script_line(0)), ": ", 2);
 	if (other)
 	{

@@ -6,11 +6,18 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/23 16:02:50 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 13:42:26 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 10:18:38 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**Copies the current terminal attributes in config->termios and
+**config->termios_backup. Changes the control mode in non canonical and stop
+**echo of input characters. Defines a minimun of zero characters for
+**noncanonical read. No defines a timeout for noncanonical read.
+*/
 
 static int	ft_init_term(t_config *config)
 {
@@ -23,6 +30,13 @@ static int	ft_init_term(t_config *config)
 	config->termios.c_cc[VTIME] = 1;
 	return (true);
 }
+
+/*
+**For the first call of function gets terminal attributes and Changes
+**config->termios. If mode exists, modification of term attributes occurs after
+**all output written to STDIN_FILENO has been transmitted. If mode doesn't
+**exists, modification are set immediately.
+*/
 
 static void	ft_termios_handle(t_config *config, int mode)
 {
@@ -39,6 +53,11 @@ static void	ft_termios_handle(t_config *config, int mode)
 	return ;
 }
 
+/*
+**When keys CTRL + D are touched, puts cursor on the first column after the 
+**prompt and exits the programe.
+*/
+
 static void	ft_ctrl_d(t_stream *stream)
 {
 	ft_gohome(stream);
@@ -53,7 +72,7 @@ static void	ft_scan(t_stream *stream)
 	while (1)
 	{
 		ft_bzero(stream->buf, 255);
-		if (((stream->ret = read(stream->fd, stream->buf, 255)) < 0
+		if (((stream->ret = read(SFD, stream->buf, 255)) < 0
 			&& (stream->state = -1))
 			|| (stream->buf[0] == CTRLD
 			&& (!stream->command || !stream->command[0]))
@@ -71,7 +90,7 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 	ft_bzero(stream, sizeof(t_stream));
 	ft_freegiveone((void **)(&(config->history[config->hindex])));
 	stream->config = config;
-	stream->fd = fd;
+	SFD = fd;
 	ft_termios_handle(config, 1);
 	ft_winsize();
 	ft_scan(stream);
@@ -90,6 +109,6 @@ char		*ft_streamscan(t_config *config, t_stream *stream, int fd)
 		ft_push_history(stream, config);
 		ft_incr_history(&(config->hindex));
 	}
-	ft_putchar('\n');
+	ft_putchar_fd('\n', SFD);
 	return (stream->command);
 }

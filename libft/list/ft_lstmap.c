@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/04 18:24:51 by tboos             #+#    #+#             */
-/*   Updated: 2016/02/22 20:35:04 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:31:07 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ t_dclist		*ft_dclstmap(t_dclist *lst, t_dclist *(*f)(t_dclist *elem))
 	return (cpy);
 }
 
-t_list		*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
+t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	t_list	*cpy;
-	t_list	*rabbit;
-	t_list	*turtle;
+	t_list		*cpy;
+	t_list		*rabbit;
+	t_list		*turtle;
 
 	cpy = NULL;
 	if (lst)

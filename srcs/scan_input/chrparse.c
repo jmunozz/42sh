@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 14:29:42 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 13:44:37 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 13:44:24 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,13 @@ void			ft_flushend(t_stream *stream)
 	else if (stream->command && stream->command[0])
 	{
 		size = ft_strlen(stream->command + stream->pos);
-		ft_putstr(stream->command + stream->pos);
+		ft_putstr_fd(stream->command + stream->pos, SFD);
 		stream->pos += size;
 	}
-	if (!((stream->pos + stream->config->prompt_len) % stream->col))
-	{
-		ft_putstr(" ");
-		stream->tput = "le";
-		ft_tputs(stream);
-	}
-	else
-		ft_erase(stream);
+	if (stream->pos && stream->command[stream->pos - 1] != '\n'
+			&& ft_checknewline(stream, stream->pos - 1) >= 0)
+		ft_repeat_termcaps(1, "do", stream);
+	ft_erase(stream);
 }
 
 void			ft_flush(t_stream *stream)
@@ -84,10 +80,8 @@ static int		ft_chrmatch(t_stream *stream)
 	int					i;
 
 	i = 0;
-//	printf("\nbuf   = %lx\n", ((ssize_t *)(stream->buf))[0]);
 	while (match[i])
 	{
-//	printf("\nmatch = %lx\n", match[i]);
 		if (((ssize_t *)(stream->buf))[0] == match[i])
 			return (i);
 		i++;
@@ -98,7 +92,7 @@ static int		ft_chrmatch(t_stream *stream)
 }
 
 /*
-** Lance la fonction appropriée en fonction de la touche pressée.
+** Run the appropriate function for a key touched.
 */
 
 int				ft_chrparse(t_stream *stream)
@@ -107,9 +101,8 @@ int				ft_chrparse(t_stream *stream)
 	static void			(*ftab[])(t_stream *) = {&ft_sup, &ft_autocomp,
 			&ft_del, &ft_left, &ft_right, &ft_up, &ft_down,
 			&ft_ctrlleft, &ft_ctrlright, &ft_ctrlup, &ft_ctrldown,
-			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend, &ft_syntax_color};
-	//ceci est un tableau de fonctions prenant toutes t_stream en parametre.
-
+			&ft_goend, &ft_gohome, &ft_searchengine, &ft_searchengineend,
+			&ft_syntax_color};
 
 	if (COMP_STATE == 2 && ((ssize_t*)(stream->buf))[0] == CLF)
 		ft_end_autocomp(stream);

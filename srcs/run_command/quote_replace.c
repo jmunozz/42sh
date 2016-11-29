@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 09:21:44 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/16 13:39:16 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/18 14:15:37 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static t_list	*ft_quote_replace(char **t, t_list *next)
 				ft_memmove(t[i] + j, t[i] + j + 1, ft_strlen(t[i] + j));
 				--j;
 			}
-		
 	}
 	return (next);
 }

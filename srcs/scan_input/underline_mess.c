@@ -6,20 +6,20 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:18:09 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 13:27:25 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 10:22:21 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_putmess(t_stream *stream, char *mess)
+void	ft_putmess(t_stream *stream, char *mess)
 {
 	size_t			i;
 
-	ft_putstr(mess);
+	ft_putstr_fd(mess, SFD);
 	if (!((stream->pos + stream->config->prompt_len) % stream->col))
 	{
-		ft_putstr(" ");
+		ft_putstr_fd(" ", SFD);
 		stream->tput = "le";
 		ft_tputs(stream);
 	}
@@ -33,7 +33,7 @@ static void	ft_putmess(t_stream *stream, char *mess)
 		ft_tputs(stream);
 }
 
-int			ft_underline_mess(char *mess, t_stream *stream)
+int		ft_underline_mess(char *mess, t_stream *stream)
 {
 	size_t			i;
 	unsigned int	pos_buf;

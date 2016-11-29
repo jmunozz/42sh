@@ -6,14 +6,15 @@
 /*   By: tboos <to-uss@noos.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/16 22:35:30 by tboos             #+#    #+#             */
-/*   Updated: 2016/03/28 16:31:46 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/18 14:32:00 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list.h"
 #include "dclist.h"
 
-static void	ft_dcloopsort(t_dclist *beg, t_dclist *rab, t_dclist *last, int (*cmp)())
+static void	ft_dcloopsort(t_dclist *beg, t_dclist *rab, t_dclist *last,
+			int (*cmp)())
 {
 	t_dclist	*memo;
 

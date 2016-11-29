@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:14:05 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/16 13:26:51 by rbaran           ###   ########.fr       */
+/*   Updated: 2016/11/18 13:17:16 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 # define SHNAME "21sh"
 # define HISTORY_SIZE 100
 # define FT_PUTSTRFD ft_putstr_str_str_fd
-# define QUOTE_ERR "please end your quote before running command"
-# define PAR_ERR "missing '(' ')' '[' ']' '{' '}' or \"`\" character"
-# define BACK_ERR "missing character after backslash"
 # define DPATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 /*
@@ -91,10 +88,6 @@ typedef struct	s_config
 	int			last_exit;
 	bool		syntax_color_off;
 }				t_config;
-typedef enum	e_sigerr
-{
-	SEGV
-}				t_sigerr;
 /*
 **builtin.c && environ.c
 */

@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   buildlist.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/18 13:27:31 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/18 15:53:16 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/autocomp.h"
+
 /*
-** Construit la liste si elle n'existe pas. Ajoute un élément si la liste existe.
-** Filtre les fichiers cachés et dans tous les cas "." et "..";
+** Built list if not exist. add elem in a existing list.
+** hidden files are ignored if patern does not begin with '.'.
 */
+
 static void		do_list(t_stream *stream, struct dirent *file, char *dir)
 {
 	size_t		data_size;
@@ -14,24 +28,29 @@ static void		do_list(t_stream *stream, struct dirent *file, char *dir)
 	if (lstat(tmp, &buf) >= 0)
 		data_size = (buf.st_mode & ~1);
 	ft_freegiveone((void**)&tmp);
-	if ((file->d_name[0] == '.' && COMP_BEGIN[0] == '.' && ft_strcmp(file->d_name, ".")
-	&& ft_strcmp(file->d_name, "..")) || file->d_name[0] != '.')
+	if ((file->d_name[0] == '.' && COMP_BEGIN[0] == '.'
+		&& ft_strcmp(file->d_name, ".")
+		&& ft_strcmp(file->d_name, "..")) || file->d_name[0] != '.')
 	{
-		{
-			if (!COMP_BEGIN_LIST)
-				COMP_BEGIN_LIST = ft_lstnew((S_ISDIR(data_size)) ? ft_strjoin(file->d_name, "/") : ft_strdup(file->d_name), data_size);
-			else
-				ft_list_push_back(&(COMP_BEGIN_LIST), ft_lstnew((S_ISDIR(data_size)) ? ft_strjoin(file->d_name, "/") : ft_strdup(file->d_name), data_size));
-			get_pad(stream, file->d_name);
-		}
+		if (!COMP_BEGIN_LIST)
+			COMP_BEGIN_LIST = ft_lstnew((S_ISDIR(data_size)) ?
+				ft_strjoin(file->d_name, "/") :
+					ft_strdup(file->d_name), data_size);
+		else
+			ft_list_push_back(&(COMP_BEGIN_LIST),
+				ft_lstnew((S_ISDIR(data_size)) ? ft_strjoin(file->d_name, "/") :
+					ft_strdup(file->d_name), data_size));
+		get_pad(stream, file->d_name);
 	}
 }
+
 /*
-** Fonction qui set la chaîne de caractère à comparer aux fichiers du dossier
-** ouvert. Cette chaîne est 1. NULLE, 2.équivalente à la commande passée,
-** 3. équivalente au dernier élément du path entré en commande.
+** Set needle for comaraison with open repertory. Can be NULL or match previous
+** user defined pattern.
 */
-void			set_comp(char *str, char **comp, size_t *len_comp, int mode, t_stream *stream)
+
+void			set_comp(char *str, char **comp, size_t *len_comp, int mode,
+				t_stream *stream)
 {
 	char *tmp;
 
@@ -48,12 +67,14 @@ void			set_comp(char *str, char **comp, size_t *len_comp, int mode, t_stream *st
 	}
 	*len_comp = (!mode || mode == 1) ? 0 : ft_strlen(*comp);
 }
+
 /*
-** Appelle set_comp, puis set up le dossier à parcourir. Plusieurs cas de figure
-** 1. PATH, 2. Dossier courant, 3. Dossier mentionne dans la commande.
+** Call set_comp, and set repertory to search. Can be:
+** 1. PATH, 2. Current repertory, 3. Specified file in command.
 */
-char		**set_dir(char *str, int mode,
-			t_stream *stream, char **comp, size_t *len_comp)
+
+char			**set_dir(char *str, int mode,
+				t_stream *stream, char **comp, size_t *len_comp)
 {
 	char	**dir;
 	char	*tmp;
@@ -77,11 +98,12 @@ char		**set_dir(char *str, int mode,
 	ft_freegiveone((void**)&path);
 	return (dir);
 }
+
 /*
-** Appelle set_dir. Construit la liste en fonction du ou des dossiers ouverts
-** (**dir) et de la chaîne à comparer (*comp). free **dir (à rectifier)
+** Call set_dir. Built list depending on open directory(ies)
 */
-void		build_list(char *str, int mode, t_stream *stream)
+
+void			build_list(char *str, int mode, t_stream *stream)
 {
 	DIR				*directory;
 	struct dirent	*file;
@@ -109,7 +131,4 @@ void		build_list(char *str, int mode, t_stream *stream)
 	get_size_list(stream);
 	free(dir);
 	ft_freegiveone((void**)&comp);
-	if (COMP_PAD > COMP_ROW)
-		exit(1);
 }
-

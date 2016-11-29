@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 17:44:08 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 08:55:46 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/17 18:39:45 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ static void	ft_manage_files(int ac, char **av, t_config *config)
 	}
 }
 
+/*
+**Searches the terminal name in config->env. If variable TERM exists,
+**initializes the termcaps.
+*/
+
 static void	ft_termcaps_init(t_config *config)
 {
 	char		*i;
@@ -54,6 +59,12 @@ static void	ft_termcaps_init(t_config *config)
 		config->term_state = 0;
 	}
 }
+
+/*
+**If stdin is a terminal, initializes termcaps and launch stream scan. Otherwise
+**reads command on stdin and run command directly without stream scan. If the
+**shell has a file in parameter, tries to opens and reads it.
+*/
 
 static void	ft_tricase(int ac, char **av, t_config *config)
 {
@@ -98,6 +109,12 @@ static int	ft_history_loc_init(t_config *config, char *av)
 	ft_freegiveone((void**)&c);
 	return (0);
 }
+
+/*
+**Copies environment in config.env, copies all binaries in config.binary.
+**Copies pathname of current working directory in config.pwd. Increases the
+**shell level.
+*/
 
 int			main(int ac, char **av, char **env)
 {

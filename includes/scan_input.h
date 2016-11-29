@@ -6,13 +6,14 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 14:14:44 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 14:14:45 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 12:38:27 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INPUT_SCAN_H
-# define INPUT_SCAN_H
+#ifndef SCAN_INPUT_H
+# define SCAN_INPUT_H
 
+# define SFD stream->fd
 # define TUP "\x1b[A"
 # define TDO "\x1b[B"
 # define TLE "\x1b[D"
@@ -55,6 +56,17 @@ typedef struct	s_stream
 	t_comp		comp;
 
 }				t_stream;
+
+typedef struct	s_globing
+{
+	t_list		*lstmp;
+	t_list		*lstprint;
+	int			ret;
+	int			mode;
+	int			end;
+	int			print;
+	char		*path;
+}				t_globing;
 /*
 **streamscan.c
 */
@@ -62,6 +74,7 @@ char			*ft_streamscan(t_config *config, t_stream *stream, int fd);
 /*
 **underlinemess.c
 */
+void			ft_putmess(t_stream *stream, char *mess);
 int				ft_underline_mess(char *mess, t_stream *stream);
 /*
 **quotecheck.c
@@ -106,6 +119,16 @@ int				ft_chrparse(t_stream *stream);
 */
 void			ft_autocomp(t_stream *stream);
 /*
+**globing.c
+*/
+void			ft_loop_path(t_stream *stream, t_globing *data);
+int				ft_search_chr(char *str, char c);
+int				ft_checkdir(t_stream *stream, t_list *list, t_globing *glob, char *path, char *needle);
+/*
+**outputfile.c
+*/
+void			ft_print_output(char *str);
+/*
 **prompt.c
 */
 void			ft_prompt(t_config *config);
@@ -138,7 +161,11 @@ void			ft_secure_prompt(t_stream *stream);
 /*
 **checknewline.c
 */
-void			ft_checknewline(t_stream *stream);
+int				ft_checknewline(t_stream *stream, size_t p);
+/*
+**syntax_color.c
+*/
+void			ft_syntax_color(t_stream *stream);
 
 /*
 ** cursor.c

@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   syntax_color.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/04 18:24:51 by tboos             #+#    #+#             */
-/*   Updated: 2015/11/05 00:11:36 by tboos            ###   ########.fr       */
+/*   Created: 2016/11/18 13:10:40 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/18 14:17:37 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+/*
+** Put syntax_color_off at ON.
+*/
+
+void		ft_syntax_color(t_stream *stream)
 {
-	char	*cpy;
-	size_t	i;
-
-	if (!(cpy = ft_strnew(len)))
-		return (NULL);
-	i = 0;
-	while (i < len)
-		cpy[i++] = s[start++];
-	cpy[i] = '\0';
-	return (cpy);
+	stream->config->syntax_color_off ^= 1;
 }

@@ -1,40 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/18 12:26:47 by tboos             #+#    #+#             */
+/*   Updated: 2016/11/18 13:57:45 by tboos            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "autocomp.h"
+
 /*
- ** Gère l'impression d'un élément avec le padding approprié. Si data_size = 1, imprime
- ** l'élément en surbrillance.
- */
+** print elem in appropriate padding.  If data_size = 1,
+** Print element in video inverted
+*/
+
 void		ft_print_elem(t_list *list, t_stream *stream)
 {
-	if (stream->config->syntax_color_off)
+	if (!stream->config->syntax_color_off)
 	{
 		if (S_ISDIR(list->data_size))
-			ft_putstr(ANSI_COLOR_CYAN);
+			ft_putstr_fd(ANSI_COLOR_CYAN, SFD);
 		else if (S_ISLNK(list->data_size))
-			ft_putstr(ANSI_COLOR_YELLOW);
+			ft_putstr_fd(ANSI_COLOR_YELLOW, SFD);
 		else if (S_ISREG(list->data_size)
 				&& 00100 & list->data_size)
-			ft_putstr(ANSI_COLOR_GREEN);
+			ft_putstr_fd(ANSI_COLOR_GREEN, SFD);
 		else if (S_ISCHR(list->data_size))
-			ft_putstr(ANSI_COLOR_BLUE);
+			ft_putstr_fd(ANSI_COLOR_BLUE, SFD);
 		else if (S_ISBLK(list->data_size))
-			ft_putstr(ANSI_COLOR_RED);
+			ft_putstr_fd(ANSI_COLOR_RED, SFD);
 		else if (S_ISFIFO(list->data_size))
-			ft_putstr(ANSI_COLOR_MAGENTA);
+			ft_putstr_fd(ANSI_COLOR_MAGENTA, SFD);
 		else if (S_ISSOCK(list->data_size))
-			ft_putstr(ANSI_COLOR_MAGENTA);
+			ft_putstr_fd(ANSI_COLOR_MAGENTA, SFD);
 	}
 	if ((list->data_size & 1))
 		ft_repeat_termcaps(1, "mr", stream);
-	ft_putstrpad(list->data, COMP_PAD, 'L');
+	ft_putstrpad_fd(list->data, COMP_PAD, 'L', SFD);
 	if ((list->data_size & 1))
 		ft_repeat_termcaps(1, "me", stream);
-	if (stream->config->syntax_color_off)
-		ft_putstr(ANSI_COLOR_RESET);
+	if (!stream->config->syntax_color_off)
+		ft_putstr_fd(ANSI_COLOR_RESET, SFD);
 }
+
 /*
- ** Imprime une ligne élément par élément.
- ** Imprime un élément puis l'élément n + COMP_IN_COL de manière récursive.
- */
+** Print a line each elem one after another
+*/
+
 void		ft_autocomp_print_line(t_list *list, size_t elem, t_stream *stream)
 {
 	size_t	new_elem;
@@ -52,9 +67,11 @@ void		ft_autocomp_print_line(t_list *list, size_t elem, t_stream *stream)
 		ft_autocomp_print_line(list, new_elem, stream);
 	}
 }
+
 /*
- ** Imprime une ligne. Assure le retour à la ligne et la bonne incrémentation de la liste.
- */
+** Print a line and make sure to return carriage before continuing.
+*/
+
 void		ft_autocomp_print_grid(size_t start, size_t end, t_stream *stream)
 {
 	size_t	j;
@@ -78,9 +95,11 @@ void		ft_autocomp_print_grid(size_t start, size_t end, t_stream *stream)
 		start++;
 	}
 }
+
 /*
- ** N'imprime que la partie de la liste imprimable et gère le scroll vertical.
- */
+** Print only printable part and handle vertical scrolling.
+*/
+
 void		ft_autocomp_scroll(t_stream *stream)
 {
 	static int		start = 0;
@@ -105,22 +124,24 @@ void		ft_autocomp_scroll(t_stream *stream)
 	ft_repeat_termcaps((end - start + 1), "up", stream);
 	ft_autocomp_underline(stream, 'U');
 }
+
 /*
- ** Fonction intermédiaire.
- ** Si oversize, imprime le prompt en dessous. Sinon remonte le nombre de lignes imprimées.
- */
+** If oversize, return carriage for prompt.
+** Else, come back to previous position.
+*/
+
 void		ft_comp_print(t_stream *stream)
 {
 	if (COMP_PAD >= COMP_COL)
 		ft_underline_mess("Please resize term...", stream);
 	else
 	{
-		get_col_elem(stream); // obtient COMP_IN_COL.
-		ft_autocomp_underline(stream, 'D'); //Positionne le curseur en dessous de la ligne de commande.
+		get_col_elem(stream);
+		ft_autocomp_underline(stream, 'D');
 		if (ft_autocomp_is_oversize(stream))
 			if (COMP_STATE == 1)
 			{
-				ft_autocomp_print_grid(0, COMP_IN_COL, stream);//imprime les colonnes.
+				ft_autocomp_print_grid(0, COMP_IN_COL, stream);
 				stream->tput = "do";
 				ft_tputs(stream);
 				ft_secure_prompt(stream);
@@ -130,9 +151,9 @@ void		ft_comp_print(t_stream *stream)
 				ft_autocomp_scroll(stream);
 		else
 		{
-			ft_autocomp_print_grid(0, COMP_IN_COL, stream); //imprime les colonnes.
+			ft_autocomp_print_grid(0, COMP_IN_COL, stream);
 			ft_repeat_termcaps(COMP_IN_COL, "up", stream);
-			ft_autocomp_underline(stream, 'U'); // Positionne le curseur à sa place sur la commande.
+			ft_autocomp_underline(stream, 'U');
 		}
 	}
 }

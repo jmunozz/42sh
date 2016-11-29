@@ -6,7 +6,7 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 13:44:56 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 13:46:12 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/27 13:35:23 by tboos            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@ t_stream		*ft_save_stream(t_stream *stream)
 void			ft_secure_prompt(t_stream *stream)
 {
 	ft_prompt(stream->config);
-	if (!((stream->pos + stream->config->prompt_len) % stream->col))
-	{
-		ft_putstr(" ");
-		stream->tput = "le";
-		ft_tputs(stream);
-	}
+	if (!((stream->config->prompt_len) % stream->col))
+		ft_repeat_termcaps(1, "do", stream);
 }
+
+/*
+**Fill stream->row and stream->col with winsize structure w wich contents screen
+**width and height (in characters).
+*/
 
 void			ft_prompt_reset(t_stream *stream)
 {
@@ -38,19 +39,15 @@ void			ft_prompt_reset(t_stream *stream)
 	size_t			col;
 	size_t			lin;
 
-	ioctl(stream->fd, TIOCGWINSZ, &w);
+	ioctl(SFD, TIOCGWINSZ, &w);
 	col = w.ws_col;
 	stream->row = w.ws_row;
 	if (stream->col)
 	{
 		ft_gohome(stream);
-		lin = stream->config->prompt_len / stream->col;
-		stream->tput = "up";
-		while (lin--)
-			ft_tputs(stream);
-		stream->tput = "le";
-		while ((stream->col)--)
-			ft_tputs(stream);
+		lin = stream->config->prompt_len / (stream->col > col ? stream->col : col);
+		ft_repeat_termcaps(lin, "up", stream);
+		ft_repeat_termcaps(col, "le", stream);
 		stream->tput = "cd";
 		ft_tputs(stream);
 	}
@@ -75,10 +72,13 @@ void			ft_flush_command(t_stream *stream)
 void			ft_winsize(void)
 {
 	t_stream		*stream;
+	size_t			pos;
 
 	stream = ft_save_stream(NULL);
+	pos = stream->pos;
 	ft_prompt_reset(stream);
 	ft_flush_command(stream);
+	ft_gomatch(stream, pos);
 	if (COMP_STATE)
 		ft_comp_print(stream);
 	ft_sigwinch(1);

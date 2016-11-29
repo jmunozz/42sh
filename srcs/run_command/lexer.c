@@ -6,11 +6,17 @@
 /*   By: tboos <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 09:05:45 by tboos             #+#    #+#             */
-/*   Updated: 2016/11/14 09:05:46 by tboos            ###   ########.fr       */
+/*   Updated: 2016/11/17 18:02:35 by maxpetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+**Returns the index i of cmd, where the pattern matchs with on of these
+**operators ><|&;()#. If an escapement pattern before quote is meeted, the
+**function doesn't takes care about what there are between quotes.
+*/
 
 int				ft_next_op(char *cmd, size_t i)
 {
