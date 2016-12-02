@@ -5,9 +5,11 @@ static void	ft_rep_glob(t_stream *stream, char *b)
 	char	*ret;
 	size_t	size;
 	size_t	pos;
+	char	*tmp;
 
 	if ((ret = ft_launch_glob(COMP_BEGIN)))
 	{
+		tmp = ret;
 		pos = stream->pos;
 		ft_gomatch(stream, b - stream->command);
 		ft_memmove(b, stream->command + pos,
@@ -22,6 +24,7 @@ static void	ft_rep_glob(t_stream *stream, char *b)
 		ft_append(stream);
 	}
 	ft_bzero(stream->buf, 256);
+	ft_freegiveone((void**)&tmp);
 }
 
 int		ft_rep(t_stream *stream, char *b)

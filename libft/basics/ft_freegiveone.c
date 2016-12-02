@@ -12,6 +12,13 @@
 
 #include "libft.h"
 
+int		ft_free(void *kill)
+{
+	if (kill)
+		free(kill);
+	return (1);
+}
+
 int		ft_freegiveone(void **kill)
 {
 	if (kill && *kill)

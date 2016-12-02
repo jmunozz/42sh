@@ -1,7 +1,7 @@
 .PHONY: fclean re
 .SUFFIXES:
 NAME = 21sh
-FLAGS = -Werror
+FLAGS = -Wall -Wextra -Werror
 FLAGSPOSIX = -ansi -pedantic -D_POSIX_SOURCE=1
 SRCS = $(foreach S, $(SRC), srcs/$(S))
 OBJ = $(SRCS:.c=.o)
@@ -16,10 +16,8 @@ autocomp/command.c \
 autocomp/getenv.c \
 autocomp/move.c \
 autocomp/print.c \
-autocomp/support.c \
 autocomp/rep.c \
-globbing/globbing.c \
-globbing/match.c \
+autocomp/support.c \
 builtins/builtin.c \
 builtins/cd.c \
 builtins/echo.c \
@@ -37,6 +35,8 @@ core/main.c \
 core/minishell.c \
 core/qerror.c \
 core/signal.c \
+globbing/globbing.c \
+globbing/match.c \
 history/history.c \
 history/history_backup.c \
 history/history_search_down.c \
@@ -48,6 +48,7 @@ run_command/build_sentence.c \
 run_command/env_var_replace.c \
 run_command/exec.c \
 run_command/files.c \
+run_command/globbing_replace.c \
 run_command/heredoc.c \
 run_command/lexer.c \
 run_command/lexer_av.c \
@@ -65,7 +66,6 @@ scan_input/checknewline.c \
 scan_input/chrparse.c \
 scan_input/cursor.c \
 scan_input/deletion.c \
-scan_input/globing.c \
 scan_input/prompt.c \
 scan_input/quotecheck.c \
 scan_input/streamscan.c \

@@ -16,11 +16,13 @@
  ** Save once and  return list with valid files pathnames.
 */
 
-static t_list	**ft_save_list(t_list **begin)
+static t_list	**ft_save_list(t_list **begin, char clear)
 {
 	static t_list **save = NULL;
 
-	if (!save)
+	if (clear == 1)
+		save = NULL;
+	else if (!save)
 		save = begin;
 	return (save);
 }
@@ -66,7 +68,7 @@ void			ft_glob(DIR *dir, char *path, char *glob)
 	int				end;
 	t_list			**begin;
 
-	begin = ft_save_list(NULL);
+	begin = ft_save_list(NULL, 0);
 	end = ft_strlen(ft_strcpy(buf, path));
 	if (!*glob)
 		ft_list_push_back(begin, ft_lstnew(ft_strdup(buf), 0));
@@ -96,7 +98,7 @@ int			ft_size_list(t_list *begin)
 ** result into a string.
 */
 
-char			*ft_launch_glob(char *str)
+char	*ft_launch_glob(const char *str)
 {
 	DIR		*stream;
 	t_list	*begin;
@@ -104,13 +106,15 @@ char			*ft_launch_glob(char *str)
 	char	*tot;
 
 	begin = NULL;
-	ft_save_list(&begin);
+	tot = NULL;
+	ft_save_list(&begin, 0);
 	if ((*str == '/' && !(stream = opendir("/"))) || !(stream = opendir(".")))
 		return (NULL);
-	ft_glob(stream, NULL, str);
+	ft_glob(stream, NULL, (char*)str);
 	if (begin)
 	{
 		tot = ft_strnew(ft_size_list(begin));
+		//test = &begin;
 		while (begin)
 		{
 			ft_strcat(ft_strcat(tot, begin->data), " ");
@@ -119,5 +123,7 @@ char			*ft_launch_glob(char *str)
 			ft_lstdelone(&tmp, &ft_list_free_data);
 		}
 	}
+	ft_save_list(NULL, 1);
 	return (tot);
 }
+
